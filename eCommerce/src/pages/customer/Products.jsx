@@ -5,9 +5,7 @@ const Products = () => {
         <div className="customer-products">
             <h1>Danh sách sản phẩm</h1>
             <div className="product-grid">
-                <p>San pham 1</p>
-                <p>San pham 1</p>
-                <p>San pham 1</p>
+                {/* Hien san pham */}
             </div>
         </div>
     );

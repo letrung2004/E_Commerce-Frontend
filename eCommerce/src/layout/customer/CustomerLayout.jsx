@@ -5,11 +5,14 @@ import CustomerFooter from "./CustomerFooter";
 
 const CustomerLayout = () => {
     return (
-        <div className="customer-layout">
+        <div className="flex flex-col min-h-screen">
             <CustomerHeader />
-            <main className="content">
-                <Outlet /> {/* Hiển thị component con tương ứng với route */}
+
+            {/* Phần nội dung có thể co giãn */}
+            <main className="flex-grow flex">
+                <Outlet />
             </main>
+
             <CustomerFooter />
         </div>
     );
