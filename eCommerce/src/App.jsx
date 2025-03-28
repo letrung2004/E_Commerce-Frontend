@@ -9,6 +9,11 @@ import Cart from "./pages/customer/Cart";
 import StoreLayout from "./layout/store/StoreLayout";
 import StoreHome from "./pages/store/Home";
 import StoreProducts from "./pages/store/Products";
+import AddProduct from "./pages/store/AddProduct";
+import StoreCategories from "./pages/store/Categories";
+import AddCategory from "./pages/store/AddCategories";
+import Revenue from "./pages/store/Revenue";
+import Messages from "./pages/store/Messages";
 
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
@@ -34,6 +39,11 @@ const App = () => {
           <Route path="/seller" element={<StoreLayout />}>
             <Route index element={<StoreHome />} />
             <Route path="products" element={<StoreProducts />} />
+            <Route path="products/add" element={<AddProduct />} />
+            <Route path="categories" element={<StoreCategories />} />
+            <Route path="categories/add" element={<AddCategory />} />
+            <Route path="revenue" element={<Revenue />} />
+            <Route path="messages" element={<Messages />} />
           </Route>
         </Routes>
       </BrowserRouter>
