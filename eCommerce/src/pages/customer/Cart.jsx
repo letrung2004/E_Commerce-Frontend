@@ -1,4 +1,5 @@
 import React from "react";
+import { FaTrash } from "react-icons/fa";
 
 const Cart = () => {
     const shops = [
@@ -69,8 +70,8 @@ const Cart = () => {
                                     <button className="px-2 py-1 text-gray-600">+</button>
                                 </div>
 
-                                <button className="text-gray-500 hover:text-red-500">
-
+                                <button className="text-black hover:text-red-500">
+                                    <FaTrash />
                                 </button>
                             </div>
                         </div>

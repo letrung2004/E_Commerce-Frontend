@@ -1,16 +1,18 @@
 import React from "react";
 import { Outlet } from "react-router-dom";
 import StoreHeader from "./StoreHeader";
-import StoreFooter from "./StoreFooter";
+import StoreSidebar from "./StoreSidebar";
 
 const StoreLayout = () => {
     return (
-        <div className="store-layout">
+        <div className="flex flex-col h-screen">
             <StoreHeader />
-            <main className="content">
-                <Outlet /> {/* Hiển thị component con tương ứng với route */}
-            </main>
-            <StoreFooter />
+            <div className="flex flex-grow overflow-hidden">
+                <StoreSidebar />
+                <main className="flex-grow p-6 overflow-auto">
+                    <Outlet />
+                </main>
+            </div>
         </div>
     );
 };
