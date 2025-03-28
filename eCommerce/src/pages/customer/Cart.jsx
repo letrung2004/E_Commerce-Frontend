@@ -1,5 +1,4 @@
 import React from "react";
-import { Trash2 } from "lucide-react";
 
 const Cart = () => {
     const shops = [
@@ -71,7 +70,7 @@ const Cart = () => {
                                 </div>
 
                                 <button className="text-gray-500 hover:text-red-500">
-                                    <Trash2 size={20} />
+
                                 </button>
                             </div>
                         </div>
