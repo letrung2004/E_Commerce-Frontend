@@ -3,7 +3,6 @@ import React from "react";
 import CustomerLayout from "./layout/customer/CustomerLayout";
 import CustomerHome from "./pages/customer/Home";
 import ProductsDetail from "./pages/customer/ProductsDetail";
-import Categories from "./pages/customer/Categories";
 import Cart from "./pages/customer/Cart";
 import CustomerStoreDetail from "./pages/customer/StoreDetail";
 
@@ -33,7 +32,6 @@ const App = () => {
           <Route path="/" element={<CustomerLayout />}>
             <Route index element={<CustomerHome />} />
             <Route path="products/:productId" element={<ProductsDetail />} />
-            <Route path="categories" element={<Categories />} />
             <Route path="cart" element={<Cart />} />
             <Route path="store-detail" element={<CustomerStoreDetail />} />
           </Route>
