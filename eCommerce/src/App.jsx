@@ -14,6 +14,7 @@ import StoreCategories from "./pages/store/Categories";
 import AddCategory from "./pages/store/AddCategories";
 import Revenue from "./pages/store/Revenue";
 import Messages from "./pages/store/Messages";
+import StoreOrders from "./pages/store/Orders";
 
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
@@ -44,6 +45,7 @@ const App = () => {
             <Route path="categories/add" element={<AddCategory />} />
             <Route path="revenue" element={<Revenue />} />
             <Route path="messages" element={<Messages />} />
+            <Route path="orders" element={<StoreOrders />} />
           </Route>
         </Routes>
       </BrowserRouter>

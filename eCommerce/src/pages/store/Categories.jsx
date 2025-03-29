@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { FaEdit, FaTrash, FaPlus, FaSearch } from "react-icons/fa";
 
@@ -6,6 +6,11 @@ const Categories = () => {
     const categories = [
         { id: 1, name: "Bánh Mì", productCount: 10 },
         { id: 2, name: "Cà Phê", productCount: 8 },
+        { id: 3, name: "Trà Sữa", productCount: 12 },
+        { id: 3, name: "Trà Sữa", productCount: 12 },
+        { id: 3, name: "Trà Sữa", productCount: 12 },
+        { id: 3, name: "Trà Sữa", productCount: 12 },
+        { id: 3, name: "Trà Sữa", productCount: 12 },
         { id: 3, name: "Trà Sữa", productCount: 12 },
     ];
 
@@ -34,15 +39,15 @@ const Categories = () => {
             <div className="bg-white shadow-md rounded-lg p-4">
                 <table className="w-full border-collapse">
                     <thead>
-                        <tr className="bg-gray-200 text-gray-700">
-                            <th className="p-3 text-left">Tên danh mục</th>
+                        <tr className="bg-blue-200 text-gray-700 rounded-lg">
+                            <th className="p-3 text-left rounded-tl-lg">Tên danh mục</th>
                             <th className="p-3 text-left">Số lượng sản phẩm</th>
-                            <th className="p-3 text-center">Hành động</th>
+                            <th className="p-3 text-center rounded-tr-lg">Hành động</th>
                         </tr>
                     </thead>
                     <tbody>
                         {categories.map((category) => (
-                            <tr key={category.id} className="border-t hover:bg-gray-100">
+                            <tr key={category.id} className="even:bg-gray-100 hover:bg-gray-200 transition">
                                 <td className="p-3">{category.name}</td>
                                 <td className="p-3">{category.productCount}</td>
                                 <td className="p-5 flex justify-center items-center space-x-4">

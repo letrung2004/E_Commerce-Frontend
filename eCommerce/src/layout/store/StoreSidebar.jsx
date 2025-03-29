@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { FaBox, FaChartBar, FaEnvelope, FaShoppingCart, FaQuestionCircle } from "react-icons/fa";
+import { FaBox, FaChartBar, FaEnvelope, FaShoppingCart } from "react-icons/fa";
 
 const StoreSidebar = () => {
     const [openSections, setOpenSections] = useState({
@@ -14,8 +14,8 @@ const StoreSidebar = () => {
     };
 
     return (
-        <aside className="w-60 p-6 bg-white shadow-md rounded-lg">
-            <nav className="space-y-4">
+        <aside className="w-60 p-6 bg-white shadow-md rounded-lg flex flex-col h-screen">
+            <nav className="space-y-4 flex-grow">
                 {/* Quản lý đơn hàng */}
                 <div>
                     <button onClick={() => toggleSection("orders")} className="flex items-center w-full text-left text-black hover:text-purple-600">
@@ -53,7 +53,6 @@ const StoreSidebar = () => {
                     {openSections.finance && (
                         <div className="ml-6 mt-2 space-y-2">
                             <Link to="/seller/revenue" className="block text-gray-700 hover:text-purple-600">Doanh thu</Link>
-                            {/* <Link to="/seller/revenue" className="block text-gray-700 hover:text-purple-600">Thống kê số dư</Link> */}
                         </div>
                     )}
                 </div>
@@ -62,9 +61,13 @@ const StoreSidebar = () => {
                 <Link to="/seller/messages" className="flex items-center space-x-2 text-black hover:text-purple-600">
                     <FaEnvelope /> <span>Tin nhắn</span>
                 </Link>
-
-
             </nav>
+
+            {/* Phần bản quyền - Luôn ở dưới cùng */}
+            <div className="text-center text-gray-500 text-sm pt-4 mb-15">
+                © {new Date().getFullYear()} Store Management.
+                <br /> All Rights Reserved.
+            </div>
         </aside>
     );
 };

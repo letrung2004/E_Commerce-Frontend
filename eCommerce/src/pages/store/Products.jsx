@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { FaEdit, FaTrash, FaPlus, FaSearch } from "react-icons/fa";
 
@@ -6,6 +6,9 @@ const Products = () => {
     const products = [
         { id: 1, name: "Bánh Mì", price: 15000, quantity: 50, image: "https://res.cloudinary.com/derx1izam/image/upload/v1741688511/wds7s8z3kqtytrj4tidp.png" },
         { id: 2, name: "Cà Phê Sữa", price: 25000, quantity: 30, image: "https://res.cloudinary.com/derx1izam/image/upload/v1741688511/wds7s8z3kqtytrj4tidp.png" },
+        { id: 3, name: "Trà Sữa Trân Châu", price: 35000, quantity: 40, image: "https://res.cloudinary.com/derx1izam/image/upload/v1741688511/wds7s8z3kqtytrj4tidp.png" },
+        { id: 3, name: "Trà Sữa Trân Châu", price: 35000, quantity: 40, image: "https://res.cloudinary.com/derx1izam/image/upload/v1741688511/wds7s8z3kqtytrj4tidp.png" },
+        { id: 3, name: "Trà Sữa Trân Châu", price: 35000, quantity: 40, image: "https://res.cloudinary.com/derx1izam/image/upload/v1741688511/wds7s8z3kqtytrj4tidp.png" },
         { id: 3, name: "Trà Sữa Trân Châu", price: 35000, quantity: 40, image: "https://res.cloudinary.com/derx1izam/image/upload/v1741688511/wds7s8z3kqtytrj4tidp.png" },
     ];
 
@@ -34,24 +37,24 @@ const Products = () => {
             <div className="bg-white shadow-md rounded-lg p-4">
                 <table className="w-full border-collapse">
                     <thead>
-                        <tr className="bg-gray-200 text-gray-700">
-                            <th className="p-3 text-left">Hình ảnh</th>
+                        <tr className="bg-blue-200 text-gray-700 rounded-lg">
+                            <th className="p-3 text-left rounded-tl-lg">Hình ảnh</th>
                             <th className="p-3 text-left">Tên sản phẩm</th>
                             <th className="p-3 text-left">Giá</th>
                             <th className="p-3 text-left">Số lượng</th>
-                            <th className="p-3 text-center">Hành động</th>
+                            <th className="p-3 text-center rounded-tr-lg">Thao tác</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {products.map((product) => (
-                            <tr key={product.id} className="border-t hover:bg-gray-100">
+                        {products.map((product, index) => (
+                            <tr key={product.id} className={`even:bg-gray-100 hover:bg-gray-200 transition`}>
                                 <td className="p-3">
-                                    <img src={product.image} alt={product.name} className="w-16 h-16 rounded-md" />
+                                    <img src={product.image} alt={product.name} className="w-18 h-16 rounded-md shadow-md" />
                                 </td>
                                 <td className="p-3">{product.name}</td>
                                 <td className="p-3 text-green-600 font-semibold">₫{product.price.toLocaleString()}</td>
                                 <td className="p-3">{product.quantity}</td>
-                                <td className="p-5 w-full flex justify-center items-center space-x-4">
+                                <td className="p-5 flex justify-center items-center space-x-4">
                                     <button className="text-blue-500 hover:text-blue-700 text-xl p-2">
                                         <FaEdit />
                                     </button>
@@ -59,7 +62,6 @@ const Products = () => {
                                         <FaTrash />
                                     </button>
                                 </td>
-
                             </tr>
                         ))}
                     </tbody>
