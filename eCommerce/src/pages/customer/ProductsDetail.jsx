@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 const ProductsDetail = () => {
     const [quantity, setQuantity] = useState(1);
@@ -19,17 +20,19 @@ const ProductsDetail = () => {
                 <div className="w-full md:w-1/2 md:pl-10 mt-6 md:mt-0">
                     {/* Shop Header */}
                     <div className="flex items-center justify-between bg-lightGray p-4 rounded-lg shadow-md bg-purple-100 ">
-                        <div className="flex items-center space-x-4">
-                            <img
-                                src="https://res.cloudinary.com/derx1izam/image/upload/v1741688511/wds7s8z3kqtytrj4tidp.png"
-                                alt="Adanola Logo"
-                                className="w-12 h-12 rounded-full shadow-md"
-                            />
-                            <div>
-                                <h3 className="text-lg font-semibold text-gray-800">Store name</h3>
-                                <p className="text-sm text-gray-500">Official Store</p>
+                        <Link to="/store-detail/1">
+                            <div className="flex items-center space-x-4">
+                                <img
+                                    src="https://res.cloudinary.com/derx1izam/image/upload/v1741688511/wds7s8z3kqtytrj4tidp.png"
+                                    alt="Adanola Logo"
+                                    className="w-12 h-12 rounded-full shadow-md"
+                                />
+                                <div>
+                                    <h3 className="text-lg font-semibold text-gray-800">Store name</h3>
+                                    <p className="text-sm text-gray-500">Official Store</p>
+                                </div>
                             </div>
-                        </div>
+                        </Link>
                         <button className="px-4 py-2 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 transition">
                             Follow
                         </button>

@@ -33,7 +33,7 @@ const App = () => {
             <Route index element={<CustomerHome />} />
             <Route path="products/:productId" element={<ProductsDetail />} />
             <Route path="cart" element={<Cart />} />
-            <Route path="store-detail" element={<CustomerStoreDetail />} />
+            <Route path="store-detail/:storeId" element={<CustomerStoreDetail />} />
           </Route>
 
           {/* Routes cho người bán */}

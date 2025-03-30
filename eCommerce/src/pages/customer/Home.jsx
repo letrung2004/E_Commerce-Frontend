@@ -1,5 +1,6 @@
 import React from "react";
 import ProductCard from "../../components/customer/ProductCard";
+import { Link } from "react-router-dom";
 
 const Home = () => {
     const categories = [
@@ -42,7 +43,10 @@ const Home = () => {
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                     {products.map((product, index) => (
-                        <ProductCard key={index} name={product.name} price={product.price} image={product.image} />
+                        <Link to="/products/1">
+                            <ProductCard key={index} name={product.name} price={product.price} image={product.image} />
+                        </Link>
+
                     ))}
                 </div>
 
