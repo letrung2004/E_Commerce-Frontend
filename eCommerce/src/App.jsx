@@ -6,6 +6,8 @@ import ProductsDetail from "./pages/customer/ProductsDetail";
 import Cart from "./pages/customer/Cart";
 import CustomerStoreDetail from "./pages/customer/StoreDetail";
 import CategoryProducts from "./pages/customer/Products";
+import CustomerOrder from "./pages/customer/CustomerOrder";
+import CustomerOrderDetail from "./pages/customer/OrderDetail ";
 
 import StoreLayout from "./layout/store/StoreLayout";
 import StoreHome from "./pages/store/Home";
@@ -36,6 +38,8 @@ const App = () => {
             <Route path="cart" element={<Cart />} />
             <Route path="store-detail/:storeId" element={<CustomerStoreDetail />} />
             <Route path="category-detail/:categoryId" element={<CategoryProducts />} />
+            <Route path="orders" element={<CustomerOrder />} />
+            <Route path="orders/:orderId" element={<CustomerOrderDetail />} />
           </Route>
 
           {/* Routes cho người bán */}
