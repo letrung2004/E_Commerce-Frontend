@@ -5,6 +5,7 @@ import CustomerHome from "./pages/customer/Home";
 import ProductsDetail from "./pages/customer/ProductsDetail";
 import Cart from "./pages/customer/Cart";
 import CustomerStoreDetail from "./pages/customer/StoreDetail";
+import CategoryProducts from "./pages/customer/Products";
 
 import StoreLayout from "./layout/store/StoreLayout";
 import StoreHome from "./pages/store/Home";
@@ -34,6 +35,7 @@ const App = () => {
             <Route path="products/:productId" element={<ProductsDetail />} />
             <Route path="cart" element={<Cart />} />
             <Route path="store-detail/:storeId" element={<CustomerStoreDetail />} />
+            <Route path="category-detail/:categoryId" element={<CategoryProducts />} />
           </Route>
 
           {/* Routes cho người bán */}

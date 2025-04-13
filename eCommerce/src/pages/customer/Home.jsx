@@ -6,15 +6,11 @@ const Home = () => {
     const categories = [
         { name: 'Clothes', image: 'https://cdn-icons-png.flaticon.com/512/892/892458.png' },
         { name: 'Beauty', image: 'https://cdn-icons-png.flaticon.com/128/682/682616.png' },
-        { name: 'Food & drinks', image: 'https://cdn-icons-png.flaticon.com/512/1046/1046784.png' },
-        { name: 'Home', image: 'https://cdn-icons-png.flaticon.com/128/2163/2163350.png' },
-        { name: 'Fitness', image: 'https://cdn-icons-png.flaticon.com/128/2382/2382679.png' },
-        { name: 'Accessories', image: 'https://cdn-icons-png.flaticon.com/128/3674/3674333.png' },
-        { name: 'Pet supplies', image: 'https://cdn-icons-png.flaticon.com/512/616/616408.png' },
-        { name: 'Toys & games', image: 'https://cdn-icons-png.flaticon.com/128/4287/4287470.png' },
-        { name: 'Electronics', image: 'https://cdn-icons-png.flaticon.com/128/2278/2278984.png' },
-        { name: 'Fashions', image: 'https://cdn-icons-png.flaticon.com/128/12516/12516451.png' },
-        { name: 'Sports', image: 'https://cdn-icons-png.flaticon.com/128/3311/3311579.png' },
+        { name: 'Home', image: 'https://cdn-icons-png.flaticon.com/128/1828/1828740.png' },
+        { name: 'Health', image: 'https://cdn-icons-png.flaticon.com/128/4326/4326328.png' },
+        { name: 'Electronics', image: 'https://cdn-icons-png.flaticon.com/128/536/536255.png' },
+        { name: 'Fashions', image: 'https://cdn-icons-png.flaticon.com/128/17017/17017673.png' },
+        { name: 'Shoe', image: 'https://cdn-icons-png.flaticon.com/128/5144/5144617.png' },
     ];
 
     const products = [
@@ -36,13 +32,15 @@ const Home = () => {
                 <h1 className="text-4xl font-bold mb-6 text-gray-800">Categories</h1>
                 <div className="flex flex-wrap justify-center gap-6 w-full max-w-7xl">
                     {categories.map((category) => (
-                        <div
-                            key={category.name}
-                            className="w-37 h-25 flex flex-col items-center justify-center bg-white rounded-lg shadow hover:shadow-md transition"
-                        >
-                            <img src={category.image} alt={category.name} className="w-12 h-12 mb-2 object-contain" />
-                            <span className="text-sm font-semibold text-gray-700 text-center">{category.name}</span>
-                        </div>
+                        <Link to="/category-detail/1">
+                            <div
+                                key={category.name}
+                                className="w-37 h-25 flex flex-col items-center justify-center bg-white rounded-lg shadow hover:shadow-md transition"
+                            >
+                                <img src={category.image} alt={category.name} className="w-12 h-12 mb-2 object-contain" />
+                                <span className="text-sm font-semibold text-gray-700 text-center">{category.name}</span>
+                            </div>
+                        </Link>
                     ))}
                 </div>
 
