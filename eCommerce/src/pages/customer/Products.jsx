@@ -10,10 +10,10 @@ const sampleProducts = [
 ];
 
 const priceFilters = [
-    { label: "Dưới 10 triệu", range: [0, 10000000] },
-    { label: "10 - 20 triệu", range: [10000000, 20000000] },
-    { label: "20 - 30 triệu", range: [20000000, 30000000] },
-    { label: "Trên 30 triệu", range: [30000000, Infinity] },
+    { label: "Under 10 million", range: [0, 10000000] },
+    { label: "10 - 20 million", range: [10000000, 20000000] },
+    { label: "20 - 30 million", range: [20000000, 30000000] },
+    { label: "Over 30 million", range: [30000000, Infinity] },
 ];
 
 const Products = () => {
@@ -29,24 +29,17 @@ const Products = () => {
 
     return (
         <div className="max-w-7xl mx-auto px-6 py-4">
-            <nav className="text-sm text-gray-600 mb-6">
-                <ul className="flex items-center space-x-2">
-                    <li>
-                        <Link to="/" className="hover:underline">Trang chủ</Link>
-                    </li>
-                    <li>{`>`}</li>
-                    <li>
-                        <Link to="/category-detail/1" className="hover:underline">Tên danh mục</Link>
-                    </li>
-                    <li>{`>`}</li>
-                    <li className="text-gray-800 font-medium">Tất cả sản phẩm</li>
-                </ul>
-            </nav>
+            {/* Breadcrumb */}
+            <div className="text-sm text-gray-500 mb-4">
+                <Link to="/" className="hover:underline">Home</Link> &gt;
+                <Link to="/category" className="hover:underline ml-1">Fashion</Link> &gt;
+                <span className="ml-1"><strong>All Products</strong></span>
+            </div>
             {/* <h1 className="text-4xl font-bold mb-6 text-gray-800">Tất cả sản phẩm</h1> */}
             <div className="flex flex-col md:flex-row gap-6">
                 {/* Sidebar filter */}
                 <div className="md:w-64 w-full bg-white p-4 rounded shadow">
-                    <h2 className="text-lg font-bold mb-4">Lọc theo giá</h2>
+                    <h2 className="text-lg font-bold mb-4">Filter</h2>
                     <div className="space-y-3">
                         {priceFilters.map((filter, idx) => (
                             <label key={idx} className="flex items-center cursor-pointer">
@@ -78,7 +71,7 @@ const Products = () => {
 
             <div className="flex justify-center mt-8">
                 <button className="px-6 py-3 bg-gray-200 rounded-full hover:bg-gray-300">
-                    Xem thêm
+                    View more
                 </button>
             </div>
         </div>

@@ -10,7 +10,7 @@ const ProductsDetail = () => {
             <div className="text-sm text-gray-500 mb-4">
                 <Link to="/" className="hover:underline">Home</Link> &gt;
                 <Link to="/category" className="hover:underline ml-1">Fashion</Link> &gt;
-                <span className="ml-1">Men's Accessories</span>
+                <span className="ml-1"><strong>Men's Accessories</strong></span>
             </div>
             {/* Top Section: Image + Info */}
             <div className="flex flex-col md:flex-row gap-6">

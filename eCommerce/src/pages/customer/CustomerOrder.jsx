@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import OrderCart from "../../components/customer/OrderCard";
+import { Link } from "react-router-dom";
 
 const orderStatus = [
     { label: "On The Way", value: "on_the_way" },
@@ -67,6 +68,11 @@ const CustomerOrder = () => {
 
     return (
         <div className="w-full max-w-6xl mx-auto p-4 space-y-6">
+            {/* Breadcrumb */}
+            <div className="text-sm text-gray-500 mb-4">
+                <Link to="/" className="hover:underline">Home</Link> &gt;
+                <span className="ml-1"><strong>Orders List</strong></span>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                 {/* Sidebar filter */}
                 <div className="bg-white p-5 rounded shadow sticky top-5 h-fit">
