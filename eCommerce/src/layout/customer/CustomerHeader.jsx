@@ -6,7 +6,9 @@ const CustomerHeader = () => {
     return (
         <header className="sticky top-0 z-50 flex items-center justify-between px-6 py-3 shadow-md bg-white">
 
-            <div className="text-3xl cursor-pointer font-bold text-purple-600">E-Commerce</div>
+            <Link to="/">
+                <div className="text-3xl cursor-pointer font-bold text-purple-600">E-Commerce</div>
+            </Link>
 
             <div className="flex items-center space-x-6">
                 <div className="flex items-center bg-gray-200 px-4 py-2 rounded-full w-80">
