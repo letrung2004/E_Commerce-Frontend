@@ -17,7 +17,7 @@ const StoreDetail = () => {
         { name: "Bộ LEGO Star Wars Millennium Falcon", price: 3990000, image: "https://res.cloudinary.com/derx1izam/image/upload/v1741688511/wds7s8z3kqtytrj4tidp.png", category: "Đồ chơi" },
     ];
 
-    const categories = ["Tất cả", "Điện tử", "Phụ kiện", "Sách", "Đồ chơi"];
+    const categories = ["All", "Category1", "Category1", "Category1", "Category1"];
 
     const filteredProducts = products.filter(product =>
         (selectedCategory === "Tất cả" || product.category === selectedCategory) &&
@@ -46,7 +46,7 @@ const StoreDetail = () => {
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-white p-4 rounded-lg shadow-md">
                 <input
                     type="text"
-                    placeholder="Tìm kiếm sản phẩm..."
+                    placeholder="Search..."
                     className="p-2 rounded-lg w-full md:w-1/2 focus:outline-none bg-gray-200"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}

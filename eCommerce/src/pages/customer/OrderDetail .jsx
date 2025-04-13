@@ -36,7 +36,12 @@ const OrderDetail = () => {
     return (
         <div className="w-full max-w-5xl mx-auto px-6 py-8 space-y-8">
 
-
+            {/* Breadcrumb */}
+            <div className="text-sm text-gray-500 mb-4">
+                <Link to="/" className="hover:underline">Home</Link> &gt;
+                <Link to="/orders" className="hover:underline">Orders List</Link> &gt;
+                <span className="ml-1"><strong>Order Detail</strong></span>
+            </div>
             {/* Order Info */}
             <div className="bg-white p-5 rounded shadow space-y-3">
                 <h1 className="text-2xl font-bold">Order ID: #{order.id}</h1>
