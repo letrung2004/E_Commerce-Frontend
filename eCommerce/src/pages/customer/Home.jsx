@@ -32,9 +32,9 @@ const Home = () => {
                 <h1 className="text-4xl font-bold mb-6 text-gray-800">Categories</h1>
                 <div className="flex flex-wrap justify-center gap-6 w-full max-w-7xl">
                     {categories.map((category) => (
-                        <Link to="/category-detail/1">
+                        <Link key={category.name} to="/category-detail/1">
                             <div
-                                key={category.name}
+
                                 className="w-37 h-25 flex flex-col items-center justify-center bg-white rounded-lg shadow hover:shadow-md transition"
                             >
                                 <img src={category.image} alt={category.name} className="w-12 h-12 mb-2 object-contain" />
@@ -50,8 +50,8 @@ const Home = () => {
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                     {products.map((product, index) => (
-                        <Link to="/products/1">
-                            <ProductCard key={index} name={product.name} price={product.price} image={product.image} />
+                        <Link key={index} to="/products/1">
+                            <ProductCard name={product.name} price={product.price} image={product.image} />
                         </Link>
 
                     ))}
