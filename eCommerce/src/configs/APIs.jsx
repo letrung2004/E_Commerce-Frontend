@@ -9,6 +9,13 @@ const BASE_URL = 'http://localhost:8080/webapp_war_exploded/api/'
 // const BASE_URL = '..........'
 
 export const endpoints = {
+    // APIs for auth
+    'register': '/auth/register',
+    'login': '/auth/login',
+    // 'google-login': '/oauth2/authorization/google',
+    // 'current-user': '/api/auth/me',
+
+
     // APIs for customer
     'categories': '/categories',
     'products': '/products',
