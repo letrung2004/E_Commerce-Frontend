@@ -1,44 +1,32 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../../context/AuthProvider';
 
 const OAuth2CallbackHandler = () => {
     const navigate = useNavigate();
     const location = useLocation();
+    const { login } = useAuth();
 
     useEffect(() => {
-        // Lấy token từ URL
-        const params = new URLSearchParams(location.search);
-        const token = params.get('token');
+        const token = new URLSearchParams(location.search).get('token');
 
-        if (token) {
-            localStorage.setItem('authToken', token);
-            fetchUserInfo(token);
-            navigate('/');
-        } else {
-            navigate('/login', { state: { error: 'Đăng nhập không thành công' } });
-        }
-    }, [location, navigate]);
-
-    const fetchUserInfo = async (token) => {
-        try {
-            const response = await fetch('http://localhost:8080/webapp_war_exploded/api/auth/me', {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                }
-            });
-
-            if (response.ok) {
-                const userData = await response.json();
-                console.log("User info:", userData);
-                console.log("Token:", token);
-                localStorage.setItem('user', JSON.stringify(userData));
+        const fetchUserInfo = async () => {
+            try {
+                const res = await fetch('http://localhost:8080/webapp_war_exploded/api/auth/me', {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                const userData = await res.json();
+                login(userData, token);
+                console.info(userData)
+                navigate("/");
+            } catch (err) {
+                navigate("/login", { state: { error: 'Đăng nhập thất bại' } });
             }
-        } catch (error) {
-            console.error('Lỗi khi lấy thông tin người dùng:', error);
-        }
-    };
+        };
+
+        if (token) fetchUserInfo();
+        else navigate("/login");
+    }, []);
 
     return (
         <div className="oauth-callback">

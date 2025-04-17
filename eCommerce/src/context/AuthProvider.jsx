@@ -7,23 +7,29 @@ const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
+    const login = (userData, token) => {
+        localStorage.setItem('jwtToken', token);
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        setUser(userData);
+    };
+
+    const logout = () => {
+        localStorage.removeItem('jwtToken');
+        delete axios.defaults.headers.common['Authorization'];
+        setUser(null);
+    };
+
     useEffect(() => {
-        // Kiểm tra xem người dùng đã đăng nhập chưa khi tải trang
         const loadUser = async () => {
             const token = localStorage.getItem('jwtToken');
-
             if (token) {
+                axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
                 try {
-
-                    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-
-                    // Lấy thông tin người dùng từ JWT
                     const response = await axios.get('http://localhost:8080/webapp_war_exploded/api/auth/me');
                     setUser(response.data);
                 } catch (error) {
                     console.error('Error loading user:', error);
-                    localStorage.removeItem('jwtToken');
-                    delete axios.defaults.headers.common['Authorization'];
+                    logout();
                 }
             }
 
@@ -33,12 +39,7 @@ const AuthProvider = ({ children }) => {
         loadUser();
     }, []);
 
-    // Đăng xuất
-    const logout = () => {
-        localStorage.removeItem('jwtToken');
-        delete axios.defaults.headers.common['Authorization'];
-        setUser(null);
-    };
+
 
     // Cập nhật header cho tất cả các request
     axios.interceptors.request.use(
@@ -55,7 +56,7 @@ const AuthProvider = ({ children }) => {
     );
 
     return (
-        <AuthContext.Provider value={{ user, setUser, loading, logout }}>
+        <AuthContext.Provider value={{ user, setUser, loading, logout, login }}>
             {children}
         </AuthContext.Provider>
     );

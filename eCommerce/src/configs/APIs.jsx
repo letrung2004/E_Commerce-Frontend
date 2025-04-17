@@ -13,7 +13,7 @@ export const endpoints = {
     'register': '/auth/register',
     'login': '/auth/login',
     // 'google-login': '/oauth2/authorization/google',
-    // 'current-user': '/api/auth/me',
+    'current-user': 'auth/me',
 
 
     // APIs for customer

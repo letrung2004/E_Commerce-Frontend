@@ -3,6 +3,7 @@ import { FaGoogle } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import APIs, { endpoints } from "../../configs/APIs";
 import cookie from "react-cookies"
+import { useAuth } from "../../context/AuthProvider";
 
 const Login = () => {
 
@@ -18,7 +19,7 @@ const Login = () => {
         }
 
     ];
-
+    const { login } = useAuth();
     const [user, setUser] = useState({});
     const [msg, setMsg] = useState("")
     const nav = useNavigate();
@@ -32,10 +33,9 @@ const Login = () => {
         window.location.href = 'http://localhost:8080/webapp_war_exploded/oauth2/authorization/google';
     };
 
-    const login = async (e) => {
+    const loginHandler = async (e) => {
         e.preventDefault();
         setMsg("");
-
         if (!user.username || user.username.trim() === "" || !user.password) {
             setMsg("Vui lòng nhập đủ thông tin đăng nhập !!!");
             return;
@@ -47,14 +47,17 @@ const Login = () => {
             })
             console.info(res.data)
             console.info(user)
-            cookie.save('token', res.data.token, { path: '/' });
-            //12:06 - 17/4/25 continue....
+            const { token } = res.data;
+
+            const userResponse = await fetch('http://localhost:8080/webapp_war_exploded/api/auth/me', {
+                headers: { Authorization: `Bearer ${token}` }
+            });
+            const userData = await userResponse.json();
+
+            login(userData, token);
 
 
-
-            APIs.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`;
             nav("/");
-
 
         } catch (err) {
             setMsg("Đăng nhập thất bại. Vui lòng thử lại!");
@@ -68,7 +71,7 @@ const Login = () => {
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
             <div className="bg-white p-6 rounded-lg shadow-lg w-96">
                 <h2 className="text-4xl font-bold text-center text-gray-800  mb-5">Đăng nhập</h2>
-                <form onSubmit={login}>
+                <form onSubmit={loginHandler}>
                     {info.map(f =>
                         <input key={f.field}
                             type={f.type}
