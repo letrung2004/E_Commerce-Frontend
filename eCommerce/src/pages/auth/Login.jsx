@@ -45,9 +45,8 @@ const Login = () => {
             let res = await APIs.post(endpoints['login'], {
                 ...user
             })
-            // console.info(res.data)
-
             const { token } = res.data;
+            cookie.save("jwtToken", res.data.token)
 
             const userResponse = await fetch(`${BASE_URL}${endpoints['current-user']}`, {
                 headers: { Authorization: `Bearer ${token}` }
