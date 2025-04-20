@@ -19,6 +19,8 @@ export const endpoints = {
     // APIs for customer
     'getCategories': (storeId) => `/secure/store/${storeId}/categories`,
     'createCategory': (storeId) => `/secure/store/${storeId}/categories`,
+    'updateCategory': (storeId, categoryId) => `/secure/store/${storeId}/categories/${categoryId}`,
+
     'products': '/products',
 
 
