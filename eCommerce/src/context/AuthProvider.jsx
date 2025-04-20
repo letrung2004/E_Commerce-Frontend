@@ -29,7 +29,7 @@ const AuthProvider = ({ children }) => {
             try {
                 const response = await authAPIs().get(endpoints['current-user']);
                 setUser(response.data);
-                console.log(token)
+                // console.log(token)
             } catch (error) {
                 console.error('Lỗi khi load user:', error);
                 logout();
