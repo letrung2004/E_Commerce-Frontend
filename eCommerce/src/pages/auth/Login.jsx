@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FaGoogle } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
-import APIs, { endpoints } from "../../configs/APIs";
+import APIs, { BASE_URL, endpoints } from "../../configs/APIs";
 import cookie from "react-cookies"
 import { useAuth } from "../../context/AuthProvider";
 
@@ -45,17 +45,17 @@ const Login = () => {
             let res = await APIs.post(endpoints['login'], {
                 ...user
             })
-            console.info(res.data)
-            console.info(user)
+            // console.info(res.data)
+
             const { token } = res.data;
 
-            const userResponse = await fetch('http://localhost:8080/webapp_war_exploded/api/auth/me', {
+            const userResponse = await fetch(`${BASE_URL}${endpoints['current-user']}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             const userData = await userResponse.json();
 
             login(userData, token);
-
+            console.info(userData.storeId)
 
             nav("/");
 
@@ -81,7 +81,7 @@ const Login = () => {
                             value={user[f.field]}
                             onChange={e => setState(e.target.value, f.field)} />
                     )}
-                    {msg && <h3 class="text-red-500  italic mb-4">* {msg}</h3>}
+                    {msg && <h3 className="text-red-500  italic mb-4">* {msg}</h3>}
 
                     <button
                         type="submit"

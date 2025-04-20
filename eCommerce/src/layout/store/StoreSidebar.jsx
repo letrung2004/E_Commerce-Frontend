@@ -40,7 +40,7 @@ const StoreSidebar = () => {
                             <Link to="/seller/products" className="block text-gray-700 hover:text-purple-600">Sản phẩm</Link>
                             <Link to="/seller/products/add" className="block text-gray-700 hover:text-purple-600">Thêm sản phẩm</Link>
                             <Link to="/seller/categories" className="block text-gray-700 hover:text-purple-600">Danh mục</Link>
-                            <Link to="/seller/categories/add" className="block text-gray-700 hover:text-purple-600">Thêm danh mục</Link>
+                            {/* <Link to="/seller/categories/add" className="block text-gray-700 hover:text-purple-600">Thêm danh mục</Link> */}
                         </div>
                     )}
                 </div>

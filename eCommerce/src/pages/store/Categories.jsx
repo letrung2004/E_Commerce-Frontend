@@ -1,18 +1,35 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import { FaEdit, FaTrash, FaPlus, FaSearch } from "react-icons/fa";
+import { useAuth } from "../../context/AuthProvider";
+import APIs, { authAPIs, endpoints } from "../../configs/APIs";
 
 const Categories = () => {
-    const categories = [
-        { id: 1, name: "Bánh Mì", productCount: 10 },
-        { id: 2, name: "Cà Phê", productCount: 8 },
-        { id: 3, name: "Trà Sữa", productCount: 12 },
-        { id: 3, name: "Trà Sữa", productCount: 12 },
-        { id: 3, name: "Trà Sữa", productCount: 12 },
-        { id: 3, name: "Trà Sữa", productCount: 12 },
-        { id: 3, name: "Trà Sữa", productCount: 12 },
-        { id: 3, name: "Trà Sữa", productCount: 12 },
-    ];
+    const { user } = useAuth();
+    const storeId = user.storeId;
+    const [loading, setLoading] = useState(false);
+
+    const [categories, setCategories] = useState([]);
+
+    const loadCategories = async () => {
+        setLoading(true);
+        try {
+            const res = await authAPIs().get(endpoints.getCategories(storeId));
+            setCategories(res.data);
+            console.info(res.data);
+
+        } catch (err) {
+            console.error("Lỗi load danh mục:", err);
+        }
+        finally {
+            setLoading(false)
+        }
+
+    }
+
+    useEffect(() => {
+        loadCategories();
+    }, [storeId]);
+
 
     return (
         <div className="p-6">
@@ -23,19 +40,17 @@ const Categories = () => {
                         <input
                             type="text"
                             placeholder="Tìm kiếm danh mục..."
-                            className="p-2 pl-8 border rounded-lg"
+                            className="w-full rounded px-3 py-2 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400"
                         />
-                        <FaSearch className="absolute left-2 top-3 text-gray-500" />
                     </div>
-                    <Link to="/seller/categories/add">
-                        <button className="flex items-center bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
-                            <FaPlus className="mr-2" /> Thêm danh mục mới
-                        </button>
-                    </Link>
+                    <button
+                        // onClick={handleAddClick}
+                        className="flex items-center bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+                    >
+                        <FaPlus className="mr-2" /> Thêm danh mục mới
+                    </button>
                 </div>
             </div>
-
-            {/* Danh sách danh mục */}
             <div className="bg-white shadow-md rounded-lg p-4">
                 <table className="w-full border-collapse">
                     <thead>
@@ -45,7 +60,7 @@ const Categories = () => {
                             <th className="p-3 text-center rounded-tr-lg">Hành động</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    {/* <tbody>
                         {categories.map((category) => (
                             <tr key={category.id} className="even:bg-gray-100 hover:bg-gray-200 transition">
                                 <td className="p-3">{category.name}</td>
@@ -60,7 +75,36 @@ const Categories = () => {
                                 </td>
                             </tr>
                         ))}
-                    </tbody>
+
+                        {showAddRow && (
+                            <tr >
+                                <td className="p-3">
+                                    <input
+                                        type="text"
+                                        value={newCategoryName}
+                                        onChange={(e) => setNewCategoryName(e.target.value)}
+                                        placeholder="Nhập tên danh mục mới..."
+                                        className="w-full rounded px-3 py-2 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                    />
+                                </td>
+                                <td className="p-3">--</td>
+                                <td className="p-3 flex justify-center items-center space-x-2">
+                                    <button
+                                        onClick={handleSave}
+                                        className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600"
+                                    >
+                                        Lưu
+                                    </button>
+                                    <button
+                                        onClick={handleCancel}
+                                        className="bg-gray-400 text-white py-2 px-4 rounded-lg hover:bg-gray-500"
+                                    >
+                                        Hủy
+                                    </button>
+                                </td>
+                            </tr>
+                        )}
+                    </tbody> */}
                 </table>
             </div>
         </div>
