@@ -11,7 +11,7 @@ const OAuth2CallbackHandler = () => {
 
     useEffect(() => {
         const token = new URLSearchParams(location.search).get('token');
-        cookie.save("jwtToken", res.data.token)
+        // cookie.save("jwtToken", res.data.token)
         const fetchUserInfo = async () => {
             try {
                 const res = await fetch(`${BASE_URL}${endpoints['current-user']}`, {

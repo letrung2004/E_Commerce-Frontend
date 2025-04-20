@@ -14,20 +14,24 @@ const CustomerHeader = () => {
     }
 
     return (
-        <header className="sticky top-0 z-50 flex items-center justify-between px-42 py-3 shadow-md bg-purple-600">
+        <header className=" flex-wrap sticky top-0 z-50 flex items-center justify-between px-6 py-3 shadow-md bg-white">
             <div className="grid gap-3">
-                <Link to="/seller" className="text-white text-sm">Kênh người bán</Link>
+                <Link to="/seller" className="text-xs text-gray-600 hover:text-purple-600 mt-1 self-start">
+                    Kênh người bán
+                </Link>
                 <Link to="/">
-                    <div className="text-3xl cursor-pointer font-bold text-white">Shopii</div>
+                    <div className="text-3xl cursor-pointer font-bold text-purple-600">E-Commerce</div>
                 </Link>
             </div>
+
+
 
             <div className="flex items-center space-x-6">
                 <div className="flex items-center bg-gray-200 px-4 py-2 rounded-full w-80">
                     <FaSearch className="text-gray-500 mr-2" />
                     <input
                         type="text"
-                        placeholder="Search"
+                        placeholder="Tìm kiếm..."
                         className="bg-transparent outline-none text-gray-500 w-full"
                     />
                 </div>
@@ -55,6 +59,13 @@ const CustomerHeader = () => {
                                 >
                                     Tài khoản của tôi
                                 </Link>
+                                {/* <Link
+                                    to="/seller"
+                                    className="block px-4 py-2 hover:bg-gray-100"
+                                    onClick={() => setShow(false)}
+                                >
+                                    Cửa hàng của tôi
+                                </Link> */}
                                 <button
                                     onClick={handleLogout}
                                     className="w-full text-left px-4 py-2 hover:bg-gray-100"
