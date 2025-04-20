@@ -28,17 +28,29 @@ export const endpoints = {
 
 }
 
+// export const authAPIs = () => {
+//     const token = localStorage.getItem('jwtToken');
+//     console.info("Token được sử dụng:", token);
+
+//     return axios.create({
+//         baseURL: BASE_URL,
+//         headers: {
+//             'Authorization': `Bearer ${token}`,
+//             'Content-Type': 'application/json'
+//         }
+//     });
+// }
+
 export const authAPIs = () => {
-    const token = localStorage.getItem('jwtToken');
-    console.info("Token được sử dụng:", token);
+    const token = cookie.load("jwtToken");
+    console.log("token from APIs: ", token)
 
     return axios.create({
         baseURL: BASE_URL,
         headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
+            'Authorization': `Bearer ${token}`
         }
-    });
+    })
 }
 
 export default axios.create({

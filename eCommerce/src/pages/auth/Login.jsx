@@ -48,6 +48,7 @@ const Login = () => {
             // console.info(res.data)
 
             const { token } = res.data;
+            cookie.save("access-token", res.data.token)
 
             const userResponse = await fetch(`${BASE_URL}${endpoints['current-user']}`, {
                 headers: { Authorization: `Bearer ${token}` }
