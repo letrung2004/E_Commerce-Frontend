@@ -60,13 +60,14 @@ const App = () => {
 
             {/* Người bán - cần đăng nhập */}
             <Route path="/seller" element={<PrivateRoute element={<StoreLayout />} />}>
+              {/* <Route path="/seller" element={<StoreLayout />} > */}
               <Route index element={<StoreHome />} />
               <Route path="welcome" element={<WelcomeSeller />} />
               <Route path="register" element={<StoreRegistration />} />
               <Route path="products" element={<StoreProducts />} />
               <Route path="products/add" element={<AddProduct />} />
               <Route path="categories" element={<StoreCategories />} />
-              <Route path="categories/add" element={<AddCategory />} />
+              {/* <Route path="categories/add" element={<AddCategory />} /> */}
               <Route path="revenue" element={<Revenue />} />
               <Route path="messages" element={<Messages />} />
               <Route path="orders" element={<StoreOrders />} />

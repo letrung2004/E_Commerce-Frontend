@@ -21,9 +21,9 @@ const Products = () => {
                         <input
                             type="text"
                             placeholder="Tìm kiếm sản phẩm..."
-                            className="p-2 pl-8 border rounded-lg"
+                            className="w-full rounded px-3 py-2 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400"
                         />
-                        <FaSearch className="absolute left-2 top-3 text-gray-500" />
+                        {/* <FaSearch className="absolute left-2 top-3 text-gray-500" /> */}
                     </div>
                     <Link to="/seller/products/add">
                         <button className="flex items-center bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">

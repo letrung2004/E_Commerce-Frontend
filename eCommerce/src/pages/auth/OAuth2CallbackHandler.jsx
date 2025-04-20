@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthProvider';
+import { BASE_URL, endpoints } from '../../configs/APIs';
+import cookie from "react-cookies"
 
 const OAuth2CallbackHandler = () => {
     const navigate = useNavigate();
@@ -9,10 +11,10 @@ const OAuth2CallbackHandler = () => {
 
     useEffect(() => {
         const token = new URLSearchParams(location.search).get('token');
-
+        cookie.save("jwtToken", res.data.token)
         const fetchUserInfo = async () => {
             try {
-                const res = await fetch('http://localhost:8080/webapp_war_exploded/api/auth/me', {
+                const res = await fetch(`${BASE_URL}${endpoints['current-user']}`, {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 const userData = await res.json();
