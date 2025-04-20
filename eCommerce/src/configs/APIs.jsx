@@ -19,6 +19,7 @@ export const endpoints = {
     // APIs for customer
     'categories': '/categories',
     'products': '/products',
+    'createAddress':'/secure/address/create',
 
 
     // APIs for seller
@@ -26,13 +27,18 @@ export const endpoints = {
 }
 
 export const authAPIs = () => {
+    const token = cookie.load("access-token");
+    console.log("access-token from APIs: ", token)
+
     return axios.create({
         baseURL: BASE_URL,
         headers: {
-            'Authorization': cookie.load("access-token")
-        }
+            'Authorization': `Bearer ${token}`
+        }        
     })
 }
+
+
 
 export default axios.create({
     baseURL: BASE_URL

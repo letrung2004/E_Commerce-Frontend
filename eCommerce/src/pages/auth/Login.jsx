@@ -49,10 +49,13 @@ const Login = () => {
             console.info(user)
             const { token } = res.data;
 
+            cookie.save("access-token", res.data.token)
+
             const userResponse = await fetch('http://localhost:8080/webapp_war_exploded/api/auth/me', {
                 headers: { Authorization: `Bearer ${token}` }
             });
             const userData = await userResponse.json();
+            console.info("User response: ", userData)
 
             login(userData, token);
 
