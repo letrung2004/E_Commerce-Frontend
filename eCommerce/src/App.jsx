@@ -24,6 +24,8 @@ import StoreOrders from "./pages/store/Orders";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import OAuth2CallbackHandler from "./pages/auth/OAuth2CallbackHandler";
+import WelcomeSeller from "./pages/store/WelcomeSeller";
+import StoreRegistration from "./pages/store/StoreRegistration";
 
 const App = () => {
 
@@ -60,6 +62,8 @@ const App = () => {
             <Route path="/seller" element={<PrivateRoute element={<StoreLayout />} />}>
               {/* <Route path="/seller" element={<StoreLayout />} > */}
               <Route index element={<StoreHome />} />
+              <Route path="welcome" element={<WelcomeSeller />} />
+              <Route path="register" element={<StoreRegistration />} />
               <Route path="products" element={<StoreProducts />} />
               <Route path="products/add" element={<AddProduct />} />
               <Route path="categories" element={<StoreCategories />} />

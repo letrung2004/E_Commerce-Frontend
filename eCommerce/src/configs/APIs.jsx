@@ -22,6 +22,7 @@ export const endpoints = {
     'updateCategory': (storeId, categoryId) => `/secure/store/${storeId}/categories/${categoryId}`,
 
     'products': '/products',
+    'createAddress':'/secure/address/create',
 
 
     // APIs for seller
@@ -32,7 +33,6 @@ export const endpoints = {
 export const authAPIs = () => {
     const token = cookie.load("jwtToken");
     console.log("token from APIs: ", token)
-
     return axios.create({
         baseURL: BASE_URL,
         headers: {
@@ -40,6 +40,8 @@ export const authAPIs = () => {
         }
     })
 }
+
+
 
 export default axios.create({
     baseURL: BASE_URL

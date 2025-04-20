@@ -19,7 +19,7 @@ const OAuth2CallbackHandler = () => {
                 });
                 const userData = await res.json();
                 login(userData, token);
-                console.info(userData)
+                console.info("Current User: ", userData)
                 navigate("/");
             } catch (err) {
                 navigate("/login", { state: { error: 'Đăng nhập thất bại' } });

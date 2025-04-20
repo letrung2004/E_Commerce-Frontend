@@ -47,11 +47,11 @@ const Login = () => {
             })
             const { token } = res.data;
             cookie.save("jwtToken", res.data.token)
-
             const userResponse = await fetch(`${BASE_URL}${endpoints['current-user']}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             const userData = await userResponse.json();
+            console.info("User response: ", userData)
 
             login(userData, token);
             console.info(userData.storeId)
