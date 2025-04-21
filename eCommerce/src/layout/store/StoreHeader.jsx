@@ -1,62 +1,59 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { FaUserCircle, FaChevronDown } from "react-icons/fa";
+import { FaUserCircle } from "react-icons/fa";
 import { useAuth } from "../../context/AuthProvider";
 
 const StoreHeader = () => {
-    const [isOpen, setIsOpen] = useState(false);
+    const [show, setShow] = useState(false);
     const { user, logout } = useAuth();
     const nav = useNavigate();
-    const [show, setShow] = useState(false);
 
     const handleLogout = () => {
         logout();
         nav("/");
-    }
+    };
 
     return (
-        <header className="sticky top-0 z-50 flex items-center justify-between px-6 py-3 shadow-md bg-white">
+        <header className="sticky top-0 z-50 flex items-center justify-between px-10 py-3 shadow-md bg-purple-600">
             {/* Logo */}
             <div>
-                <div className="text-3xl cursor-pointer font-bold text-red-500 ">
-                    <Link to="/seller" className="flex"> Shopii &nbsp;
+                <div className="text-3xl cursor-pointer font-bold text-white ">
+                    <Link to="/seller" className="flex"> E-Commerce &nbsp;
                         {user.storeActive ?
-                            <span className="font-normal text-black text-lg flex items-end ">Kênh người bán</span>
+                            <span className="font-normal text-white text-lg flex items-end ">Kênh người bán</span>
                             :
-                            <span className="font-normal text-black text-lg flex items-end ">Đăng ký để trở thành người bán Shopii</span>
+                            <span className="font-normal text-white text-lg flex items-end ">Đăng ký để trở thành người bán Shopii</span>
                         }
 
                     </Link>
                 </div>
             </div>
 
-
-
             {/* User Dropdown */}
             {user ? (
-                <div className="inline-block text-left">
+                <div className="inline-block text-left relative">
                     <div
-                        className="h-10 flex items-center space-x-2 px-4 border border-gray-300 rounded-full text-black hover:bg-gray-200 transition"
+                        className="h-10 flex items-center space-x-2 px-4 border border-white rounded-full text-white hover:bg-purple-500 transition cursor-pointer"
                         onClick={() => setShow(!show)}
                     >
-                        <FaUserCircle className="text-xl text-gray-600" />
+                        <FaUserCircle className="text-xl text-white" />
                         <span className="whitespace-nowrap">{user.username}</span>
                     </div>
 
                     {show && (
-                        <div className="absolute right-0 mt-2 w-52 bg-white rounded-xl shadow-lg z-50">
+                        <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl ring-1 ring-gray-200 z-50 text-sm">
                             <Link
                                 to="/me"
-                                className="block px-4 py-2 hover:bg-gray-100"
+                                className="flex items-center px-4 py-3 text-gray-700 hover:bg-purple-100 hover:text-purple-700 transition-colors rounded-t-xl"
                                 onClick={() => setShow(false)}
                             >
-                                Tài khoản của tôi
+                                <span className="ml-2">Tài khoản của tôi</span>
                             </Link>
                             <button
                                 onClick={handleLogout}
-                                className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                                className="flex items-center w-full px-4 py-3 text-gray-700 hover:bg-purple-100 hover:text-purple-700 transition-colors rounded-b-xl"
                             >
-                                Đăng xuất
+                                <span className="ml-2">Đăng xuất</span>
                             </button>
                         </div>
                     )}
@@ -64,14 +61,11 @@ const StoreHeader = () => {
             ) : (
                 <Link
                     to="/login"
-                    className="h-10 flex items-center px-4 border border-gray-300 rounded-full text-black hover:bg-gray-200 transition"
+                    className="h-10 flex items-center px-4 border border-white rounded-full text-white hover:bg-purple-500 transition"
                 >
                     Sign in
                 </Link>
             )}
-
-
-
         </header>
     );
 };
