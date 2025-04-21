@@ -14,13 +14,13 @@ const CustomerHeader = () => {
     }
 
     return (
-        <header className=" flex-wrap sticky top-0 z-50 flex items-center justify-between px-6 py-3 shadow-md bg-white">
+        <header className=" flex-wrap sticky top-0 z-50 flex items-center justify-between px-42 py-3 shadow-md bg-purple-600">
             <div className="grid gap-3">
-                <Link to="/seller" className="text-xs text-gray-600 hover:text-purple-600 mt-1 self-start">
+                <Link to="/seller" className="text-sm text-white hover:text-gray-300 mt-1 self-start">
                     Kênh người bán
                 </Link>
                 <Link to="/">
-                    <div className="text-3xl cursor-pointer font-bold text-purple-600">E-Commerce</div>
+                    <div className="text-4xl cursor-pointer font-bold text-white">Shopii</div>
                 </Link>
             </div>
 

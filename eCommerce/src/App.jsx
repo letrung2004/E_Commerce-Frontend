@@ -26,6 +26,7 @@ import Register from "./pages/auth/Register";
 import OAuth2CallbackHandler from "./pages/auth/OAuth2CallbackHandler";
 import WelcomeSeller from "./pages/store/WelcomeSeller";
 import StoreRegistration from "./pages/store/StoreRegistration";
+import AfterRegistration from "./pages/store/AfterRegistration";
 
 const App = () => {
 
@@ -64,6 +65,7 @@ const App = () => {
               <Route index element={<StoreHome />} />
               <Route path="welcome" element={<WelcomeSeller />} />
               <Route path="register" element={<StoreRegistration />} />
+              <Route path="success-registration" element={<AfterRegistration />} />
               <Route path="products" element={<StoreProducts />} />
               <Route path="products/add" element={<AddProduct />} />
               <Route path="categories" element={<StoreCategories />} />

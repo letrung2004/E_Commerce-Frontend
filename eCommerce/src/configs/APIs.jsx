@@ -26,6 +26,7 @@ export const endpoints = {
 
 
     // APIs for seller
+    'createStore' : '/secure/store-activation',
 
 }
 

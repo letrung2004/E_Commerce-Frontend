@@ -46,6 +46,8 @@ const Login = () => {
                 ...user
             })
             const { token } = res.data;
+            console.log("TOKEN: ", res.data)
+
             cookie.save("jwtToken", res.data.token)
             const userResponse = await fetch(`${BASE_URL}${endpoints['current-user']}`, {
                 headers: { Authorization: `Bearer ${token}` }
