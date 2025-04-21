@@ -19,6 +19,8 @@ export const endpoints = {
     // APIs for customer
     'getCategories': (storeId) => `/secure/store/${storeId}/categories`,
     'createCategory': (storeId) => `/secure/store/${storeId}/categories`,
+    'updateCategory': (storeId, categoryId) => `/secure/store/${storeId}/categories/${categoryId}`,
+
     'products': '/products',
     'createAddress':'/secure/address/create',
 
@@ -28,18 +30,16 @@ export const endpoints = {
 
 }
 
-export const authAPIs = () => {
-   
-    const token = localStorage.getItem('jwtToken');
-    console.info("Token được sử dụng:", token);
 
+export const authAPIs = () => {
+    const token = cookie.load("jwtToken");
+    console.log("token from APIs: ", token)
     return axios.create({
         baseURL: BASE_URL,
         headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
+            'Authorization': `Bearer ${token}`
         }
-    });
+    })
 }
 
 

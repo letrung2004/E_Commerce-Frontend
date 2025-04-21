@@ -11,7 +11,7 @@ const StoreHeader = () => {
 
     const handleLogout = () => {
         logout();
-        nav("/login");
+        nav("/");
     }
 
     return (
