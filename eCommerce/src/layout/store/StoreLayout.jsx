@@ -9,7 +9,7 @@ const StoreLayout = () => {
     const location = useLocation();
 
     // Danh sách các đường dẫn được phép truy cập khi store chưa được kích hoạt
-    const allowedPaths = ["/seller/welcome", "/seller/register"];
+    const allowedPaths = ["/seller/welcome", "/seller/register", "/seller/success-registration"];
 
     // Nếu user chưa active store và đường dẫn hiện tại không nằm trong danh sách cho phép, điều hướng đến /seller/welcome
     if (user && !user.storeActive && !allowedPaths.includes(location.pathname)) {

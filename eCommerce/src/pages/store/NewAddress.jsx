@@ -1,9 +1,9 @@
 // components/NewAddress.jsx
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthProvider";
 import { authAPIs, endpoints } from "../../configs/APIs";
 
-const NewAddress = ({ isOpen, onClose }) => {
+const NewAddress = ({ currentAddress, isOpen, onClose, onCreateSuccess }) => {
     if (!isOpen) return null;
 
     const { user } = useAuth();
@@ -13,6 +13,8 @@ const NewAddress = ({ isOpen, onClose }) => {
         phoneNumber: "",
         address: "",
     });
+
+
 
     const [errors, setErrors] = useState({});
 
@@ -32,7 +34,7 @@ const NewAddress = ({ isOpen, onClose }) => {
 
     const handleSubmit = async () => {
         let newErrors = {};
-        if (!formData.receiver.trim()) newErrors.receiver = "Họ & Tên là bắt buộc"; 
+        if (!formData.receiver.trim()) newErrors.receiver = "Họ & Tên là bắt buộc";
 
         if (!formData.phoneNumber.trim()) {
             newErrors.phoneNumber = "Số điện thoại là bắt buộc";
@@ -54,23 +56,35 @@ const NewAddress = ({ isOpen, onClose }) => {
 
         // Submit form here (gửi về API hoặc xử lý tiếp)
         console.log("Form đã hợp lệ:", finalForm);
-        
+
         try {
             let response = await authAPIs().post(endpoints.createAddress, finalForm);
             if (response.status === 201) {
-                console.log("CREATED");
-                onClose(); // Chỉ đóng modal khi thành công
+                console.log("CREATED: ", response.data);
+
+                if (onCreateSuccess) onCreateSuccess(response.data)
+
             } else {
                 console.log("FAILED");
             }
         } catch (err) {
             console.error("Lỗi khi gọi API:", err);
         }
-        
+
 
         onClose(); // đóng modal nếu cần
     };
-    
+
+    useEffect(() => {
+        if (currentAddress) {
+            setFormData({
+                receiver: currentAddress.receiver || "",
+                phoneNumber: currentAddress.phoneNumber || "",
+                address: currentAddress.address || "",
+            });
+        }
+    }, [currentAddress]);
+
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
@@ -86,9 +100,8 @@ const NewAddress = ({ isOpen, onClose }) => {
                         placeholder="Nhập vào"
                         value={formData.receiver}
                         onChange={handleChange}
-                        className={`w-full border ${
-                            errors.receiver ? "border-red-500" : "border-gray-300"
-                        } rounded p-2`}
+                        className={`w-full border ${errors.receiver ? "border-red-500" : "border-gray-300"
+                            } rounded p-2`}
                     />
                     {errors.receiver && (
                         <span className="text-red-500 text-sm mt-1 block">{errors.receiver}</span>
@@ -104,9 +117,8 @@ const NewAddress = ({ isOpen, onClose }) => {
                         placeholder="Nhập vào"
                         value={formData.phoneNumber}
                         onChange={handleChange}
-                        className={`w-full border ${
-                            errors.phoneNumber ? "border-red-500" : "border-gray-300"
-                        } rounded p-2`}
+                        className={`w-full border ${errors.phoneNumber ? "border-red-500" : "border-gray-300"
+                            } rounded p-2`}
                     />
                     {errors.phoneNumber && (
                         <span className="text-red-500 text-sm mt-1 block">{errors.phoneNumber}</span>
@@ -132,16 +144,15 @@ const NewAddress = ({ isOpen, onClose }) => {
                         placeholder="Số nhà, tên đường, v.v..."
                         value={formData.address}
                         onChange={handleChange}
-                        className={`w-full border ${
-                            errors.address ? "border-red-500" : "border-gray-300"
-                        } rounded p-2`}
+                        className={`w-full border ${errors.address ? "border-red-500" : "border-gray-300"
+                            } rounded p-2`}
                     ></textarea>
                     {errors.address && (
                         <span className="text-red-500 text-sm mt-1 block">{errors.address}</span>
                     )}
                 </div>
 
-            
+
 
                 {/* Footer */}
                 <div className="flex justify-end gap-2">
