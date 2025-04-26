@@ -1,12 +1,7 @@
 import axios from "axios"
 import cookie from "react-cookies"
 
-// SERVER TRUNG
 export const BASE_URL = 'http://localhost:8080/webapp_war_exploded/api/'
-
-
-// SERVER DAT 
-// const BASE_URL = '..........'
 
 export const endpoints = {
     // APIs for auth
@@ -17,16 +12,21 @@ export const endpoints = {
 
 
     // APIs for customer
-    'getCategories': (storeId) => `/secure/store/${storeId}/categories`,
-    'createCategory': (storeId) => `/secure/store/${storeId}/categories`,
-    'updateCategory': (storeId, categoryId) => `/secure/store/${storeId}/categories/${categoryId}`,
-
     'products': '/products',
-    'createAddress':'/secure/address/create',
+    'createAddress': '/secure/address/create',
 
 
     // APIs for seller
-    'createStore' : '/secure/store-activation',
+    'createStore': '/secure/store-activation',
+
+    'getCategories': (storeId) => `/secure/store/${storeId}/categories`,
+    'createCategory': (storeId) => `/secure/store/${storeId}/categories`,
+    'updateCategory': (storeId, categoryId) => `/secure/store/${storeId}/categories/${categoryId}`,
+    'getProducts': (storeId) => `/secure/store/${storeId}/products`,
+    'createProduct': (storeId) => `/secure/store/${storeId}/products`,
+    'updateProduct': (storeId, productId) => `/secure/store/${storeId}/products/${productId}`,
+
+
 
 }
 
