@@ -16,10 +16,10 @@ import StoreHome from "./pages/store/Home";
 import StoreProducts from "./pages/store/Products";
 import AddProduct from "./pages/store/AddProduct";
 import StoreCategories from "./pages/store/Categories";
-import AddCategory from "./pages/store/AddCategories";
 import Revenue from "./pages/store/Revenue";
 import Messages from "./pages/store/Messages";
 import StoreOrders from "./pages/store/Orders";
+import UpdateProduct from "./pages/store/UpdateProduct";
 
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
@@ -41,13 +41,11 @@ const App = () => {
       <AuthProvider>
         <BrowserRouter>
           <Routes>
-            {/* Routes cho login voi register */}
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/oauth2/callback" element={<OAuth2CallbackHandler />} />
 
 
-            {/* Người mua - có thể private tuỳ */}
             <Route path="/" element={<CustomerLayout />}>
               <Route index element={<CustomerHome />} />
               <Route path="products/:productId" element={<ProductsDetail />} />
@@ -59,9 +57,7 @@ const App = () => {
               <Route path="me" element={<UserProfile />} />
             </Route>
 
-            {/* Người bán - cần đăng nhập */}
             <Route path="/seller" element={<PrivateRoute element={<StoreLayout />} />}>
-              {/* <Route path="/seller" element={<StoreLayout />} > */}
               <Route index element={<StoreHome />} />
               <Route path="welcome" element={<WelcomeSeller />} />
               <Route path="register" element={<StoreRegistration />} />
@@ -69,16 +65,14 @@ const App = () => {
               <Route path="products" element={<StoreProducts />} />
               <Route path="products/add" element={<AddProduct />} />
               <Route path="categories" element={<StoreCategories />} />
-              {/* <Route path="categories/add" element={<AddCategory />} /> */}
               <Route path="revenue" element={<Revenue />} />
               <Route path="messages" element={<Messages />} />
               <Route path="orders" element={<StoreOrders />} />
+              <Route path="products/update/:productId" element={<AddProduct />} />
             </Route>
           </Routes>
         </BrowserRouter>
       </AuthProvider>
-
-
     </>
   );
 }
