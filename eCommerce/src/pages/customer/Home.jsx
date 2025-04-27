@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ProductCard from "../../components/customer/ProductCard";
 import { Link } from "react-router-dom";
+import APIs, { endpoints } from "../../configs/APIs";
 
 const Home = () => {
     const categories = [
@@ -13,23 +14,34 @@ const Home = () => {
         { name: 'Shoe', image: 'https://cdn-icons-png.flaticon.com/128/5144/5144617.png' },
     ];
 
-    const products = [
-        { name: "Điện thoại iPhone 15 Pro Max", price: "30,990,000", image: "https://res.cloudinary.com/derx1izam/image/upload/v1741688511/wds7s8z3kqtytrj4tidp.png" },
-        { name: "Điện thoại iPhone 15 Pro Max", price: "30,990,000", image: "https://res.cloudinary.com/derx1izam/image/upload/v1741688511/wds7s8z3kqtytrj4tidp.png" },
-        { name: "Điện thoại iPhone 15 Pro Max", price: "30,990,000", image: "https://res.cloudinary.com/derx1izam/image/upload/v1741688511/wds7s8z3kqtytrj4tidp.png" },
-        { name: "Điện thoại iPhone 15 Pro Max", price: "30,990,000", image: "https://res.cloudinary.com/derx1izam/image/upload/v1741688511/wds7s8z3kqtytrj4tidp.png" },
-        { name: "Điện thoại iPhone 15 Pro Max", price: "30,990,000", image: "https://res.cloudinary.com/derx1izam/image/upload/v1741688511/wds7s8z3kqtytrj4tidp.png" },
-        { name: "Điện thoại iPhone 15 Pro Max", price: "30,990,000", image: "https://res.cloudinary.com/derx1izam/image/upload/v1741688511/wds7s8z3kqtytrj4tidp.png" },
-        { name: "Điện thoại iPhone 15 Pro Max", price: "30,990,000", image: "https://res.cloudinary.com/derx1izam/image/upload/v1741688511/wds7s8z3kqtytrj4tidp.png" },
-        { name: "Điện thoại iPhone 15 Pro Max", price: "30,990,000", image: "https://res.cloudinary.com/derx1izam/image/upload/v1741688511/wds7s8z3kqtytrj4tidp.png" },
-        { name: "Điện thoại iPhone 15 Pro Max", price: "30,990,000", image: "https://res.cloudinary.com/derx1izam/image/upload/v1741688511/wds7s8z3kqtytrj4tidp.png" },
+    const [loading, setLoading] = useState(false);
+    const [products, setProducts] = useState([]);
+    const [page, setPage] = useState(1);
 
-    ];
+    const loadProducts = async () => {
+        try {
+            setLoading(true);
+            const res = await APIs.get(endpoints.products);
+            setProducts(res.data);
+
+        } catch (err) {
+            console.error("Lỗi load sản phẩm:", err);
+        } finally {
+            setLoading(false);
+        }
+
+    }
+
+    useEffect(() => {
+        loadProducts();
+    }, []);
+
+
 
     return (
         <>
             <div className="w-full px-6 py-8 bg-gray-100 flex flex-col items-center ">
-                <h1 className="text-4xl font-bold mb-6 text-gray-800">Categories</h1>
+                <h1 className="text-3xl font-bold mb-6 text-gray-800">Danh mục</h1>
                 <div className="flex flex-wrap justify-center gap-6 w-full max-w-7xl">
                     {categories.map((category) => (
                         <Link key={category.name} to="/category-detail/1">
@@ -46,7 +58,7 @@ const Home = () => {
 
 
                 <div className="flex justify-center mt-6 mb-4">
-                    <h1 className="text-3xl font-bold mb-4">Suggestion for you</h1>
+                    <h1 className="text-3xl font-bold mb-4">Sản phẩm đề xuất</h1>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                     {products.map((product, index) => (
@@ -57,7 +69,7 @@ const Home = () => {
                     ))}
                 </div>
 
-                {/* Nút xem thêm */}
+
                 <div className="flex justify-center mt-6">
                     <button className="px-6 py-3 bg-gray-200 rounded-full hover:bg-gray-300">
                         Xem thêm

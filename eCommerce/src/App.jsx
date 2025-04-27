@@ -14,12 +14,11 @@ import UserProfile from "./pages/customer/UserProfile";
 import StoreLayout from "./layout/store/StoreLayout";
 import StoreHome from "./pages/store/Home";
 import StoreProducts from "./pages/store/Products";
-import AddProduct from "./pages/store/AddProduct";
+import SaveProduct from "./pages/store/SaveProduct";
 import StoreCategories from "./pages/store/Categories";
 import Revenue from "./pages/store/Revenue";
 import Messages from "./pages/store/Messages";
 import StoreOrders from "./pages/store/Orders";
-import UpdateProduct from "./pages/store/UpdateProduct";
 
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
@@ -63,12 +62,12 @@ const App = () => {
               <Route path="register" element={<StoreRegistration />} />
               <Route path="success-registration" element={<AfterRegistration />} />
               <Route path="products" element={<StoreProducts />} />
-              <Route path="products/add" element={<AddProduct />} />
+              <Route path="products/add" element={<SaveProduct />} />
               <Route path="categories" element={<StoreCategories />} />
               <Route path="revenue" element={<Revenue />} />
               <Route path="messages" element={<Messages />} />
               <Route path="orders" element={<StoreOrders />} />
-              <Route path="products/update/:productId" element={<AddProduct />} />
+              <Route path="products/update/:productId" element={<SaveProduct />} />
             </Route>
           </Routes>
         </BrowserRouter>

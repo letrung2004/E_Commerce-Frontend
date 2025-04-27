@@ -3,7 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { authAPIs, endpoints } from "../../configs/APIs";
 import { useAuth } from "../../context/AuthProvider";
 
-const AddProduct = () => {
+const SaveProduct = () => {
     const { user } = useAuth();
     const storeId = user.storeId;
     const navigate = useNavigate();
@@ -135,8 +135,8 @@ const AddProduct = () => {
 
 
         } catch (err) {
-            console.error("Lỗi thêm sản phẩm:", err);
-            setMessage({ text: "Thêm sản phẩm thất bại. Vui lòng thử lại!", type: "error" });
+            console.error("Lỗi:", err);
+            setMessage({ text: "Thất bại. Vui lòng thử lại!", type: "error" });
         } finally {
             setLoading(false);
         }
@@ -272,4 +272,4 @@ const AddProduct = () => {
     );
 };
 
-export default AddProduct;
+export default SaveProduct;
