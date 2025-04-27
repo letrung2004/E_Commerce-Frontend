@@ -120,18 +120,11 @@ const Categories = () => {
                 </div>
             )}
 
-
-            <div >
+            <div>
                 <div className="flex justify-between items-center mb-6">
                     <h1 className="text-2xl font-semibold">Quản lý danh mục</h1>
                     <div className="flex items-center space-x-4">
-                        <div className="relative">
-                            <input
-                                type="text"
-                                placeholder="Tìm kiếm danh mục..."
-                                className="w-full rounded px-3 py-2 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                            />
-                        </div>
+
                         <button
                             onClick={handleAddClick}
                             className="flex items-center bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
@@ -139,7 +132,6 @@ const Categories = () => {
                             <FaPlus className="mr-2" /> Thêm danh mục mới
                         </button>
                     </div>
-
                 </div>
 
                 <div className="bg-white shadow-md rounded-lg p-4">
@@ -151,23 +143,23 @@ const Categories = () => {
                         <table className="w-full border-collapse">
                             <thead>
                                 <tr className="bg-blue-200 text-gray-700 rounded-lg">
-                                    <th className="p-3 text-left rounded-tl-lg">ID</th>
-                                    <th className="p-3 text-center">Tên danh mục</th>
-                                    <th className="p-3 text-center rounded-tr-lg">Thao tác</th>
+                                    <th className="p-3 text-left rounded-tl-lg" style={{ width: "15%" }}>ID</th>
+                                    <th className="p-3 text-center" style={{ width: "55%" }}>Tên danh mục</th>
+                                    <th className="p-3 text-center rounded-tr-lg" style={{ width: "30%" }}>Thao tác</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {categories.map((category) => (
                                     <tr key={category.id} className="even:bg-gray-100 hover:bg-gray-200 transition">
                                         <td className="p-3">{category.id}</td>
-                                        <td className="p-3 text-center">
+                                        <td className="p-3 text-center relative">
                                             {editCategory?.id === category.id ? (
-                                                <div>
+                                                <div className="py-1">
                                                     <input
                                                         type="text"
                                                         value={newCategoryName}
                                                         onChange={(e) => setNewCategoryName(e.target.value)}
-                                                        className="w-full text-center rounded px-3 py-2 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                                        className="w-full rounded px-3 py-2 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400"
                                                     />
                                                     {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
                                                 </div>
@@ -175,62 +167,75 @@ const Categories = () => {
                                                 category.name
                                             )}
                                         </td>
-                                        <td className="p-5 flex justify-center items-center space-x-4">
-                                            {editCategory?.id === category.id ? (
-                                                <>
-                                                    <button
-                                                        onClick={handleSave}
-                                                        disabled={loadingSave}
-                                                        className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 disabled:opacity-50"
-                                                    >
-                                                        {loadingSave ? "Đang lưu..." : "Lưu"}
-                                                    </button>
-                                                    <button
-                                                        onClick={handleCancel}
-                                                        className="bg-gray-400 text-white py-2 px-4 rounded-lg hover:bg-gray-500"
-                                                    >
-                                                        Hủy
-                                                    </button>
-                                                </>
-                                            ) : (
-                                                <>
-                                                    <button onClick={() => handleEditClick(category)} className="text-blue-500 hover:text-blue-700 text-xl p-2">
-                                                        <FaEdit />
-                                                    </button>
-                                                    <button onClick={() => confirmDelete(category)} className="text-red-500 hover:text-red-700 text-xl p-2">
-                                                        <FaTrash />
-                                                    </button>
-                                                </>
-                                            )}
+                                        <td className="p-3">
+                                            <div className="flex justify-center items-center space-x-2" style={{ minWidth: "200px" }}>
+                                                {editCategory?.id === category.id ? (
+                                                    <>
+                                                        <button
+                                                            onClick={handleSave}
+                                                            disabled={loadingSave}
+                                                            className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 disabled:opacity-50 w-24"
+                                                        >
+                                                            {loadingSave ? "Đang lưu..." : "Lưu"}
+                                                        </button>
+                                                        <button
+                                                            onClick={handleCancel}
+                                                            className="bg-gray-400 text-white py-2 px-4 rounded-lg hover:bg-gray-500 w-24"
+                                                        >
+                                                            Hủy
+                                                        </button>
+                                                    </>
+                                                ) : (
+                                                    <>
+                                                        <button
+                                                            onClick={() => handleEditClick(category)}
+                                                            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition w-24"
+                                                        >
+                                                            Cập nhật
+                                                        </button>
+                                                        <button
+                                                            onClick={() => confirmDelete(category)}
+                                                            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition w-24"
+                                                        >
+                                                            Xóa
+                                                        </button>
+                                                    </>
+                                                )}
+                                            </div>
                                         </td>
                                     </tr>
                                 ))}
                                 {showAddRow && (
-                                    <tr>
-                                        <td colSpan={3} className="p-4 bg-gray-50">
-                                            <div className="flex items-center space-x-4">
+                                    <tr className="bg-gray-50">
+                                        <td className="p-3">Mới</td>
+                                        <td className="p-3 text-center">
+                                            <div className="py-1">
                                                 <input
                                                     type="text"
                                                     value={newCategoryName}
                                                     onChange={(e) => setNewCategoryName(e.target.value)}
                                                     placeholder="Nhập tên danh mục mới..."
-                                                    className="flex-1 rounded px-3 py-2 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                                    className="w-full rounded px-3 py-2 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400"
                                                 />
+                                                {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
+                                            </div>
+                                        </td>
+                                        <td className="p-3">
+                                            <div className="flex justify-center items-center space-x-2" style={{ minWidth: "200px" }}>
                                                 <button
                                                     onClick={handleSave}
                                                     disabled={loadingSave}
-                                                    className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 disabled:opacity-50"
+                                                    className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 disabled:opacity-50 w-24"
                                                 >
                                                     {loadingSave ? "Đang lưu..." : "Lưu"}
                                                 </button>
                                                 <button
                                                     onClick={handleCancel}
-                                                    className="bg-gray-400 text-white py-2 px-4 rounded-lg hover:bg-gray-500"
+                                                    className="bg-gray-400 text-white py-2 px-4 rounded-lg hover:bg-gray-500 w-24"
                                                 >
                                                     Hủy
                                                 </button>
                                             </div>
-                                            {errors.name && <p className="text-red-500 text-sm mt-2">{errors.name}</p>}
                                         </td>
                                     </tr>
                                 )}
