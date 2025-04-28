@@ -61,15 +61,18 @@ const Home = () => {
                     <h1 className="text-3xl font-bold mb-4">Sản phẩm đề xuất</h1>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                    {products.map((product, index) => (
-                        <Link key={index} to="/products/1">
-                            <ProductCard name={product.name} price={product.price} image={product.image} />
-                        </Link>
-
-                    ))}
+                    {loading ? (
+                        <div className="col-span-full flex justify-center py-20">
+                            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-600"></div>
+                        </div>
+                    ) : (
+                        products.map((product, index) => (
+                            <Link key={index} to={`/products/${product.id}`}>
+                                <ProductCard name={product.name} price={product.price} image={product.image} />
+                            </Link>
+                        ))
+                    )}
                 </div>
-
-
                 <div className="flex justify-center mt-6">
                     <button className="px-6 py-3 bg-gray-200 rounded-full hover:bg-gray-300">
                         Xem thêm
