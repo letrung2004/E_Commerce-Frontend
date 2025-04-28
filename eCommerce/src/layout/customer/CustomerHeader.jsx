@@ -109,7 +109,7 @@ const CustomerHeader = () => {
                                         <p className="truncate">{user.fullName}</p>
                                     </div>
                                     <Link
-                                        to="/me"
+                                        to="/me/profile"
                                         className="flex items-center px-4 py-3 text-gray-700 hover:bg-purple-50 hover:text-purple-700 transition-colors"
                                         onClick={() => setShow(false)}
                                     >

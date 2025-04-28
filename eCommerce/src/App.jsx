@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthProvider";
-import React from "react";
+import React, { useState } from "react";
 import CustomerLayout from "./layout/customer/CustomerLayout";
 import CustomerHome from "./pages/customer/Home";
 import ProductsDetail from "./pages/customer/ProductsDetail";
@@ -29,8 +29,11 @@ import AfterRegistration from "./pages/store/AfterRegistration";
 import Address from "./components/customer/profile/Address";
 import MyProfile from "./pages/customer/MyProfile";
 import ProfileInfo from "./components/customer/profile/ProfileInfo";
+import { AddressContext, AddressDispatchContext } from "./context/AppContext";
 
 const App = () => {
+
+  const [currentAddress, setCurrentAddress] = useState(null)
 
   // Component route kiểm tra đăng nhập
   const PrivateRoute = ({ element }) => {
@@ -41,12 +44,13 @@ const App = () => {
   return (
     <>
       <AuthProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/oauth2/callback" element={<OAuth2CallbackHandler />} />
-
+        <AddressContext.Provider value={currentAddress}>
+          <AddressDispatchContext.Provider value={setCurrentAddress}>
+            <BrowserRouter>
+              <Routes>
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/oauth2/callback" element={<OAuth2CallbackHandler />} />
 
             <Route path="/" element={<CustomerLayout />}>
               <Route index element={<CustomerHome />} />
@@ -62,23 +66,25 @@ const App = () => {
                 <Route path="address" element={<Address/>}/>
               </Route>
 
-            </Route>
+                </Route>
 
-            <Route path="/seller" element={<PrivateRoute element={<StoreLayout />} />}>
-              <Route index element={<StoreHome />} />
-              <Route path="welcome" element={<WelcomeSeller />} />
-              <Route path="register" element={<StoreRegistration />} />
-              <Route path="success-registration" element={<AfterRegistration />} />
-              <Route path="products" element={<StoreProducts />} />
-              <Route path="products/add" element={<SaveProduct />} />
-              <Route path="categories" element={<StoreCategories />} />
-              <Route path="revenue" element={<Revenue />} />
-              <Route path="messages" element={<Messages />} />
-              <Route path="orders" element={<StoreOrders />} />
-              <Route path="products/update/:productId" element={<SaveProduct />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
+                <Route path="/seller" element={<PrivateRoute element={<StoreLayout />} />}>
+                  <Route index element={<StoreHome />} />
+                  <Route path="welcome" element={<WelcomeSeller />} />
+                  <Route path="register" element={<StoreRegistration />} />
+                  <Route path="success-registration" element={<AfterRegistration />} />
+                  <Route path="products" element={<StoreProducts />} />
+                  <Route path="products/add" element={<SaveProduct />} />
+                  <Route path="categories" element={<StoreCategories />} />
+                  <Route path="revenue" element={<Revenue />} />
+                  <Route path="messages" element={<Messages />} />
+                  <Route path="orders" element={<StoreOrders />} />
+                  <Route path="products/update/:productId" element={<SaveProduct />} />
+                </Route>
+              </Routes>
+            </BrowserRouter>
+          </AddressDispatchContext.Provider>
+        </AddressContext.Provider>
       </AuthProvider>
     </>
   );
