@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import NewAddress from './NewAddress';
+import NewAddress from '../../components/store/NewAddress';
 import { useAuth } from '../../context/AuthProvider';
 import { authAPIs, endpoints } from '../../configs/APIs';
 import { useNavigate } from 'react-router-dom';
-import Process from './Process';
+import Process from '../../components/store/Process';
+
 
 const StoreRegistration = () => {
 

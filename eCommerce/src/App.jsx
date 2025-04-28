@@ -26,6 +26,9 @@ import OAuth2CallbackHandler from "./pages/auth/OAuth2CallbackHandler";
 import WelcomeSeller from "./pages/store/WelcomeSeller";
 import StoreRegistration from "./pages/store/StoreRegistration";
 import AfterRegistration from "./pages/store/AfterRegistration";
+import Address from "./components/customer/profile/Address";
+import MyProfile from "./pages/customer/MyProfile";
+import ProfileInfo from "./components/customer/profile/ProfileInfo";
 
 const App = () => {
 
@@ -53,7 +56,12 @@ const App = () => {
               <Route path="category-detail/:categoryId" element={<CategoryProducts />} />
               <Route path="orders" element={<PrivateRoute element={<CustomerOrder />} />} />
               <Route path="orders/:orderId" element={<PrivateRoute element={<CustomerOrderDetail />} />} />
-              <Route path="me" element={<UserProfile />} />
+              {/* <Route path="me" element={<UserProfile />} /> */}
+              <Route path="me" element={<MyProfile/>}>
+                <Route path="profile" index element={<ProfileInfo/>}/>
+                <Route path="address" element={<Address/>}/>
+              </Route>
+
             </Route>
 
             <Route path="/seller" element={<PrivateRoute element={<StoreLayout />} />}>
