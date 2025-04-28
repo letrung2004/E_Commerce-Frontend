@@ -25,7 +25,7 @@ const DeleteConfirmation = ({isOpen, onClose, addressId, onRemovedSuccess}) => {
     }
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-            <div className="bg-white opacity-100 w-[600px] rounded shadow-lg p-6 max-h-[90vh] overflow-y-auto relative">
+            <div className="bg-white flex flex-col gap-7 opacity-100 w-[600px] rounded shadow-lg p-6 max-h-[90vh] overflow-y-auto relative">
                 <span>Bạn có chắc muốn xóa địa chỉ này?</span>
                 <div className='flex justify-end gap-x-2'>
                     <button className='px-8 py-2 rounded-sm hover:bg-gray-50'
