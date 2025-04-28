@@ -5,13 +5,13 @@ import APIs, { endpoints } from "../../configs/APIs";
 
 const Home = () => {
     const categories = [
-        { name: 'Clothes', image: 'https://cdn-icons-png.flaticon.com/512/892/892458.png' },
-        { name: 'Beauty', image: 'https://cdn-icons-png.flaticon.com/128/682/682616.png' },
-        { name: 'Home', image: 'https://cdn-icons-png.flaticon.com/128/1828/1828740.png' },
-        { name: 'Health', image: 'https://cdn-icons-png.flaticon.com/128/4326/4326328.png' },
-        { name: 'Electronics', image: 'https://cdn-icons-png.flaticon.com/128/536/536255.png' },
-        { name: 'Fashions', image: 'https://cdn-icons-png.flaticon.com/128/17017/17017673.png' },
-        { name: 'Shoe', image: 'https://cdn-icons-png.flaticon.com/128/5144/5144617.png' },
+        { name: 'Quần áo', image: 'https://cdn-icons-png.flaticon.com/512/892/892458.png' },
+        { name: 'Sắc đẹp', image: 'https://cdn-icons-png.flaticon.com/128/682/682616.png' },
+        { name: 'Nhà cửa', image: 'https://cdn-icons-png.flaticon.com/128/1828/1828740.png' },
+        { name: 'Sức khỏe', image: 'https://cdn-icons-png.flaticon.com/128/4326/4326328.png' },
+        { name: 'Điện tử', image: 'https://cdn-icons-png.flaticon.com/128/536/536255.png' },
+        { name: 'Thời trang', image: 'https://cdn-icons-png.flaticon.com/128/17017/17017673.png' },
+        { name: 'Giày dép', image: 'https://cdn-icons-png.flaticon.com/128/5144/5144617.png' },
     ];
 
     const [loading, setLoading] = useState(false);

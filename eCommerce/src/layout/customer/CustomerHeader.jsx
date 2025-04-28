@@ -59,9 +59,7 @@ const CustomerHeader = () => {
                         <Link to="/products" className="text-lg font-medium text-white transition-colors">
                             Sản phẩm
                         </Link>
-                        <Link to="/categories" className="text-lg font-medium text-white transition-colors">
-                            Danh mục
-                        </Link>
+
                     </div>
 
                     <div className="flex items-center bg-gray-200 px-4 py-2 rounded-full w-80">
@@ -94,7 +92,7 @@ const CustomerHeader = () => {
                             {show && (
                                 <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-xl ring-1 ring-gray-200 z-50 overflow-hidden transition-all">
                                     <div className="px-4 py-3 bg-purple-50 text-purple-800 font-medium border-b border-gray-200">
-                                        <p className="truncate">{user.email}</p>
+                                        <p className="truncate">{user.fullName}</p>
                                     </div>
                                     <Link
                                         to="/me"
@@ -110,13 +108,7 @@ const CustomerHeader = () => {
                                     >
                                         <span>Đơn hàng</span>
                                     </Link>
-                                    <Link
-                                        to="/wishlist"
-                                        className="flex items-center px-4 py-3 text-gray-700 hover:bg-purple-50 hover:text-purple-700 transition-colors"
-                                        onClick={() => setShow(false)}
-                                    >
-                                        <span>Danh sách yêu thích</span>
-                                    </Link>
+
                                     <button
                                         onClick={handleLogout}
                                         className="flex items-center w-full px-4 py-3 text-red-600 hover:bg-red-50 transition-colors border-t border-gray-200"
