@@ -28,17 +28,6 @@ const CustomerHeader = () => {
 
     return (
         <header className="sticky top-0 z-50 bg-gradient-to-r from-purple-700 to-purple-500 shadow-lg">
-            {/* Top bar with seller link */}
-            <div className="bg-purple-800 text-white text-xs px-10 py-1 flex justify-between items-center">
-                <Link to="/seller" className="hover:text-gray-200 transition-colors flex items-center">
-                    <span>Kênh người bán</span>
-                </Link>
-
-                <div className="flex items-center space-x-4">
-                    <Link to="/help" className="hover:text-gray-200 transition-colors">Trợ giúp</Link>
-                    <Link to="/notifications" className="hover:text-gray-200 transition-colors">Thông báo</Link>
-                </div>
-            </div>
 
             {/* Main header */}
             <div className="flex items-center justify-between px-10 py-3">
