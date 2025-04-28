@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import OrderCart from "../../components/customer/OrderCard";
 import { Link } from "react-router-dom";
+import { AddressContext } from "../../context/AppContext";
 
 const orderStatus = [
     { label: "On The Way", value: "on_the_way" },
@@ -51,6 +52,8 @@ const ordersData = [
 
 const CustomerOrder = () => {
     const [selectedStatuses, setSelectedStatuses] = useState([]);
+    const currentAddress = useContext(AddressContext)
+    console.log("Order Address: ", currentAddress)
 
     const handleStatusChange = (value) => {
         setSelectedStatuses((prev) =>
