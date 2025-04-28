@@ -52,20 +52,19 @@ const App = () => {
                 <Route path="/register" element={<Register />} />
                 <Route path="/oauth2/callback" element={<OAuth2CallbackHandler />} />
 
-
-                <Route path="/" element={<CustomerLayout />}>
-                  <Route index element={<CustomerHome />} />
-                  <Route path="products/:productId" element={<ProductsDetail />} />
-                  <Route path="cart" element={<Cart />} />
-                  <Route path="store-detail/:storeId" element={<CustomerStoreDetail />} />
-                  <Route path="category-detail/:categoryId" element={<CategoryProducts />} />
-                  <Route path="orders" element={<PrivateRoute element={<CustomerOrder />} />} />
-                  <Route path="orders/:orderId" element={<PrivateRoute element={<CustomerOrderDetail />} />} />
-                  {/* <Route path="me" element={<UserProfile />} /> */}
-                  <Route path="me" element={<MyProfile />}>
-                    <Route path="profile" index element={<ProfileInfo />} />
-                    <Route path="address" element={<Address />} />
-                  </Route>
+            <Route path="/" element={<CustomerLayout />}>
+              <Route index element={<CustomerHome />} />
+              <Route path="products/:productId" element={<ProductsDetail />} />
+              <Route path="cart" element={<Cart />} />
+              <Route path="store-detail/:storeId" element={<CustomerStoreDetail />} />
+              <Route path="products" element={<CategoryProducts />} />
+              <Route path="orders" element={<PrivateRoute element={<CustomerOrder />} />} />
+              <Route path="orders/:orderId" element={<PrivateRoute element={<CustomerOrderDetail />} />} />
+              {/* <Route path="me" element={<UserProfile />} /> */}
+              <Route path="me" element={<MyProfile/>}>
+                <Route path="profile" index element={<ProfileInfo/>}/>
+                <Route path="address" element={<Address/>}/>
+              </Route>
 
                 </Route>
 
