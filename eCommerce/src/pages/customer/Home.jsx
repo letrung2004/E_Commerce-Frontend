@@ -5,13 +5,13 @@ import APIs, { endpoints } from "../../configs/APIs";
 
 const Home = () => {
     const categories = [
-        { name: 'Clothes', image: 'https://cdn-icons-png.flaticon.com/512/892/892458.png' },
-        { name: 'Beauty', image: 'https://cdn-icons-png.flaticon.com/128/682/682616.png' },
-        { name: 'Home', image: 'https://cdn-icons-png.flaticon.com/128/1828/1828740.png' },
-        { name: 'Health', image: 'https://cdn-icons-png.flaticon.com/128/4326/4326328.png' },
-        { name: 'Electronics', image: 'https://cdn-icons-png.flaticon.com/128/536/536255.png' },
-        { name: 'Fashions', image: 'https://cdn-icons-png.flaticon.com/128/17017/17017673.png' },
-        { name: 'Shoe', image: 'https://cdn-icons-png.flaticon.com/128/5144/5144617.png' },
+        { name: 'Quần áo', image: 'https://cdn-icons-png.flaticon.com/512/892/892458.png' },
+        { name: 'Sắc đẹp', image: 'https://cdn-icons-png.flaticon.com/128/682/682616.png' },
+        { name: 'Nhà cửa', image: 'https://cdn-icons-png.flaticon.com/128/1828/1828740.png' },
+        { name: 'Sức khỏe', image: 'https://cdn-icons-png.flaticon.com/128/4326/4326328.png' },
+        { name: 'Điện tử', image: 'https://cdn-icons-png.flaticon.com/128/536/536255.png' },
+        { name: 'Thời trang', image: 'https://cdn-icons-png.flaticon.com/128/17017/17017673.png' },
+        { name: 'Giày dép', image: 'https://cdn-icons-png.flaticon.com/128/5144/5144617.png' },
     ];
 
     const [loading, setLoading] = useState(false);
@@ -61,15 +61,18 @@ const Home = () => {
                     <h1 className="text-3xl font-bold mb-4">Sản phẩm đề xuất</h1>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                    {products.map((product, index) => (
-                        <Link key={index} to="/products/1">
-                            <ProductCard name={product.name} price={product.price} image={product.image} />
-                        </Link>
-
-                    ))}
+                    {loading ? (
+                        <div className="col-span-full flex justify-center py-20">
+                            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-600"></div>
+                        </div>
+                    ) : (
+                        products.map((product, index) => (
+                            <Link key={index} to={`/products/${product.id}`}>
+                                <ProductCard name={product.name} price={product.price} image={product.image} />
+                            </Link>
+                        ))
+                    )}
                 </div>
-
-
                 <div className="flex justify-center mt-6">
                     <button className="px-6 py-3 bg-gray-200 rounded-full hover:bg-gray-300">
                         Xem thêm
