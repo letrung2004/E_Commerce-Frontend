@@ -143,11 +143,13 @@ const Products = () => {
     }, [page, param]);
 
     return (
-        <div className="max-w-7xl mx-auto px-4 md:px-6 py-4">
-            <div className="text-sm text-gray-500 mb-4">
-                <Link to="/" className="hover:underline">Trang chủ</Link> &gt;
-                <span className="ml-1"><strong>Sản phẩm</strong></span>
-            </div>
+        <div className=" w-full max-w-7xl mx-auto px-4 md:px-6 py-4">
+            {/* Breadcrumb with nicer styling */}
+            <nav className="flex items-center text-sm text-gray-500 mb-4 bg-gray-50 p-3 rounded-lg">
+                <Link to="/" className="hover:text-purple-600 transition">Trang chủ</Link>
+                <span className="mx-2">•</span>
+                <span className="text-purple-700 font-medium truncate">Sản phẩm</span>
+            </nav>
 
             <div className="flex items-center justify-between mb-6">
                 <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Tất cả sản phẩm</h1>
@@ -265,12 +267,7 @@ const Products = () => {
                         <>
                             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                                 {products.map((product) => (
-                                    <ProductCard
-                                        key={product.id}
-                                        name={product.name}
-                                        price={product.price.toLocaleString('vi-VN')}
-                                        image={product.image}
-                                    />
+                                    <ProductCard key={product.id} product={product} />
                                 ))}
                             </div>
 
