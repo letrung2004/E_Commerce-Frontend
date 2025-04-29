@@ -16,6 +16,7 @@ export const endpoints = {
     'createAddress': '/secure/address/create',
     'myAddress': '/secure/address/my',
     'removeAddress': addressId => `/secure/address/remove/${addressId}`,
+    'productDetail': productId => `/products/${productId}`,
 
 
     // APIs for seller

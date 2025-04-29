@@ -9,26 +9,10 @@ const StoreDetail = () => {
     const [minPrice, setMinPrice] = useState('');
     const [maxPrice, setMaxPrice] = useState('');
 
-    const products = [
-        { name: "Điện thoại iPhone 15 Pro Max", price: 30990000, image: "https://res.cloudinary.com/derx1izam/image/upload/v1741688511/wds7s8z3kqtytrj4tidp.png", category: "Điện tử" },
-        { name: "Laptop Dell XPS 13", price: 25990000, image: "https://res.cloudinary.com/derx1izam/image/upload/v1741688511/wds7s8z3kqtytrj4tidp.png", category: "Điện tử" },
-        { name: "Tai nghe Bluetooth Sony WF-1000XM4", price: 4990000, image: "https://res.cloudinary.com/derx1izam/image/upload/v1741688511/wds7s8z3kqtytrj4tidp.png", category: "Phụ kiện" },
-        { name: "Sách 'Atomic Habits' (James Clear)", price: 290000, image: "https://res.cloudinary.com/derx1izam/image/upload/v1741688511/wds7s8z3kqtytrj4tidp.png", category: "Sách" },
-        { name: "Bộ LEGO Star Wars Millennium Falcon", price: 3990000, image: "https://res.cloudinary.com/derx1izam/image/upload/v1741688511/wds7s8z3kqtytrj4tidp.png", category: "Đồ chơi" },
-    ];
-
     const categories = ["All", "Category1", "Category1", "Category1", "Category1"];
-
-    const filteredProducts = products.filter(product =>
-        (selectedCategory === "Tất cả" || product.category === selectedCategory) &&
-        product.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-        (!minPrice || product.price >= parseInt(minPrice)) &&
-        (!maxPrice || product.price <= parseInt(maxPrice))
-    ).sort((a, b) => sortOrder === 'asc' ? a.price - b.price : b.price - a.price);
 
     return (
         <div className="w-full max-w-6xl mx-auto p-4 space-y-6">
-            {/* Shop Header */}
             <div className="flex items-center justify-between bg-purple-100 p-4 rounded-lg shadow-md">
                 <Link to="/store-detail/1">
                     <div className="flex items-center space-x-4">
@@ -42,7 +26,6 @@ const StoreDetail = () => {
                 <button className="px-4 py-2 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 transition">Follow</button>
             </div>
 
-            {/* Search and Filters */}
             <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 bg-white p-4 rounded-lg shadow-md">
                 <input
                     type="text"
@@ -64,19 +47,19 @@ const StoreDetail = () => {
                 </div>
             </div>
 
-            {/* Price Filters */}
             <div className="bg-white p-4 rounded-lg shadow-md flex flex-row gap-4 items-center">
                 <input type="number" placeholder="Giá tối thiểu" className="p-2 rounded-lg w-1/4 bg-gray-200" value={minPrice} onChange={(e) => setMinPrice(e.target.value)} />
                 <input type="number" placeholder="Giá tối đa" className="p-2 rounded-lg w-1/4 bg-gray-200" value={maxPrice} onChange={(e) => setMaxPrice(e.target.value)} />
                 <select className="p-2 rounded-lg w-1/4 focus:outline-none bg-gray-200" value={sortOrder} onChange={(e) => setSortOrder(e.target.value)}>
-                    <option value="asc">Giá thấp đến cao</option>
-                    <option value="desc">Giá cao đến thấp</option>
+                    <option value="newest">Mới nhất</option>
+                    <option value="priceAsc">Giá tăng dần</option>
+                    <option value="priceDesc">Giá giảm dần</option>
                 </select>
-                <button className="px-4 py-2 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 transition">Filter</button>
+                <button className="px-4 py-2 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 transition">Áp dụng</button>
             </div>
 
-            {/* Product Section */}
-            <div className="bg-white p-4 rounded-lg shadow-md">
+
+            {/* <div className="bg-white p-4 rounded-lg shadow-md">
                 <h2 className="text-xl font-bold mb-4">Products</h2>
                 <div className="mb-8">
                     {filteredProducts.length > 0 ? (
@@ -89,7 +72,7 @@ const StoreDetail = () => {
                         <p className="text-center text-gray-500">Không tìm thấy sản phẩm phù hợp.</p>
                     )}
                 </div>
-            </div>
+            </div> */}
         </div>
     );
 };

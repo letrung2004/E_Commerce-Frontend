@@ -26,6 +26,12 @@ const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         const loadUser = async () => {
+            const token = cookie.load('jwtToken');
+
+            if (!token) {
+                setLoading(false);
+                return;
+            }
             try {
                 const response = await authAPIs().get(endpoints['current-user']);
                 setUser(response.data);
