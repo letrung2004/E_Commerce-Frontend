@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ProductCard from "../../components/customer/ProductCard";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import APIs, { endpoints } from "../../configs/APIs";
 import { FaSearch, FaStar, FaFilter, FaSortAmountDown } from "react-icons/fa";
 
@@ -9,24 +9,19 @@ const Products = () => {
     const [products, setProducts] = useState([]);
     const [page, setPage] = useState(1);
     const [param] = useSearchParams();
+    const navigate = useNavigate();
 
-
-    const [priceRange, setPriceRange] = useState("");
+    const [minPrice, setMinPrice] = useState("");
+    const [maxPrice, setMaxPrice] = useState("");
     const [rating, setRating] = useState("");
-
-    const khoangGia = [
-        { label: "Dưới 200.000₫", range: [0, 200000], value: "under200k" },
-        { label: "200.000₫ - 500.000₫", range: [200000, 500000], value: "200k-500k" },
-        { label: "500.000₫ - 1.000.000₫", range: [500000, 1000000], value: "500k-1m" },
-        { label: "1.000.000₫ - 2.000.000₫", range: [1000000, 2000000], value: "1m-2m" },
-        { label: "Trên 2.000.000₫", range: [10000000, Infinity], value: "over2m" },
-    ];
+    const [sort, setSort] = useState("");
 
     const danhGia = [
         { label: "5 sao", value: 5 },
         { label: "4 sao trở lên", value: 4 },
         { label: "3 sao trở lên", value: 3 },
     ];
+
     const renderStars = (count) => {
         const stars = [];
         for (let i = 0; i < count; i++) {
@@ -35,14 +30,47 @@ const Products = () => {
         return stars;
     };
 
+    const formatPriceInput = (value) => {
+        const numericValue = value.replace(/\D/g, '');
+        if (numericValue) {
+            return parseInt(numericValue).toLocaleString('vi-VN');
+        }
+        return "";
+    };
+
     const applyFilters = () => {
-        console.log("Áp dụng bộ lọc:", { priceRange, location, rating });
-        loadProducts();
+        const params = new URLSearchParams();
+
+        if (minPrice) params.set('fromPrice', minPrice.replace(/\D/g, ''));
+        if (maxPrice) params.set('toPrice', maxPrice.replace(/\D/g, ''));
+        if (rating) params.set('minRating', rating);
+        if (sort) params.set('sort', sort);
+
+        const q = param.get('q');
+        if (q) params.set('q', q);
+
+        navigate(`/products?${params.toString()}`);
+        setPage(1);
     };
 
     const resetFilters = () => {
-        setPriceRange("");
+        setMinPrice("");
+        setMaxPrice("");
         setRating("");
+        setSort("");
+        navigate("/products");
+        setPage(1);
+    };
+
+
+    const handleMinPriceChange = (e) => {
+        const formattedValue = formatPriceInput(e.target.value);
+        setMinPrice(formattedValue);
+    };
+
+    const handleMaxPriceChange = (e) => {
+        const formattedValue = formatPriceInput(e.target.value);
+        setMaxPrice(formattedValue);
     };
 
     const loadProducts = async () => {
@@ -51,10 +79,21 @@ const Products = () => {
                 setLoading(true);
                 let url = `${endpoints.products}?page=${page}`;
 
-                let q = param.get('q');
-                if (q) {
-                    url = `${url}&q=${q}`;
-                }
+                const q = param.get('q');
+                if (q) url += `&q=${q}`;
+
+                const fromPrice = param.get('fromPrice');
+                if (fromPrice) url += `&fromPrice=${fromPrice}`;
+
+                const toPrice = param.get('toPrice');
+                if (toPrice) url += `&toPrice=${toPrice}`;
+
+                const minRating = param.get('minRating');
+                if (minRating) url += `&minRating=${minRating}`;
+
+                const sortParam = param.get('sort');
+                if (sortParam) url += `&sort=${sortParam}`;
+
                 const res = await APIs.get(url);
                 if (res.data.length === 0) {
                     setPage(0);
@@ -88,14 +127,23 @@ const Products = () => {
         }
     };
 
+    const handleSortChange = (e) => {
+        setSort(e.target.value);
+    };
+
 
     useEffect(() => {
+        if (page === 1) { // chỉ update state filter khi mới load hoặc filter
+            setMinPrice(param.get('fromPrice') ? parseInt(param.get('fromPrice')).toLocaleString('vi-VN') : "");
+            setMaxPrice(param.get('toPrice') ? parseInt(param.get('toPrice')).toLocaleString('vi-VN') : "");
+            setRating(param.get('minRating') || "");
+            setSort(param.get('sort') || "newest");
+        }
         loadProducts();
     }, [page, param]);
 
     return (
         <div className="max-w-7xl mx-auto px-4 md:px-6 py-4">
-
             <div className="text-sm text-gray-500 mb-4">
                 <Link to="/" className="hover:underline">Trang chủ</Link> &gt;
                 <span className="ml-1"><strong>Sản phẩm</strong></span>
@@ -124,23 +172,35 @@ const Products = () => {
                         <h3 className="font-semibold text-gray-800 mb-3">
                             Khoảng Giá
                         </h3>
-                        <div className="space-y-2 ml-1">
-                            {khoangGia.map((filter, idx) => (
-                                <label key={idx} className="flex items-center cursor-pointer hover:text-purple-600">
+                        <div className="space-y-2">
+                            <div className="flex flex-col">
+                                <label className="text-sm text-gray-600 mb-1">Giá thấp nhất</label>
+                                <div className="relative">
                                     <input
-                                        type="radio"
-                                        name="price"
-                                        className="mr-2 accent-purple-600"
-                                        value={filter.value}
-                                        checked={priceRange === filter.value}
-                                        onChange={() => setPriceRange(filter.value)}
+                                        type="text"
+                                        className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-purple-600"
+                                        placeholder="0₫"
+                                        value={minPrice}
+                                        onChange={handleMinPriceChange}
                                     />
-                                    <span>{filter.label}</span>
-                                </label>
-                            ))}
+                                    <span className="absolute right-3 top-2 text-gray-500">₫</span>
+                                </div>
+                            </div>
+                            <div className="flex flex-col">
+                                <label className="text-sm text-gray-600 mb-1">Giá cao nhất</label>
+                                <div className="relative">
+                                    <input
+                                        type="text"
+                                        className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-purple-600"
+                                        placeholder="5.000.000₫"
+                                        value={maxPrice}
+                                        onChange={handleMaxPriceChange}
+                                    />
+                                    <span className="absolute right-3 top-2 text-gray-500">₫</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-
 
                     <div className="mb-6">
                         <h3 className="font-semibold text-gray-800 mb-3">
@@ -177,22 +237,26 @@ const Products = () => {
                     </button>
                 </div>
 
-
                 <div className="flex-1">
                     <div className="bg-white p-3 rounded-lg shadow-sm mb-4 flex items-center justify-between">
                         <div className="flex items-center">
                             <FaSortAmountDown className="text-purple-600 mr-2" />
                             <span className="font-medium">Sắp xếp theo:</span>
-                            <select className="ml-2 p-1 focus:outline-none text-purple-600 font-medium bg-transparent">
+                            <select
+                                className="ml-2 p-1 focus:outline-none text-purple-600 font-medium bg-transparent"
+                                value={sort}
+                                onChange={handleSortChange}
+                            >
                                 <option value="newest">Mới nhất</option>
-                                <option value="price-asc">Giá tăng dần</option>
-                                <option value="price-desc">Giá giảm dần</option>
+                                <option value="priceAsc">Giá tăng dần</option>
+                                <option value="priceDesc">Giá giảm dần</option>
                             </select>
                         </div>
                         <div className="text-sm text-gray-500">
                             {products.length} sản phẩm
                         </div>
                     </div>
+
                     {loading ? (
                         <div className="flex justify-center py-20">
                             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-600"></div>
@@ -209,6 +273,7 @@ const Products = () => {
                                     />
                                 ))}
                             </div>
+
                             {page > 0 && (
                                 <div className="flex justify-center mt-6">
                                     <button
