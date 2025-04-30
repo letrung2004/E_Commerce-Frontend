@@ -18,15 +18,16 @@ export const endpoints = {
     'myOrders': '/secure/orders/all',
     'removeAddress': addressId => `/secure/address/remove/${addressId}`,
     'productDetail': productId => `/products/${productId}`,
+    'storeDetail': storeId => `/store/${storeId}`,
 
 
     // APIs for seller
     'createStore': '/secure/store-activation',
 
-    'getCategories': (storeId) => `/secure/store/${storeId}/categories`,
+    'getCategories': (storeId) => `/store/${storeId}/categories`,
     'createCategory': (storeId) => `/secure/store/${storeId}/categories`,
     'updateCategory': (storeId, categoryId) => `/secure/store/${storeId}/categories/${categoryId}`,
-    'getProducts': (storeId) => `/secure/store/${storeId}/products`,
+    'getProducts': (storeId) => `/store/${storeId}/products`,
     'createProduct': (storeId) => `/secure/store/${storeId}/products`,
     'updateProduct': (storeId, productId) => `/secure/store/${storeId}/products/${productId}`,
 

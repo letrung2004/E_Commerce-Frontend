@@ -7,6 +7,7 @@ const ProductsDetail = () => {
     const [loading, setLoading] = useState(false);
     const [product, setProduct] = useState({});
     const [quantity, setQuantity] = useState(1);
+    const [store, setStore] = useState({});
 
     const loadProductDetail = async () => {
         try {
@@ -21,12 +22,30 @@ const ProductsDetail = () => {
         }
     }
 
+    const loadStoreDetail = async () => {
+        try {
+            if (product) {
+                const res = await APIs.get(endpoints.storeDetail(product.storeId));
+                console.log("store data: ", res.data);
+                setStore(res.data);
+            }
+        } catch (err) {
+            console.error("Lỗi load store:", err);
+        }
+    }
+
     useEffect(() => {
         if (productId) {
             loadProductDetail();
             window.scrollTo(0, 0);
         }
     }, [productId]);
+
+    useEffect(() => {
+        if (product && product.storeId) {
+            loadStoreDetail();
+        }
+    }, [product.storeId]);
 
     const reviews = [
         {
@@ -183,21 +202,26 @@ const ProductsDetail = () => {
                         <Link to={`/store-detail/${product.storeId}`} className="flex items-center gap-4 group">
                             <div className="relative">
                                 <img
-                                    src="https://res.cloudinary.com/derx1izam/image/upload/v1741688511/wds7s8z3kqtytrj4tidp.png"
+                                    src={store.logo}
                                     alt="Store"
                                     className="w-14 h-14 rounded-full object-cover border-2 border-purple-300 group-hover:border-purple-500 transition-all"
                                 />
 
                             </div>
-                            <div>
-                                <h3 className="text-lg font-semibold text-gray-800 group-hover:text-purple-700 transition">Store name</h3>
-                                <div className="flex items-center">
-                                    <span className="bg-blue-100 text-blue-800 text-xs px-2 py-0.5 rounded-full font-medium">Official Store</span>
-                                    <div className="flex items-center ml-2 text-yellow-500 text-xs">
-                                        <span>4.9 ★</span>
-                                    </div>
+                            <div className="space-y-1">
+                                <div className="flex items-center gap-2">
+                                    <h3 className="text-lg font-semibold text-gray-800 group-hover:text-purple-700 transition">
+                                        {store.name || "Tên cửa hàng"}
+                                    </h3>
+                                    <span className="bg-blue-100 text-blue-800 text-xs px-2 py-0.5 rounded-full font-medium">
+                                        Official Store
+                                    </span>
+                                </div>
+                                <div className="flex items-center text-sm text-gray-600 gap-1">
+                                    <span>{store.addressLine || "Địa chỉ chưa cập nhật"}</span>
                                 </div>
                             </div>
+
                         </Link>
                         <button className="px-4 py-2 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700 transition-all transform hover:scale-105 shadow-sm hover:shadow">
                             Follow
