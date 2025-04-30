@@ -116,7 +116,7 @@ const CustomerHeader = () => {
                                         <span>Tài khoản của tôi</span>
                                     </Link>
                                     <Link
-                                        to="/orders"
+                                        to="me/my-orders"
                                         className="flex items-center px-4 py-3 text-gray-700 hover:bg-purple-50 hover:text-purple-700 transition-colors"
                                         onClick={() => setShow(false)}
                                     >

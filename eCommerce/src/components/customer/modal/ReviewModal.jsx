@@ -1,7 +1,7 @@
 import React from 'react'
 import { authAPIs, endpoints } from '../../../configs/APIs';
 
-const DeleteConfirmation = ({isOpen, onClose, addressId, onRemovedSuccess}) => {
+const ReviewModal = ({isOpen, onClose, addressId, onRemovedSuccess}) => {
     if (isOpen===false) return null;
     console.log("address ID : ", addressId)
 
@@ -24,15 +24,15 @@ const DeleteConfirmation = ({isOpen, onClose, addressId, onRemovedSuccess}) => {
         }
     }
     return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/10">
             <div className="bg-white flex flex-col gap-7 opacity-100 w-[600px] rounded shadow-lg p-6 max-h-[90vh] overflow-y-auto relative">
-                <span>Bạn có chắc muốn xóa địa chỉ này?</span>
+                <span>Đánh giá</span>
                 <div className='flex justify-end gap-x-2'>
                     <button className='px-8 py-2 rounded-sm hover:bg-gray-50'
                      onClick={onClose}>TRỞ VỀ</button>
                     <button
                         className='bg-red-600 px-8 py-2 rounded-sm hover:bg-red-500 text-white'
-                        onClick={() => handleRemoveAddress(addressId)}
+                        
                     >XÓA</button>
                 </div>
             </div>
@@ -40,4 +40,4 @@ const DeleteConfirmation = ({isOpen, onClose, addressId, onRemovedSuccess}) => {
     )
 }
 
-export default DeleteConfirmation
+export default ReviewModal
