@@ -3,6 +3,7 @@ import ProductCard from "../../components/customer/ProductCard";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import APIs, { endpoints } from "../../configs/APIs";
 import { FaSearch, FaStar, FaFilter, FaSortAmountDown } from "react-icons/fa";
+import Process from "../../components/store/Process";
 
 const Products = () => {
     const [loading, setLoading] = useState(false);
@@ -48,6 +49,8 @@ const Products = () => {
 
         const q = param.get('q');
         if (q) params.set('q', q);
+        console.log("key word in applyFilters: ", q);
+        setProducts([]);
 
         navigate(`/products?${params.toString()}`);
         setPage(1);
@@ -94,8 +97,13 @@ const Products = () => {
                 const sortParam = param.get('sort');
                 if (sortParam) url += `&sort=${sortParam}`;
 
+                console.log("key word in loadProducts: ", q);
+
                 const res = await APIs.get(url);
                 if (res.data.length === 0) {
+                    if (page === 1) {
+                        setProducts([]);
+                    }
                     setPage(0);
                 } else {
                     if (page === 1) {
