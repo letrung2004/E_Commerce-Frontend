@@ -4,7 +4,7 @@ import ProfileSidebar from '../../components/customer/profile/ProfileSidebar';
 
 const MyProfile = () => {
     return (
-        <div className="flex min-h-screen px-42 bg-gray-50 w-full">
+        <div className="flex min-h-screen px-42 bg-gray-100 w-full">
             <ProfileSidebar/>
             <div className="flex-grow flex mx-4">
                 <Outlet /> {/* Hiển thị nội dung theo từng route con */}

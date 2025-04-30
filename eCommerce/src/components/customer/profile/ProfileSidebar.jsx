@@ -56,22 +56,20 @@ const ProfileSidebar = () => {
 
                 {/* Đơn hàng */}
                 <div>
-                    <button onClick={() => toggleSection("orders")} className="flex items-center w-full text-left text-black hover:text-purple-600">
-                        <ClipboardList size={16} /> <span className="ml-2">Đơn hàng</span>
-                    </button>
-                    {openSections.orders && (
-                        <div className="ml-6 mt-2 space-y-2">
-                            {/* Đơn hàng
-                            ... */}
-                        </div>
-                    )}
+                    <NavLink to="/me/my-orders" className={({ isActive }) =>
+                        `flex items-center w-full text-left text-black  ${isActive ? 'text-purple-600' : 'hover:text-purple-600'}`
+                    }>
+                        <ClipboardList size={16} />
+                        <span className="ml-2">
+                            Đơn mua
+                        </span>
+                    </NavLink>
                 </div>
-
 
             </nav>
 
 
-        </aside>
+        </aside >
     );
 };
 

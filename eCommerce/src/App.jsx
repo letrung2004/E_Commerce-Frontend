@@ -30,6 +30,7 @@ import Address from "./components/customer/profile/Address";
 import MyProfile from "./pages/customer/MyProfile";
 import ProfileInfo from "./components/customer/profile/ProfileInfo";
 import { AddressContext, AddressDispatchContext } from "./context/AppContext";
+import Orders from "./pages/customer/Orders";
 
 const App = () => {
 
@@ -64,6 +65,7 @@ const App = () => {
               <Route path="me" element={<MyProfile/>}>
                 <Route path="profile" index element={<ProfileInfo/>}/>
                 <Route path="address" element={<Address/>}/>
+                <Route path="my-orders" element={<Orders/>}/>
               </Route>
 
                 </Route>

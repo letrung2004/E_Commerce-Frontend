@@ -15,6 +15,7 @@ export const endpoints = {
     'products': '/products',
     'createAddress': '/secure/address/create',
     'myAddress': '/secure/address/my',
+    'myOrders': '/secure/orders/all',
     'removeAddress': addressId => `/secure/address/remove/${addressId}`,
 
 
