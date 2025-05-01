@@ -68,7 +68,7 @@ const Home = () => {
                     ) : (
                         products.map((product, index) => (
                             <Link key={index} to={`/products/${product.id}`}>
-                                <ProductCard name={product.name} price={product.price} image={product.image} />
+                                <ProductCard product={product} />
                             </Link>
                         ))
                     )}
