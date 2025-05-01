@@ -12,7 +12,7 @@ const useOrders = (status) => {
             let url = endpoints.myOrders;
             if (status && status !== "Tất cả") {
                 url += `?status=${status}`;
-            }
+            }   
 
             const response = await authAPIs().get(url);
             if (response.status === 200) {
@@ -32,7 +32,7 @@ const useOrders = (status) => {
         loadOrders();
     }, [status]);
 
-    return { orders, loading, error };
+    return { orders, loading, error, loadOrders };
 };
 
 export default useOrders;
