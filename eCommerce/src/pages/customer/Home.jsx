@@ -21,7 +21,8 @@ const Home = () => {
     const loadProducts = async () => {
         try {
             setLoading(true);
-            const res = await APIs.get(endpoints.products);
+            let url = `${endpoints.products}?isActive=1`;
+            const res = await APIs.get(url);
             setProducts(res.data);
 
         } catch (err) {
@@ -44,15 +45,14 @@ const Home = () => {
                 <h1 className="text-3xl font-bold mb-6 text-gray-800">Danh mục</h1>
                 <div className="flex flex-wrap justify-center gap-6 w-full max-w-7xl">
                     {categories.map((category) => (
-                        <Link key={category.name} to="/category-detail/1">
-                            <div
 
-                                className="w-37 h-25 flex flex-col items-center justify-center bg-white rounded-lg shadow hover:shadow-md transition"
-                            >
-                                <img src={category.image} alt={category.name} className="w-12 h-12 mb-2 object-contain" />
-                                <span className="text-sm font-semibold text-gray-700 text-center">{category.name}</span>
-                            </div>
-                        </Link>
+                        <div
+                            className="w-37 h-25 flex flex-col items-center justify-center bg-white rounded-lg shadow hover:shadow-md transition"
+                        >
+                            <img src={category.image} alt={category.name} className="w-12 h-12 mb-2 object-contain" />
+                            <span className="text-sm font-semibold text-gray-700 text-center">{category.name}</span>
+                        </div>
+
                     ))}
                 </div>
 

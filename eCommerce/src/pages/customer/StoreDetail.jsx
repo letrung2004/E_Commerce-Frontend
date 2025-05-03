@@ -78,6 +78,7 @@ const StoreDetail = () => {
         loadStoreInfo();
         loadCate();
         loadProducts();
+        window.scrollTo(0, 0);
     }, [storeId]);
 
 
