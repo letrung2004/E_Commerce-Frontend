@@ -118,13 +118,26 @@ const Cart = () => {
             );
 
             if (selectedItemsInStore.length > 0) {
-                const subCartItemIds = selectedItemsInStore.map(item => item.product.id);
+                const subCartItemIds = selectedItemsInStore.map(item => ({
+                    productId: item.product.id,
+                    productAvatar: item.product.image,
+                    quantity: item.quantity,
+                    unitPrice: item.unitPrice
+                }));
                 const storeShippingCost = 30000;
 
+                const itemsTotal = subCartItemIds.reduce((sum, item) => {
+                    return sum + item.quantity * item.unitPrice;
+                }, 0);
+
+                const total = itemsTotal + storeShippingCost;
                 subOrderItems.push({
-                    storeId: subCart.subCartId,
+                    storeId: subCart.storeId,
+                    storeName: subCart.storeName,
+                    storeLogo: subCart.storeAvatar,
                     shippingCost: storeShippingCost,
-                    subCartItemIds: subCartItemIds
+                    subCartItemIds: subCartItemIds,
+                    total: total
                 });
             }
         });
@@ -150,14 +163,16 @@ const Cart = () => {
                     <div className="text-gray-400 text-5xl mb-4">🛒</div>
                     <h2 className="text-xl font-semibold mb-2">Giỏ hàng của bạn đang trống</h2>
                     <p className="text-gray-500 mb-6">Hãy khám phá và tìm kiếm sản phẩm bạn yêu thích</p>
-                    <button className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors">
-                        Tiếp tục mua sắm
-                    </button>
+                    <Link to='/products'>
+                        <button className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+                            Tiếp tục mua sắm
+                        </button>
+                    </Link>
                 </div>
             ) : (
                 <div className="flex flex-col lg:flex-row gap-6">
                     <div className="lg:w-2/3 space-y-4">
-                        <div className="bg-white shadow-sm rounded-lg p-4 flex items-center">
+                        <div className="bg-white shadow-sm rounded-lg p-4 flex items-center justify-between">
                             <div className="flex items-center">
                                 <input
                                     type="checkbox"
@@ -165,7 +180,10 @@ const Cart = () => {
                                     checked={isAllSelected()}
                                     onChange={handleSelectAll}
                                 />
-                                <span className="font-medium">Chọn tất cả sản phẩm</span>
+                                <span className="font-medium">Chọn tất cả</span>
+                            </div>
+                            <div className="text-sm text-gray-500">
+                                {cart.itemsNumber} sản phẩm
                             </div>
                         </div>
 
