@@ -30,8 +30,15 @@ const Orders = () => {
                     </button>
                 ))}
             </div>
-            {loading && <p>Loading...</p>}
-            {error && <p className="text-red-500">{error}</p>}
+            {loading &&
+                <div className="flex justify-center py-20">
+                    <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-600"></div>
+                </div>}
+            {error &&
+                <div className="text-center py-8 text-red-500">
+                    <p className="font-medium">{error}</p>
+                </div>
+            }
 
             {/* Đơn hàng */}
             <div>
@@ -101,11 +108,18 @@ const Orders = () => {
                         </div>
                     ))
                 ) : (
-                    <p>Không có đơn hàng nào.</p>
+                    <>
+                        {!loading && error == null && (
+                            <div className="text-center py-8 text-gray-500">
+                                <p className="font-medium">Không có đơn hàng nào</p>
+                            </div>
+                        )}
+
+                    </>
                 )}
 
             </div>
-            <ReviewModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} orderDetails={selectedOrderDetails} fetchOrders={loadOrders}/>
+            <ReviewModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} orderDetails={selectedOrderDetails} fetchOrders={loadOrders} />
 
         </div>
     )

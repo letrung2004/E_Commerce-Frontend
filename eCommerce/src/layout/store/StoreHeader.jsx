@@ -22,7 +22,7 @@ const StoreHeader = () => {
                         {user.storeActive ?
                             <span className="font-normal text-white text-lg flex items-end ">Kênh người bán</span>
                             :
-                            <span className="font-normal text-white text-lg flex items-end ">Đăng ký để trở thành người bán Shopii</span>
+                            <span className="font-normal text-white text-lg flex items-end ">Đăng ký để trở thành người bán E-Commerce</span>
                         }
 
                     </Link>

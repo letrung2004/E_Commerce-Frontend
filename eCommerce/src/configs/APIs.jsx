@@ -20,17 +20,21 @@ export const endpoints = {
     'addReviews': 'secure/reviews/add',
     'productDetail': productId => `/products/${productId}`,
     'storeDetail': storeId => `/store/${storeId}`,
+    'getCart': '/secure/cart',
+    'addToCart': productId => `/secure/cart/add/${productId}`,
+    'removeProductCart': productId => `/secure/cart/remove/${productId}`,
+    'updateCartItem': 'secure/cart/update-quantity',
 
 
     // APIs for seller
     'createStore': '/secure/store-activation',
 
     'getCategories': (storeId) => `/store/${storeId}/categories`,
-    'createCategory': (storeId) => `/secure/store/${storeId}/categories`,
-    'updateCategory': (storeId, categoryId) => `/secure/store/${storeId}/categories/${categoryId}`,
+    'updateCategory': (categoryId) => `/secure/store/categories/${categoryId}`,
     'getProducts': (storeId) => `/store/${storeId}/products`,
-    'createProduct': (storeId) => `/secure/store/${storeId}/products`,
-    'updateProduct': (storeId, productId) => `/secure/store/${storeId}/products/${productId}`,
+    'createProduct': '/secure/store/products',
+    'updateProduct': (productId) => `/secure/store/products/${productId}`,
+    'createCategory': '/secure/store/categories',
 
 
 

@@ -275,7 +275,9 @@ const Products = () => {
                         <>
                             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                                 {products.map((product) => (
-                                    <ProductCard key={product.id} product={product} />
+                                    <Link to={`/products/${product.id}`}>
+                                        <ProductCard key={product.id} product={product} />
+                                    </Link>
                                 ))}
                             </div>
 
@@ -299,7 +301,7 @@ const Products = () => {
                     )}
                 </div>
             </div>
-        </div>
+        </div >
     );
 };
 

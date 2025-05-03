@@ -31,6 +31,7 @@ import MyProfile from "./pages/customer/MyProfile";
 import ProfileInfo from "./components/customer/profile/ProfileInfo";
 import { AddressContext, AddressDispatchContext } from "./context/AppContext";
 import Orders from "./pages/customer/Orders";
+import { CartProvider } from "./context/CartContext";
 
 const App = () => {
 
@@ -45,48 +46,50 @@ const App = () => {
   return (
     <>
       <AuthProvider>
-        <AddressContext.Provider value={currentAddress}>
-          <AddressDispatchContext.Provider value={setCurrentAddress}>
-            <BrowserRouter>
-              <Routes>
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/oauth2/callback" element={<OAuth2CallbackHandler />} />
+        <CartProvider>
+          <AddressContext.Provider value={currentAddress}>
+            <AddressDispatchContext.Provider value={setCurrentAddress}>
+              <BrowserRouter>
+                <Routes>
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/register" element={<Register />} />
+                  <Route path="/oauth2/callback" element={<OAuth2CallbackHandler />} />
 
-            <Route path="/" element={<CustomerLayout />}>
-              <Route index element={<CustomerHome />} />
-              <Route path="products/:productId" element={<ProductsDetail />} />
-              <Route path="cart" element={<Cart />} />
-              <Route path="store-detail/:storeId" element={<CustomerStoreDetail />} />
-              <Route path="products" element={<CategoryProducts />} />
-              <Route path="orders" element={<PrivateRoute element={<CustomerOrder />} />} />
-              <Route path="orders/:orderId" element={<PrivateRoute element={<CustomerOrderDetail />} />} />
-              {/* <Route path="me" element={<UserProfile />} /> */}
-              <Route path="me" element={<MyProfile/>}>
-                <Route path="profile" index element={<ProfileInfo/>}/>
-                <Route path="address" element={<Address/>}/>
-                <Route path="my-orders" element={<Orders/>}/>
-              </Route>
+                  <Route path="/" element={<CustomerLayout />}>
+                    <Route index element={<CustomerHome />} />
+                    <Route path="products/:productId" element={<ProductsDetail />} />
+                    <Route path="cart" element={<Cart />} />
+                    <Route path="store-detail/:storeId" element={<CustomerStoreDetail />} />
+                    <Route path="products" element={<CategoryProducts />} />
+                    <Route path="orders" element={<PrivateRoute element={<CustomerOrder />} />} />
+                    <Route path="orders/:orderId" element={<PrivateRoute element={<CustomerOrderDetail />} />} />
+                    {/* <Route path="me" element={<UserProfile />} /> */}
+                    <Route path="me" element={<MyProfile />}>
+                      <Route path="profile" index element={<ProfileInfo />} />
+                      <Route path="address" element={<Address />} />
+                      <Route path="my-orders" element={<Orders />} />
+                    </Route>
 
-                </Route>
+                  </Route>
 
-                <Route path="/seller" element={<PrivateRoute element={<StoreLayout />} />}>
-                  <Route index element={<StoreHome />} />
-                  <Route path="welcome" element={<WelcomeSeller />} />
-                  <Route path="register" element={<StoreRegistration />} />
-                  <Route path="success-registration" element={<AfterRegistration />} />
-                  <Route path="products" element={<StoreProducts />} />
-                  <Route path="products/add" element={<SaveProduct />} />
-                  <Route path="categories" element={<StoreCategories />} />
-                  <Route path="revenue" element={<Revenue />} />
-                  <Route path="messages" element={<Messages />} />
-                  <Route path="orders" element={<StoreOrders />} />
-                  <Route path="products/update/:productId" element={<SaveProduct />} />
-                </Route>
-              </Routes>
-            </BrowserRouter>
-          </AddressDispatchContext.Provider>
-        </AddressContext.Provider>
+                  <Route path="/seller" element={<PrivateRoute element={<StoreLayout />} />}>
+                    <Route index element={<StoreHome />} />
+                    <Route path="welcome" element={<WelcomeSeller />} />
+                    <Route path="register" element={<StoreRegistration />} />
+                    <Route path="success-registration" element={<AfterRegistration />} />
+                    <Route path="products" element={<StoreProducts />} />
+                    <Route path="products/add" element={<SaveProduct />} />
+                    <Route path="categories" element={<StoreCategories />} />
+                    <Route path="revenue" element={<Revenue />} />
+                    <Route path="messages" element={<Messages />} />
+                    <Route path="orders" element={<StoreOrders />} />
+                    <Route path="products/update/:productId" element={<SaveProduct />} />
+                  </Route>
+                </Routes>
+              </BrowserRouter>
+            </AddressDispatchContext.Provider>
+          </AddressContext.Provider>
+        </CartProvider>
       </AuthProvider>
     </>
   );
