@@ -69,7 +69,7 @@ const Products = () => {
 
     const handleDelete = async () => {
         try {
-            await authAPIs().delete(endpoints.updateProduct(storeId, productDel.id));
+            await authAPIs().delete(endpoints.updateProduct(productDel.id));
             setSuccessMessage("Xóa thành công!");
             setPage(1);
             setProducts([]);

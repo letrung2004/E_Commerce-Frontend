@@ -1,13 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import APIs, { endpoints } from "../../configs/APIs";
+import { useAuth } from "../../context/AuthProvider";
+import { useCart } from "../../context/CartContext";
 
 const ProductsDetail = () => {
     const { productId } = useParams();
+    const nav = useNavigate();
     const [loading, setLoading] = useState(false);
     const [product, setProduct] = useState({});
     const [quantity, setQuantity] = useState(1);
     const [store, setStore] = useState({});
+    const { user } = useAuth();
+    const { addToCart } = useCart();
+    const [showSuccess, setShowSuccess] = useState(false);
+
 
     const loadProductDetail = async () => {
         try {
@@ -31,6 +38,16 @@ const ProductsDetail = () => {
             }
         } catch (err) {
             console.error("Lỗi load store:", err);
+        }
+    }
+
+    const handelAddProductToCart = async () => {
+        if (user) {
+            addToCart(product.id, quantity);
+            setShowSuccess(true);
+            setTimeout(() => setShowSuccess(false), 3000);
+        } else {
+            nav("/login");
         }
     }
 
@@ -81,6 +98,21 @@ const ProductsDetail = () => {
                 <span className="mx-2">•</span>
                 <span className="text-purple-700 font-medium truncate">{product.name || "Chi tiết sản phẩm"}</span>
             </nav>
+
+            {showSuccess && (
+                <div className="fixed bottom-6 right-6 bg-white border-l-4 border-purple-600 text-gray-700 px-5 py-3 rounded-lg shadow-xl z-50 flex items-center space-x-3 animate-slide-in-right">
+                    <div className="bg-purple-100 p-2 rounded-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-purple-600" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                        </svg>
+                    </div>
+                    <div>
+                        <p className="font-medium">Đã thêm vào giỏ hàng</p>
+                        <p className="text-sm text-gray-600">Sản phẩm đã được thêm thành công</p>
+                    </div>
+                </div>
+            )}
+
 
             {loading ? (
                 <div className="flex justify-center py-20">
@@ -168,7 +200,7 @@ const ProductsDetail = () => {
 
 
                             <div className="flex gap-4 pt-4">
-                                <button className="w-1/2 bg-white border-2 border-blue-600 text-blue-600 py-3 rounded-xl font-semibold hover:bg-blue-50 transition-all flex items-center justify-center shadow-sm">
+                                <button onClick={handelAddProductToCart} className="w-1/2 bg-white border-2 border-blue-600 text-blue-600 py-3 rounded-xl font-semibold hover:bg-blue-50 transition-all flex items-center justify-center shadow-sm">
                                     <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
                                     </svg>

@@ -58,12 +58,12 @@ const Categories = () => {
         setLoadingSave(true);
         try {
             if (editCategory) {
-                await authAPIs().put(endpoints.updateCategory(storeId, editCategory.id), {
+                await authAPIs().put(endpoints.updateCategory(editCategory.id), {
                     name: newCategoryName
                 });
                 setMessage({ text: "Cập nhật danh mục thành công!", type: "success" });
             } else {
-                await authAPIs().post(endpoints.createCategory(storeId), {
+                await authAPIs().post((endpoints.createCategory), {
                     name: newCategoryName
                 });
                 setMessage({ text: "Thêm danh mục mới thành công!", type: "success" });
@@ -86,7 +86,7 @@ const Categories = () => {
     const handleDelete = async () => {
         if (!categoryToDelete) return;
         try {
-            await authAPIs().delete(endpoints.updateCategory(storeId, categoryToDelete.id));
+            await authAPIs().delete(endpoints.updateCategory(categoryToDelete.id));
             await loadCategories();
             setMessage({ text: "Xóa danh mục thành công!", type: "success" });
         } catch (err) {

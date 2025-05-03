@@ -58,7 +58,7 @@ const SaveProduct = () => {
             setLoading(true);
             setIsEditMode(true);
             try {
-                const res = await authAPIs().get(endpoints.updateProduct(storeId, productId));
+                const res = await authAPIs().get(endpoints.updateProduct(productId));
                 console.log(res.data)
                 const productData = res.data;
                 setProduct({
@@ -118,13 +118,13 @@ const SaveProduct = () => {
             let res;
             if (isEditMode) {
                 res = await authAPIs().put(
-                    endpoints.updateProduct(storeId, productId),
+                    endpoints.updateProduct(productId),
                     formData
                 );
                 navigate("/seller/products", { state: { successMessage: "Cập nhật sản phẩm thành công!" } });
             } else {
                 res = await authAPIs().post(
-                    endpoints.createProduct(storeId),
+                    endpoints.createProduct,
                     formData
                 );
                 navigate("/seller/products", { state: { successMessage: "Thêm sản phẩm thành công!" } });
