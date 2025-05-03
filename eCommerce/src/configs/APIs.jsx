@@ -16,8 +16,10 @@ export const endpoints = {
     'createAddress': '/secure/address/create',
     'myAddress': '/secure/address/my',
     'myOrders': '/secure/orders/all',
-    'removeAddress': addressId => `/secure/address/remove/${addressId}`,
     'addReviews': 'secure/reviews/add',
+    'placeOrder': '/secure/orders/place-order',
+    'removeAddress': addressId => `/secure/address/remove/${addressId}`,
+    'setDefaultAddress': addressId => `/secure/address/set-default/${addressId}`,
     'productDetail': productId => `/products/${productId}`,
     'storeDetail': storeId => `/store/${storeId}`,
 
@@ -39,7 +41,6 @@ export const endpoints = {
 
 export const authAPIs = () => {
     const token = cookie.load("jwtToken");
-    console.log("token from APIs: ", token)
     return axios.create({
         baseURL: BASE_URL,
         headers: {
