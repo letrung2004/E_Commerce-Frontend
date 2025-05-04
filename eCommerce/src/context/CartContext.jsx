@@ -39,12 +39,15 @@ const CartProvider = ({ children }) => {
                     const filteredItems = subCart.items.filter(
                         (item) => item.product.id !== productId
                     );
-
                     return { ...subCart, items: filteredItems };
                 }).filter(subCart => subCart.items.length > 0);
 
+                const newTotalItems = updatedSubCarts.flatMap(subCart => subCart.items).length;
+                setTotalItems(newTotalItems);
+
                 return { ...prevCart, subCarts: updatedSubCarts };
             });
+
 
         } catch (err) {
             console.error("Lỗi xóa giỏ hàng:", err);

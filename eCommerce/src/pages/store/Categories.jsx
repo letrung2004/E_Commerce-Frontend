@@ -114,9 +114,16 @@ const Categories = () => {
     return (
         <div className="p-6">
             {message.text && (
-                <div className={`mb-4 px-4 py-2 rounded-lg shadow-lg flex items-center space-x-2 animate-fade-in-out
-                    ${message.type === "success" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
-                    <span>{message.text}</span>
+                <div className="fixed bottom-6 right-6 bg-white border-l-4 border-purple-600 text-gray-700 px-5 py-3 rounded-lg shadow-xl z-50 flex items-center space-x-3 animate-slide-in-right">
+                    <div className="bg-purple-100 p-2 rounded-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-purple-600" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                        </svg>
+                    </div>
+                    <div>
+                        <p className="font-medium">Thao tác thành công</p>
+                        <p className="text-sm text-gray-600">{message.text}</p>
+                    </div>
                 </div>
             )}
 
@@ -136,8 +143,8 @@ const Categories = () => {
 
                 <div className="bg-white shadow-md rounded-lg p-4">
                     {loading ? (
-                        <div className="flex justify-center items-center h-40">
-                            <div className="text-blue-600 font-medium text-lg animate-pulse">Đang tải danh mục...</div>
+                        <div className="flex justify-center py-20">
+                            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-600"></div>
                         </div>
                     ) : (
                         <table className="w-full border-collapse">

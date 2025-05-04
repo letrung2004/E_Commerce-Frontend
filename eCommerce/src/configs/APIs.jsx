@@ -37,6 +37,7 @@ export const endpoints = {
     'createProduct': '/secure/store/products',
     'updateProduct': (productId) => `/secure/store/products/${productId}`,
     'createCategory': '/secure/store/categories',
+    'changeStatus': (productId) => `/secure/store/update-status/${productId}`,
 
 
 

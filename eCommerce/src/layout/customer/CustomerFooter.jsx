@@ -9,22 +9,22 @@ const CustomerFooter = () => {
                 <div>
                     <h2 className="text-3xl font-bold text-purple-600">E-Commerce</h2>
                     <p className="mt-2 text-gray-600">
-                        The best place to shop for quality products at affordable prices.
+                        Nơi mua sắm lý tưởng với các sản phẩm chất lượng và giá cả phải chăng.
                     </p>
                 </div>
 
-
                 <div>
-                    <h3 className="font-semibold mb-2">Quick Links</h3>
+                    <h3 className="font-semibold mb-2">Liên Kết Nhanh</h3>
                     <ul className="space-y-2">
-                        <li><a href="/" className="text-gray-600 hover:text-purple-600">Home</a></li>
-                        <li><a href="/products" className="text-gray-600 hover:text-purple-600">Products</a></li>
+                        <li><a href="/" className="text-gray-600 hover:text-purple-600">Trang Chủ</a></li>
+                        <li><a href="/products" className="text-gray-600 hover:text-purple-600">Sản Phẩm</a></li>
                     </ul>
                 </div>
 
 
+
                 <div>
-                    <h3 className="font-semibold mb-2">Follow Us</h3>
+                    <h3 className="font-semibold mb-2">Theo dõi chúng tôi</h3>
                     <div className="flex space-x-4">
                         <FaFacebook className="text-2xl text-gray-600 hover:text-blue-600 cursor-pointer" />
                         <FaInstagram className="text-2xl text-gray-600 hover:text-pink-600 cursor-pointer" />

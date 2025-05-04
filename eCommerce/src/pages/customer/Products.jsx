@@ -80,7 +80,7 @@ const Products = () => {
         if (page > 0) {
             try {
                 setLoading(true);
-                let url = `${endpoints.products}?page=${page}`;
+                let url = `${endpoints.products}?isActive=1&page=${page}`;
 
                 const q = param.get('q');
                 if (q) url += `&q=${q}`;
