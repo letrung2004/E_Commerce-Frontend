@@ -1,10 +1,13 @@
 import React, { useState } from 'react'
 import useOrders from '../../components/customer/hook/useOrders';
 import ReviewModal from '../../components/customer/modal/ReviewModal';
+import { useLocation } from 'react-router-dom';
 
 const Orders = () => {
+    const location = useLocation();
     const tabs = ['Tất cả', 'Chờ xác nhận', 'Chờ lấy hàng', 'Chờ giao hàng', 'Hoàn thành', 'Đã hủy', 'Trả hàng/Hoàn tiền']
-    const [activeTab, setActiveTab] = useState('Tất cả')
+    const tabAssign = location.state?.tabAssign || "Tất cả";
+    const [activeTab, setActiveTab] = useState(tabAssign);
     const { orders, loading, error, loadOrders } = useOrders(activeTab)
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [selectedOrderDetails, setSelectedOrderDetails] = useState(null);

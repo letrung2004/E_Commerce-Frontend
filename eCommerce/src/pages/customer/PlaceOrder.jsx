@@ -1,13 +1,14 @@
 import React, { useContext, useState } from 'react';
-import { FaMapMarkerAlt } from 'react-icons/fa';
+import { FaCommentDots, FaMapMarkerAlt } from 'react-icons/fa';
 import { AddressContext, AddressDispatchContext } from '../../context/AppContext';
 import useAddress from '../../components/customer/hook/useAddress';
 import Process from '../../components/store/Process';
 import vnPayIcon from '../../assets/Icon-VNPAY-QR.webp'
 import { authAPIs, endpoints } from '../../configs/APIs';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const PlaceOrder = () => {
+    const navigate = useNavigate();
     const location = useLocation();
     const { checkoutData } = location.state || {};
     const { addresses, loading, setLoading, error } = useAddress(1)
@@ -19,61 +20,35 @@ const PlaceOrder = () => {
 
     console.log("data from cart: ", checkoutData)
 
-
     const handlePlaceOrder = async () => {
-        const data2 = {
-            "username": "dt123",
-            "addressId": 33,
-            "shippingFree": 20000,
-            "total": 20000,
-
-            "subOrderItems": [
-                {
-                    "storeId": 8,
-                    "shippingCost": 10000,
-                    "subCartItemIds": [
-                        1
-                    ]
-                },
-                {
-                    "storeId": 14,
-                    "shippingCost": 21000,
-                    "subCartItemIds": [
-                        2
-                    ]
-                }
-            ],
-            "paymentMethod": "COD"
-        }
         const data = {
-            "username": "dt123",
-            "addressId": addresses[0].id,
-            "total": 320000,
-            "subOrderItems": [
-                {
-                    "storeId": 8,
-                    "shippingCost": 10000,
-                    "subCartItemIds": [
-                        1
-                    ]
-                },
-                {
-                    "storeId": 14,
-                    "shippingCost": 21000,
-                    "subCartItemIds": [
-                        2
-                    ]
-                }
-            ],
-            "paymentMethod": paymentMethod
-        }
-        console.log("data: ", data)
+            addressId: addresses[0].id,
+            total: checkoutData.subOrderItems.reduce((sum, o) => sum + o.total, 0),
+            subOrderItems: checkoutData.subOrderItems.map(item => ({
+                storeId: item.storeId,
+                shippingCost: item.shippingCost,
+                subCartItemIds: item.subCartItem.map(i => i.id)
+            })),
+            paymentMethod: paymentMethod
+        };
+
+        console.log("data: ", data);
+
         try {
             setLoading(true)
             const response = await authAPIs().post(endpoints.placeOrder, data);
-            if (response.status === 201) {
+            console.log("Status: ", response.status)
 
-                console.log("order created")
+
+            if (response.status === 201) {
+                console.log("Đặt hàng COD thành công", response.data);
+                navigate("/me/my-orders", {state: {tabAssign: "Chờ xác nhận"}})
+                // if (paymentMethod === "VNPay") {
+                //     const paymentUrl = response.data.paymentUrl;
+                //     window.location.href = paymentUrl;
+                // } else if (paymentMethod==="COD") {
+                   
+                // }
 
             } else {
                 throw new Error("Failed to load addresses");
@@ -108,7 +83,7 @@ const PlaceOrder = () => {
 
             {loading && <Process />}
 
-            <div className="w-[80%] mx-auto p-6 space-y-4 bg-transparent">
+            <div className="w-[70%] mx-auto p-6 space-y-4 bg-transparent">
                 <div className='bg-purple-500 text-white font-bold text-lg px-5'>
                     <h3>Thanh toán</h3>
                 </div>
@@ -133,8 +108,8 @@ const PlaceOrder = () => {
                 }
 
                 {/* Sản phẩm */}
-                <div className="bg-white rounded shadow">
-                    <div className='flex p-5'>
+                <div className="bg-transparent rounded ">
+                    <div className='flex p-5 bg-white'>
                         <div className='w-[50%]'>
                             <h3 className="font-semibold text-lg">Sản phẩm</h3>
                         </div>
@@ -144,40 +119,61 @@ const PlaceOrder = () => {
                             <div className="flex-1 text-end">Thành tiền</div>
                         </div>
                     </div>
-                    <div className="flex gap-4 items-center p-5 ">
-                        <div className='w-[50%] gap-3 flex items-center'>
-                            <img
-                                src="img.jpg"
-                                alt="product"
-                                className="w-15 h-15 rounded bg-gray-100 object-cover"
-                            />
-                            <div className="flex-1 space-y-1">
-                                <p className="font-medium text-gray-800">
-                                    Quần kaki ống suông nam PEALO casual pant...
-                                </p>
+                    {checkoutData.subOrderItems.map((subOrder, index) =>
+                        <div key={index} className='mb-3 bg-amber-300 shadow'>
+                            <div className="pt-3 px-5 flex items-center gap-2 bg-white">
+                                <span className="bg-purple-600 text-white text-xs px-1 rounded">Mall</span>
+                                <span className="font-semibold">{subOrder.storeName}</span>
+                                <span className="text-gray-500"> | </span>
+                                <div className='flex mx-2 text-purple-600 items-center px-2 hover:bg-purple-50 rounded'>
+                                    <FaCommentDots size={16} />
+                                    <button className="text-purple-600 cursor-pointer text-sm px-1 rounded ">
+                                        Chat ngay</button>
+                                </div>
+                            </div>
+
+                            {checkoutData.subOrderItems[index].subCartItem.map((item, idx) =>
+
+
+                                <div key={idx} className="flex gap-4 items-center p-5 bg-white">
+
+                                    <div className='w-[50%] gap-3 flex items-center'>
+                                        <img
+                                            src={item.productAvatar}
+                                            alt="product"
+                                            className="w-15 h-15 rounded bg-gray-100 object-cover"
+                                        />
+                                        <div className="flex-1 space-y-1">
+                                            <p className="font-medium text-gray-800">
+                                                {item.productName}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className='w-[50%] flex font-medium text-gray-800'>
+                                        <div className="flex-1 text-end"><p className="text-sm ">₫{item.unitPrice.toLocaleString()}</p></div>
+                                        <div className="flex-1 text-end"><p className="text-sm ">{item.quantity}</p></div>
+                                        <div className="flex-1 text-end">₫{(item.unitPrice * item.quantity).toLocaleString()}</div>
+                                    </div>
+                                </div>
+
+                            )}
+
+
+                            {/* Voucher + Shipping */}
+                            <div className="p-5 border-t border-gray-300 border-dotted bg-gray-100">
+                                <div className="flex justify-between ">
+                                    <span>Phương thức vận chuyển: <strong className="text-gray-700">Nhanh</strong></span>
+                                    <span className="text-gray-800">₫{subOrder.shippingCost.toLocaleString()}</span>
+                                </div>
+                            </div>
+
+                            {/* Tổng phụ */}
+                            <div className="text-right flex justify-end gap-3  px-5 py-7 border-t bg-gray-100 border-gray-300 border-dotted">
+                                <p className='text-gray-500'>Tổng số tiền ({subOrder.subCartItem.length}) sản phẩm:</p>
+                                <p className='text-red-500 font-semibold'>₫{subOrder.total.toLocaleString()}</p>
                             </div>
                         </div>
-                        <div className='w-[50%] flex font-medium text-gray-800'>
-                            <div className="flex-1 text-end"><p className="text-sm ">₫285.000</p></div>
-                            <div className="flex-1 text-end"><p className="text-sm ">1</p></div>
-                            <div className="flex-1 text-end">₫285.000</div>
-                        </div>
-                    </div>
-
-
-
-                    {/* Voucher + Shipping */}
-                    <div className="p-5 border-t border-gray-300 border-dotted bg-gray-50">
-                        <div className="flex justify-between ">
-                            <span>Phương thức vận chuyển: <strong className="text-gray-700">Nhanh</strong></span>
-                            <span className="text-gray-800">₫37.300</span>
-                        </div>
-                    </div>
-
-                    {/* Tổng phụ */}
-                    <div className="text-right font-semibold text-red-500 px-5 py-7 border-t bg-gray-50 border-gray-300 border-dotted">
-                        Tổng số tiền (1 sản phẩm): ₫322.300
-                    </div>
+                    )}
                 </div>
 
                 {/* Shopee Voucher + Xu */}
