@@ -31,7 +31,9 @@ import MyProfile from "./pages/customer/MyProfile";
 import ProfileInfo from "./components/customer/profile/ProfileInfo";
 import { AddressContext, AddressDispatchContext } from "./context/AppContext";
 import Orders from "./pages/customer/Orders";
+import PlaceOrder from "./pages/customer/PlaceOrder";
 import { CartProvider } from "./context/CartContext";
+
 
 const App = () => {
 
@@ -62,6 +64,7 @@ const App = () => {
                     <Route path="store-detail/:storeId" element={<CustomerStoreDetail />} />
                     <Route path="products" element={<CategoryProducts />} />
                     <Route path="orders" element={<PrivateRoute element={<CustomerOrder />} />} />
+                    <Route path="place-order" element={<PrivateRoute element={<PlaceOrder />} />} />
                     <Route path="orders/:orderId" element={<PrivateRoute element={<CustomerOrderDetail />} />} />
                     {/* <Route path="me" element={<UserProfile />} /> */}
                     <Route path="me" element={<MyProfile />}>

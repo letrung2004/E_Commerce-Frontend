@@ -48,6 +48,7 @@ const CustomerHeader = () => {
                 <Link to="/seller" className="hover:text-gray-200 transition-colors flex items-center">
                     <span>Kênh người bán</span>
                 </Link>
+                
 
                 <div className="flex items-center space-x-4">
                     <Link to="/help" className="hover:text-gray-200 transition-colors">Trợ giúp</Link>

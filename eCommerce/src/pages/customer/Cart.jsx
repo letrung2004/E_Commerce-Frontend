@@ -118,15 +118,17 @@ const Cart = () => {
             );
 
             if (selectedItemsInStore.length > 0) {
-                const subCartItemIds = selectedItemsInStore.map(item => ({
+                const subCartItem = selectedItemsInStore.map(item => ({
+                    id: item.id,
                     productId: item.product.id,
                     productAvatar: item.product.image,
+                    productName: item.product.name,
                     quantity: item.quantity,
                     unitPrice: item.unitPrice
                 }));
                 const storeShippingCost = 30000;
 
-                const itemsTotal = subCartItemIds.reduce((sum, item) => {
+                const itemsTotal = subCartItem.reduce((sum, item) => {
                     return sum + item.quantity * item.unitPrice;
                 }, 0);
 
@@ -136,7 +138,7 @@ const Cart = () => {
                     storeName: subCart.storeName,
                     storeLogo: subCart.storeAvatar,
                     shippingCost: storeShippingCost,
-                    subCartItemIds: subCartItemIds,
+                    subCartItem: subCartItem,
                     total: total
                 });
             }
@@ -146,7 +148,7 @@ const Cart = () => {
         const checkoutData = {
             subOrderItems: subOrderItems
         };
-        navigate('/products', {
+        navigate('/place-order', {
             state: {
                 checkoutData
             }
