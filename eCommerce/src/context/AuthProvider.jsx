@@ -10,7 +10,6 @@ const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
     const login = (userData, token) => {
-        // localStorage.setItem('jwtToken', token);
         cookie.save('jwtToken', token, { path: '/' });
         console.log("Token:", token);
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
@@ -18,7 +17,6 @@ const AuthProvider = ({ children }) => {
     };
 
     const logout = () => {
-        // localStorage.removeItem('jwtToken');
         cookie.remove('jwtToken', { path: '/' });
         delete axios.defaults.headers.common['Authorization'];
         setUser(null);

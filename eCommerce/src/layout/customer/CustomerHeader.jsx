@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaHeart, FaShoppingCart, FaSearch, FaUserCircle } from "react-icons/fa";
 import { useAuth } from "../../context/AuthProvider";
+import { useCart } from "../../context/CartContext";
 
 const CustomerHeader = () => {
     const { user, logout } = useAuth();
@@ -9,6 +10,7 @@ const CustomerHeader = () => {
     const [show, setShow] = useState(false);
     const dropdownRef = useRef(null);
     const [keyword, setKeyword] = useState("");
+    const { totalItems } = useCart();
 
     const handleLogout = () => {
         logout();
@@ -18,6 +20,14 @@ const CustomerHeader = () => {
     const handleSearch = () => {
         if (keyword.trim() !== "") {
             nav(`/products?q=${encodeURIComponent(keyword)}`);
+        }
+    };
+
+    const handleClick = () => {
+        if (user) {
+            nav("/cart");
+        } else {
+            nav("/login");
         }
     };
 
@@ -38,9 +48,7 @@ const CustomerHeader = () => {
                 <Link to="/seller" className="hover:text-gray-200 transition-colors flex items-center">
                     <span>Kênh người bán</span>
                 </Link>
-                <Link to="/place-order">
-                    Continue to checkout
-                </Link>
+                
 
                 <div className="flex items-center space-x-4">
                     <Link to="/help" className="hover:text-gray-200 transition-colors">Trợ giúp</Link>
@@ -89,12 +97,16 @@ const CustomerHeader = () => {
                         </button>
                     </div>
 
-                    <Link to="/cart" className="relative group">
+                    <div onClick={handleClick} className="relative group cursor-pointer">
                         <div className="bg-white p-2 rounded-full transition-colors">
                             <FaShoppingCart className="text-purple-700 text-xl" />
                         </div>
-                        <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">3</span>
-                    </Link>
+                        {totalItems > 0 && (
+                            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                                {totalItems}
+                            </span>
+                        )}
+                    </div>
 
                     {user ? (
                         <div className="inline-block text-left relative" ref={dropdownRef}>

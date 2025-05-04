@@ -5,14 +5,20 @@ import useAddress from '../../components/customer/hook/useAddress';
 import Process from '../../components/store/Process';
 import vnPayIcon from '../../assets/Icon-VNPAY-QR.webp'
 import { authAPIs, endpoints } from '../../configs/APIs';
+import { useLocation } from 'react-router-dom';
 
 const PlaceOrder = () => {
+    const location = useLocation();
+    const { checkoutData } = location.state || {};
     const { addresses, loading, setLoading, error } = useAddress(1)
     const setCurrentAddress = useContext(AddressDispatchContext)
     const address = useContext(AddressContext)
     const [activeMethod, setActiveMethod] = useState('Ví điện tử')
     const paymentOptions = ['Ví điện tử', 'Thẻ tín dụng/Ghi nợ', 'Google Pay', 'Thẻ nội địa Napas', 'Thanh toán khi nhận hàng']
     const [paymentMethod, setPaymentMethod] = useState("COD")
+
+    console.log("data from cart: ", checkoutData)
+
 
     const handlePlaceOrder = async () => {
         const data2 = {

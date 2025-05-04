@@ -1,131 +1,307 @@
-import React, { useState } from "react";
-import { FaTrash } from "react-icons/fa";
+import React, { useState, useEffect } from "react";
+import { useCart } from "../../context/CartContext";
+import { Link, useNavigate } from "react-router-dom";
 
 const Cart = () => {
-    const [selectedProducts, setSelectedProducts] = useState({}); // Lưu sản phẩm đã chọn
+    const { removeProductCart, cart, updateQuantity } = useCart();
+    const navigate = useNavigate();
 
-    const shops = [
-        {
-            id: 1,
-            name: "Adanola",
-            avatar: "https://res.cloudinary.com/derx1izam/image/upload/v1741688511/wds7s8z3kqtytrj4tidp.png",
-            products: [
-                {
-                    id: 101,
-                    name: "Ultimate Leggings - Midnight Blue",
-                    variant: "XXS / Regular",
-                    price: 39.99,
-                    image: "https://res.cloudinary.com/derx1izam/image/upload/v1741688511/wds7s8z3kqtytrj4tidp.png",
-                    quantity: 1
-                },
-                {
-                    id: 102,
-                    name: "Sport Bra - Black",
-                    variant: "M / Regular",
-                    price: 29.99,
-                    image: "https://res.cloudinary.com/derx1izam/image/upload/v1741688511/wds7s8z3kqtytrj4tidp.png",
-                    quantity: 2
-                }
-            ]
-        },
-        {
-            id: 2,
-            name: "Nike Store",
-            avatar: "https://res.cloudinary.com/derx1izam/image/upload/v1741688511/wds7s8z3kqtytrj4tidp.png",
-            products: [
-                {
-                    id: 201,
-                    name: "Air Zoom Pegasus 39",
-                    variant: "Size 42",
-                    price: 119.99,
-                    image: "https://res.cloudinary.com/derx1izam/image/upload/v1741688511/wds7s8z3kqtytrj4tidp.png",
-                    quantity: 1
-                }
-            ]
-        }
-    ];
 
-    // Xử lý chọn / bỏ chọn sản phẩm
-    const toggleSelectProduct = (shopId, productId) => {
-        setSelectedProducts((prevSelected) => ({
-            ...prevSelected,
-            [productId]: !prevSelected[productId] // Đảo trạng thái checkbox
-        }));
+    const formatCurrency = (amount) => {
+        return new Intl.NumberFormat('vi-VN', {
+            style: 'currency',
+            currency: 'VND',
+            maximumFractionDigits: 0
+        }).format(amount);
     };
 
-    // Tính tổng tiền dựa trên sản phẩm đã chọn
-    const totalPrice = shops.reduce((sum, shop) => {
-        return sum + shop.products.reduce((subtotal, product) => {
-            if (selectedProducts[product.id]) {
-                return subtotal + product.price * product.quantity;
+    const [selectedItems, setSelectedItems] = useState([]);
+
+    const handleSelectItem = (productId) => {
+        setSelectedItems((prevSelected) => {
+            if (prevSelected.includes(productId)) {
+                return prevSelected.filter(id => id !== productId);
+            } else {
+                return [...prevSelected, productId];
             }
-            return subtotal;
+        });
+    };
+
+    const handleSelectStore = (subCartId) => {
+        const listStoreProductIds = cart.subCarts.find(sc => sc.subCartId === subCartId)?.items.map(item => item.product.id) || [];
+        const allSelected = listStoreProductIds.every(id => selectedItems.includes(id));
+        if (allSelected) {
+            setSelectedItems(prev => prev.filter(id => !listStoreProductIds.includes(id)));
+        } else {
+            const newSelectedItems = [...selectedItems];
+            listStoreProductIds.forEach(id => {
+                if (!newSelectedItems.includes(id)) {
+                    newSelectedItems.push(id);
+                }
+            });
+            setSelectedItems(newSelectedItems);
+        }
+    }
+
+    const handleSelectAll = () => {
+        if (!cart?.subCarts) return;
+        const allProductIds = cart.subCarts.flatMap(subCart =>
+            subCart.items.map(item => item.product.id)
+        );
+        const allSelected = allProductIds.length > 0 &&
+            allProductIds.every(id => selectedItems.includes(id));
+
+        if (allSelected) {
+            setSelectedItems([]);
+        } else {
+            setSelectedItems(allProductIds);
+        }
+    };
+
+    const isStoreSelected = (subCartId) => {
+        const storeProductIds = cart.subCarts
+            .find(sc => sc.subCartId === subCartId)
+            ?.items.map(item => item.product.id) || [];
+
+        return storeProductIds.length > 0 &&
+            storeProductIds.every(id => selectedItems.includes(id));
+    };
+
+
+    const isAllSelected = () => {
+        if (!cart?.subCarts || cart.subCarts.length === 0) return false;
+
+        const allProductIds = cart.subCarts.flatMap(subCart =>
+            subCart.items.map(item => item.product.id)
+        );
+
+        return allProductIds.length > 0 &&
+            allProductIds.every(id => selectedItems.includes(id));
+    };
+
+
+    const calculateSubtotal = () => {
+        if (!cart?.subCarts) return 0;
+
+        return cart.subCarts.reduce((total, subCart) => {
+            const subCartTotal = subCart.items.reduce((subTotal, item) => {
+                if (selectedItems.includes(item.product.id)) {
+                    return subTotal + (item.unitPrice * item.quantity);
+                }
+                return subTotal;
+            }, 0);
+            return total + subCartTotal;
         }, 0);
-    }, 0);
+    };
+
+    const calculateShipping = () => {
+        if (!cart?.subCarts) return 0;
+        const storesWithSelectedItems = cart.subCarts.filter(subCart =>
+            subCart.items.some(item => selectedItems.includes(item.product.id))
+        ).length;
+        return storesWithSelectedItems * 30000;
+    };
+
+    const calculateTotal = () => {
+        return calculateSubtotal() + calculateShipping();
+    };
+
+
+    const handleCheckout = () => {
+        if (selectedItems.length === 0) return;
+
+        const subOrderItems = [];
+
+        cart.subCarts.forEach(subCart => {
+            const selectedItemsInStore = subCart.items.filter(item =>
+                selectedItems.includes(item.product.id)
+            );
+
+            if (selectedItemsInStore.length > 0) {
+                const subCartItemIds = selectedItemsInStore.map(item => item.product.id);
+                const storeShippingCost = 30000;
+
+                subOrderItems.push({
+                    storeId: subCart.subCartId,
+                    shippingCost: storeShippingCost,
+                    subCartItemIds: subCartItemIds
+                });
+            }
+        });
+
+
+        const checkoutData = {
+            subOrderItems: subOrderItems
+        };
+        navigate('/place-order', {
+            state: {
+                checkoutData
+            }
+        });
+        console.log('Checkout data:', checkoutData);
+    };
 
     return (
         <div className="w-full max-w-6xl mx-auto p-4 space-y-6">
-            {shops.map((shop) => (
-                <div key={shop.id} className="bg-white shadow-md rounded-lg">
-                    {/* Header Shop */}
-                    <div className="p-4 flex items-center space-x-4 bg-purple-100">
-                        <img src={shop.avatar} alt={shop.name} className="w-10 h-10 rounded-full object-cover" />
-                        <h2 className="text-lg font-semibold">{shop.name}</h2>
-                    </div>
+            <h1 className="text-2xl font-bold mb-6">Giỏ hàng của bạn</h1>
 
-                    {/* Danh sách sản phẩm của shop */}
-                    {shop.products.map((product) => (
-                        <div key={product.id} className="flex items-center space-x-4 p-4">
-                            {/* Checkbox chọn sản phẩm */}
-                            <input
-                                type="checkbox"
-                                checked={selectedProducts[product.id] || false}
-                                onChange={() => toggleSelectProduct(shop.id, product.id)}
-                                className="w-5 h-5 text-purple-600"
-                            />
-
-                            {/* Ảnh sản phẩm */}
-                            <img src={product.image} alt={product.name} className="w-24 h-24 object-cover rounded-lg" />
-
-                            {/* Thông tin sản phẩm */}
-                            <div className="flex-grow">
-                                <h3 className="text-base font-semibold">{product.name}</h3>
-                                <p className="text-gray-500 text-sm">{product.variant}</p>
-                                <p className="text-base font-bold">£{product.price}</p>
-                            </div>
-
-                            {/* Chỉnh số lượng */}
-                            <div className="flex items-center space-x-2">
-                                <div className="flex items-center border rounded-lg">
-                                    <button className="px-2 py-1 text-gray-600">-</button>
-                                    <span className="px-3">{product.quantity}</span>
-                                    <button className="px-2 py-1 text-gray-600">+</button>
-                                </div>
-
-                                {/* Nút xoá */}
-                                <button className="text-black hover:text-red-500">
-                                    <FaTrash />
-                                </button>
+            {!cart?.subCarts || cart.subCarts.length === 0 ? (
+                <div className="text-center py-12">
+                    <div className="text-gray-400 text-5xl mb-4">🛒</div>
+                    <h2 className="text-xl font-semibold mb-2">Giỏ hàng của bạn đang trống</h2>
+                    <p className="text-gray-500 mb-6">Hãy khám phá và tìm kiếm sản phẩm bạn yêu thích</p>
+                    <button className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+                        Tiếp tục mua sắm
+                    </button>
+                </div>
+            ) : (
+                <div className="flex flex-col lg:flex-row gap-6">
+                    <div className="lg:w-2/3 space-y-4">
+                        <div className="bg-white shadow-sm rounded-lg p-4 flex items-center">
+                            <div className="flex items-center">
+                                <input
+                                    type="checkbox"
+                                    className="w-5 h-5 mr-3 accent-blue-500"
+                                    checked={isAllSelected()}
+                                    onChange={handleSelectAll}
+                                />
+                                <span className="font-medium">Chọn tất cả sản phẩm</span>
                             </div>
                         </div>
-                    ))}
-                </div>
-            ))}
 
-            {/* Checkout */}
-            <div className="p-4 bg-white shadow-md rounded-lg">
-                <div className="flex justify-between mb-2">
-                    <span className="text-gray-600">Total</span>
-                    <span className="font-bold">£{totalPrice.toFixed(2)}</span>
+                        {cart.subCarts.map((subCart) => (
+                            <div key={subCart.subCartId} className="bg-white shadow-sm rounded-lg overflow-hidden">
+                                <div className="p-4 flex items-center bg-blue-50">
+                                    <input
+                                        type="checkbox"
+                                        className="w-5 h-5 mr-3 accent-blue-500"
+                                        checked={isStoreSelected(subCart.subCartId)}
+                                        onChange={() => handleSelectStore(subCart.subCartId)}
+                                    />
+                                    <img src={subCart.storeAvatar} alt={subCart.storeName} className="w-8 h-8 rounded-full object-cover mr-3" />
+                                    <h2 className="font-semibold">{subCart.storeName}</h2>
+                                </div>
+
+                                <div>
+                                    {subCart.items.map((item, index) => (
+                                        <div
+                                            key={item.product.id}
+                                            className={`p-4 flex flex-col sm:flex-row items-start sm:items-center gap-4 ${index < subCart.items.length - 1 ? "border-b border-gray-100" : ""
+                                                }`}
+                                        >
+                                            <div className="flex items-center">
+                                                <input
+                                                    type="checkbox"
+                                                    className="w-5 h-5 mr-3 accent-blue-500"
+                                                    checked={selectedItems.includes(item.product.id)}
+                                                    onChange={() => handleSelectItem(item.product.id)}
+                                                />
+                                                <img
+                                                    src={item.product.image}
+                                                    alt={item.product.name}
+                                                    className="w-20 h-20 object-cover rounded-md shadow-sm"
+                                                />
+                                            </div>
+
+                                            <div className="flex-grow">
+                                                <h3 className="font-medium text-gray-800">{item.product.name}</h3>
+                                                <p className="text-sm text-gray-500 mb-2">{item.product.manufacturer}</p>
+                                                <div className="flex flex-wrap items-center gap-4">
+                                                    <div className="flex items-center border border-gray-200 rounded-md">
+                                                        <button
+                                                            className="px-3 py-1 text-gray-600 hover:bg-gray-50"
+                                                            disabled={item.quantity <= 1}
+                                                            onClick={() => updateQuantity(subCart.subCartId, item.product.id, -1)}
+                                                        >
+                                                            -
+                                                        </button>
+                                                        <input
+                                                            max="10"
+                                                            readOnly
+                                                            value={item.quantity}
+                                                            className="w-12 text-center border-x border-gray-200 py-1"
+                                                        />
+                                                        <button
+                                                            className="px-3 py-1 text-gray-600 hover:bg-gray-50"
+                                                            disabled={item.quantity >= 10}
+                                                            onClick={() => updateQuantity(subCart.subCartId, item.product.id, 1)}
+                                                        >
+                                                            +
+                                                        </button>
+                                                    </div>
+                                                    <button
+                                                        className="text-sm text-red-500 hover:text-red-600"
+                                                        onClick={() => removeProductCart(item.product.id)}
+                                                    >
+                                                        Xóa
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <div className="font-bold text-lg">
+                                                {formatCurrency(item.unitPrice * item.quantity)}
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+
+                    <div className="lg:w-1/3">
+                        <div className="bg-white shadow-sm rounded-lg p-5 sticky top-4">
+                            <h2 className="text-xl font-semibold mb-4">Thông tin đơn hàng</h2>
+
+                            <div className="space-y-3 mb-4">
+                                <div className="flex justify-between">
+                                    <span className="text-gray-600">Tạm tính:</span>
+                                    <span className="font-medium">{formatCurrency(calculateSubtotal())}</span>
+
+                                </div>
+                                <div className="flex justify-between">
+                                    <span className="text-gray-600">Phí vận chuyển:</span>
+                                    <span className="font-medium">{formatCurrency(calculateShipping())}</span>
+                                </div>
+                                <div className="border-t border-gray-100 pt-3 mt-3 flex justify-between font-bold">
+                                    <span>Tổng thanh toán:</span>
+                                    <span className="text-blue-600">{formatCurrency(calculateTotal())}</span>
+                                </div>
+                            </div>
+
+                            <div className="space-y-3">
+                                <button
+                                    onClick={handleCheckout}
+                                    className="w-full py-3 rounded-lg transition-colors font-medium bg-blue-500 text-white hover:bg-blue-600"
+                                >
+                                    Thanh toán
+                                </button>
+                                <Link to='/products'>
+                                    <button className="w-full border border-blue-500 text-blue-500 py-3 rounded-lg hover:bg-blue-50 transition-colors">
+                                        Tiếp tục mua sắm
+                                    </button>
+                                </Link>
+                            </div>
+
+                            <div className="mt-6 space-y-2">
+                                <p className="flex items-center gap-2 text-sm text-gray-500">
+                                    <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                    </svg>
+                                    Thanh toán bảo mật
+                                </p>
+                                <p className="flex items-center gap-2 text-sm text-gray-500">
+                                    <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                    </svg>
+                                    Đảm bảo hoàn tiền
+                                </p>
+
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <p className="text-sm text-gray-500 mb-4">Taxes & shipping calculated at checkout</p>
-                <button
-                    className="w-full bg-purple-600 text-white py-3 rounded-lg hover:bg-purple-700 transition-colors"
-                    disabled={totalPrice === 0} // Vô hiệu hoá nếu chưa chọn sản phẩm nào
-                >
-                    Continue to checkout
-                </button>
-            </div>
+            )}
         </div>
     );
 };
