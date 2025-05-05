@@ -83,7 +83,7 @@ const CartProvider = ({ children }) => {
         } catch (err) {
             console.error("Lỗi cập nhật:", err);
         }
-    }
+    }   
 
     useEffect(() => {
         if (user) {
