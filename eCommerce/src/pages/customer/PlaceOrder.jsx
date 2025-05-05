@@ -3,20 +3,27 @@ import { FaCommentDots, FaMapMarkerAlt } from 'react-icons/fa';
 import { AddressContext, AddressDispatchContext } from '../../context/AppContext';
 import useAddress from '../../components/customer/hook/useAddress';
 import Process from '../../components/store/Process';
-import vnPayIcon from '../../assets/Icon-VNPAY-QR.webp'
+import vnPayIcon from '../../assets/vnpay-logo.png'
 import { authAPIs, endpoints } from '../../configs/APIs';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { useCart } from '../../context/CartContext';
 
 const PlaceOrder = () => {
-    const navigate = useNavigate();
-    const location = useLocation();
+    const location = useLocation()
     const { checkoutData } = location.state || {};
+
+    const navigate = useNavigate();
+
+    const { loadCart } = useCart();
     const { addresses, loading, setLoading, error } = useAddress(1)
-    const setCurrentAddress = useContext(AddressDispatchContext)
     const address = useContext(AddressContext)
+    const setCurrentAddress = useContext(AddressDispatchContext)
+
     const [activeMethod, setActiveMethod] = useState('Ví điện tử')
-    const paymentOptions = ['Ví điện tử', 'Thẻ tín dụng/Ghi nợ', 'Google Pay', 'Thẻ nội địa Napas', 'Thanh toán khi nhận hàng']
     const [paymentMethod, setPaymentMethod] = useState("COD")
+
+    const paymentOptions = ['Ví điện tử', 'Thẻ tín dụng/Ghi nợ', 'Google Pay', 'Thẻ nội địa Napas', 'Thanh toán khi nhận hàng']
+
 
     console.log("data from cart: ", checkoutData)
 
@@ -40,19 +47,22 @@ const PlaceOrder = () => {
             console.log("Status: ", response.status)
 
 
-            if (response.status === 201) {
+
+            if (response.data.paymentUrl) {
+                window.location.href = response.data.paymentUrl; // Redirect sang VNPay
+            } else if (response.status === 201) {
                 console.log("Đặt hàng COD thành công", response.data);
-                navigate("/me/my-orders", {state: {tabAssign: "Chờ xác nhận"}})
-                // if (paymentMethod === "VNPay") {
-                //     const paymentUrl = response.data.paymentUrl;
-                //     window.location.href = paymentUrl;
-                // } else if (paymentMethod==="COD") {
-                   
-                // }
+
+                loadCart()
+
+                navigate("/me/my-orders", { state: { tabAssign: "Chờ xác nhận" } })
 
             } else {
                 throw new Error("Failed to load addresses");
             }
+
+
+
         } catch (err) {
             // setError(err.message);
         } finally {

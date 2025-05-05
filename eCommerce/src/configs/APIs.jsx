@@ -28,6 +28,10 @@ export const endpoints = {
     'updateCartItem': 'secure/cart/update-quantity',
 
 
+    // APIs for VNPay
+    'vnPayReturn': '/v1/payment/vnpay-return',
+
+
     // APIs for seller
     'createStore': '/secure/store-activation',
 
