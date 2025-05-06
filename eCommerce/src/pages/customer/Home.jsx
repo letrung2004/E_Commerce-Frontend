@@ -19,25 +19,48 @@ const Home = () => {
     const [page, setPage] = useState(1);
 
     const loadProducts = async () => {
-        try {
-            setLoading(true);
-            let url = `${endpoints.products}?isActive=1`;
-            const res = await APIs.get(url);
-            setProducts(res.data);
-
-        } catch (err) {
-            console.error("Lỗi load sản phẩm:", err);
-        } finally {
-            setLoading(false);
+        if (page > 0) {
+            try {
+                setLoading(true);
+                let url = `${endpoints.products}?isActive=1&page=${page}`;
+                const res = await APIs.get(url);
+                if (res.data.length === 0) {
+                    if (page === 1) {
+                        setProducts([]);
+                    }
+                    setPage(0);
+                } else {
+                    if (page === 1) {
+                        setProducts(res.data);
+                    } else {
+                        setProducts(prev => [...prev, ...res.data]);
+                    }
+                }
+            } catch (err) {
+                console.error("Lỗi load sản phẩm:", err);
+            } finally {
+                setLoading(false);
+            }
         }
-
     }
 
     useEffect(() => {
         loadProducts();
-    }, []);
+    }, [page]);
 
+    const handleLoadMore = () => {
+        if (!loading && page > 0) {
+            const scrollPosition = window.scrollY;
+            setPage(prev => prev + 1);
 
+            setTimeout(() => {
+                window.scrollTo({
+                    top: scrollPosition,
+                    behavior: 'instant',
+                });
+            }, 100);
+        }
+    };
 
     return (
         <>
@@ -61,23 +84,29 @@ const Home = () => {
                     <h1 className="text-3xl font-bold mb-4">Sản phẩm đề xuất</h1>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                    {loading ? (
-                        <div className="col-span-full flex justify-center py-20">
-                            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-600"></div>
-                        </div>
-                    ) : (
-                        products.map((product, index) => (
-                            <Link key={index} to={`/products/${product.id}`}>
-                                <ProductCard product={product} />
-                            </Link>
-                        ))
-                    )}
+                    {products.map((product, index) => (
+                        <Link key={index} to={`/products/${product.id}`}>
+                            <ProductCard product={product} />
+                        </Link>
+                    ))}
                 </div>
-                <div className="flex justify-center mt-6">
-                    <button className="px-6 py-3 bg-gray-200 rounded-full hover:bg-gray-300">
-                        Xem thêm
-                    </button>
-                </div>
+
+                {loading && (
+                    <div className="flex justify-center py-6">
+                        <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-purple-600"></div>
+                    </div>
+                )}
+
+                {page > 0 && (
+                    <div className="flex justify-center mt-6">
+                        <button
+                            onClick={handleLoadMore}
+                            className="px-6 py-3 bg-gray-200 rounded-full hover:bg-gray-300"
+                        >
+                            Xem thêm
+                        </button>
+                    </div>
+                )}
 
             </div>
         </>

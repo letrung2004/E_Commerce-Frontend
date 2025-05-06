@@ -9,6 +9,7 @@ export const endpoints = {
     'login': '/auth/login',
     'google-login': '/oauth2/authorization/google',
     'current-user': 'auth/me',
+    'update-user': '/secure/update-profile',
 
 
     // APIs for customer
@@ -26,6 +27,8 @@ export const endpoints = {
     'addToCart': productId => `/secure/cart/add/${productId}`,
     'removeProductCart': productId => `/secure/cart/remove/${productId}`,
     'updateCartItem': 'secure/cart/update-quantity',
+    'stores': '/stores',
+
 
 
     // APIs for VNPay
