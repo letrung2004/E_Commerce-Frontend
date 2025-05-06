@@ -85,6 +85,8 @@ const CartProvider = ({ children }) => {
         }
     }
 
+
+
     useEffect(() => {
         if (user) {
             loadCart();

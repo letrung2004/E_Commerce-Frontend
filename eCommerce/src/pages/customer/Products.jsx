@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import ProductCard from "../../components/customer/ProductCard";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import APIs, { endpoints } from "../../configs/APIs";
-import { FaSearch, FaStar, FaFilter, FaSortAmountDown } from "react-icons/fa";
+import { FaSearch, FaStar, FaFilter, FaSortAmountDown, FaStore } from "react-icons/fa";
 import Process from "../../components/store/Process";
 
 const Products = () => {
@@ -11,6 +11,7 @@ const Products = () => {
     const [page, setPage] = useState(1);
     const [param] = useSearchParams();
     const navigate = useNavigate();
+    const [stores, setStores] = useState([]);
 
     const [minPrice, setMinPrice] = useState("");
     const [maxPrice, setMaxPrice] = useState("");
@@ -75,6 +76,26 @@ const Products = () => {
         const formattedValue = formatPriceInput(e.target.value);
         setMaxPrice(formattedValue);
     };
+
+    const loadStores = async () => {
+        const q = param.get('q');
+        if (!q) return;
+        try {
+            setLoading(true);
+            let url = `${endpoints.stores}`;
+            const q = param.get('q');
+            if (q) url += `&q=${q}`;
+
+            const res = await APIs.get(url);
+            console.log(res.data);
+            setStores(res.data)
+        } catch (err) {
+            console.error("Lỗi load cửa hàng:", err);
+        }
+        finally {
+            setLoading(false);
+        }
+    }
 
     const loadProducts = async () => {
         if (page > 0) {
@@ -148,6 +169,7 @@ const Products = () => {
             setSort(param.get('sort') || "newest");
         }
         loadProducts();
+        loadStores();
     }, [page, param]);
 
     return (
@@ -267,38 +289,39 @@ const Products = () => {
                         </div>
                     </div>
 
-                    {loading ? (
-                        <div className="flex justify-center py-20">
-                            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-600"></div>
+                    <>
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                            {products.map((product) => (
+                                <Link to={`/products/${product.id}`} key={product.id}>
+                                    <ProductCard product={product} />
+                                </Link>
+                            ))}
                         </div>
-                    ) : (
-                        <>
-                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                                {products.map((product) => (
-                                    <Link to={`/products/${product.id}`}>
-                                        <ProductCard key={product.id} product={product} />
-                                    </Link>
-                                ))}
+
+                        {loading && (
+                            <div className="flex justify-center py-6">
+                                <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-purple-600"></div>
                             </div>
+                        )}
 
-                            {page > 0 && (
-                                <div className="flex justify-center mt-6">
-                                    <button
-                                        onClick={handleLoadMore}
-                                        className="px-6 py-3 bg-gray-200 rounded-full hover:bg-gray-300"
-                                    >
-                                        Xem thêm
-                                    </button>
-                                </div>
-                            )}
+                        {page > 0 && !loading && (
+                            <div className="flex justify-center mt-6">
+                                <button
+                                    onClick={handleLoadMore}
+                                    className="px-6 py-3 bg-gray-200 rounded-full hover:bg-gray-300"
+                                >
+                                    Xem thêm
+                                </button>
+                            </div>
+                        )}
 
-                            {products.length === 0 && !loading && (
-                                <div className="text-center py-20">
-                                    <p className="text-gray-500">Không tìm thấy sản phẩm phù hợp</p>
-                                </div>
-                            )}
-                        </>
-                    )}
+                        {products.length === 0 && !loading && (
+                            <div className="text-center py-20">
+                                <p className="text-gray-500">Không tìm thấy sản phẩm phù hợp</p>
+                            </div>
+                        )}
+                    </>
+
                 </div>
             </div>
         </div >

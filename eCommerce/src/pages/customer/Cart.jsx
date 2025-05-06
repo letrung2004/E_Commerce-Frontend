@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 const Cart = () => {
     const { removeProductCart, cart, updateQuantity } = useCart();
     const navigate = useNavigate();
+    const [listProductIds, setListProductIds] = useState([]);
 
 
     const formatCurrency = (amount) => {

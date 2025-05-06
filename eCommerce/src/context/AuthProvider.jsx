@@ -22,32 +22,34 @@ const AuthProvider = ({ children }) => {
         setUser(null);
     };
 
-    useEffect(() => {
-        const loadUser = async () => {
-            const token = cookie.load('jwtToken');
+    const loadUser = async () => {
+        const token = cookie.load('jwtToken');
 
-            if (!token) {
-                setLoading(false);
-                return;
-            }
-            try {
-                const response = await authAPIs().get(endpoints['current-user']);
-                setUser(response.data);
-                // console.log(token)
-            } catch (error) {
-                console.error('Lỗi khi load user:', error);
-                logout();
-            } finally {
-                setLoading(false);
-            }
-        };
+        if (!token) {
+            setLoading(false);
+            return;
+        }
+        try {
+            const response = await authAPIs().get(endpoints['current-user']);
+            setUser(response.data);
+            // console.log(token)
+        } catch (error) {
+            console.error('Lỗi khi load user:', error);
+            logout();
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+
 
         loadUser();
     }, []);
 
 
     return (
-        <AuthContext.Provider value={{ user, setUser, loading, logout, login }}>
+        <AuthContext.Provider value={{ user, setUser, loading, logout, login, loadUser }}>
             {children}
         </AuthContext.Provider>
     );
