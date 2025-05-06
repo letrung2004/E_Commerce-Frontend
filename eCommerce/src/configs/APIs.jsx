@@ -42,6 +42,7 @@ export const endpoints = {
     'updateProduct': (productId) => `/secure/store/products/${productId}`,
     'createCategory': '/secure/store/categories',
     'changeStatus': (productId) => `/secure/store/update-status/${productId}`,
+    'updateOrderStatus': '/secure/orders/update',
 
 
 

@@ -43,12 +43,20 @@ const CustomerHeader = () => {
     }, []);
 
     return (
-        <header className="sticky top-0 z-50 bg-gradient-to-r from-purple-700 to-purple-500 shadow-lg">
-            <div className="bg-purple-800 text-white text-xs px-10 py-1 flex justify-between items-center">
-                <Link to="/seller" className="hover:text-gray-200 transition-colors flex items-center">
+        <header className="sticky top-0 z-50 bg-gradient-to-r from-purple-700 to-purple-500 shadow-lg ">
+            <div className="bg-purple-800 text-white text-xs px-40 py-1 flex justify-between items-center">
+                {/* <Link to="/seller" className="hover:text-gray-200 transition-colors flex items-center">
                     <span>Kênh người bán</span>
-                </Link>
-                
+                </Link> */}
+                <a
+                    href="/seller"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:text-gray-200 transition-colors flex items-center"
+                >
+                    <span>Kênh người bán</span>
+                </a>
+
 
                 <div className="flex items-center space-x-4">
                     <Link to="/help" className="hover:text-gray-200 transition-colors">Trợ giúp</Link>
@@ -56,7 +64,7 @@ const CustomerHeader = () => {
                 </div>
             </div>
 
-            <div className="flex items-center justify-between px-10 py-3">
+            <div className="flex items-center justify-between px-40 py-3">
                 <Link to="/" className="group">
                     <div className="text-3xl font-bold text-white flex items-center">
                         <span className="transition-colors">E-Commerce</span>

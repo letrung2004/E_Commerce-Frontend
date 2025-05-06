@@ -17,12 +17,12 @@ const StoreLayout = () => {
     }
 
     return (
-        <div className="flex flex-col h-screen">
+        <div className="flex flex-col h-screen bg-gray-100">
             <StoreHeader />
             <div className="flex flex-grow overflow-hidden">
                 {user.storeActive && <StoreSidebar />}
 
-                <main className="flex-grow p-6 overflow-auto">
+                <main className="flex-grow p-4 overflow-auto">
                     <Outlet />
                 </main>
             </div>
