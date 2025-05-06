@@ -1,55 +1,170 @@
-import React, { useState } from "react";
-import { FaSearch, FaCheck, FaTruck, FaTimes } from "react-icons/fa";
+import { useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import useOrders from '../../components/customer/hook/useOrders';
+import Process from '../../components/store/Process';
+import ModalUpdateOrder from '../../components/store/ModalUpdateOrder';
 
 const Orders = () => {
-    const [orders, setOrders] = useState([
-        { id: 1001, customer: "Nguyễn Văn A", status: "Chờ xác nhận", total: "500.000đ", address: "HCM", products: ["Bánh mì", "Cà phê"] },
-        { id: 1002, customer: "Trần Thị B", status: "Đang giao", total: "250.000đ", address: "Hà Nội", products: ["Trà sữa"] },
-        { id: 1003, customer: "Lê Văn C", status: "Hoàn thành", total: "1.200.000đ", address: "Đà Nẵng", products: ["Bánh kem"] },
-    ]);
+    const location = useLocation();
+    const tabs = [
+        'Tất cả',
+        'Chờ xác nhận',
+        'Chờ lấy hàng',
+        'Đang giao',
+        'Đã giao',
+        'Trả hàng/Hoàn tiền/Hủy'
+    ];
+    const tabAssign = location.state?.tabAssign || 'Tất cả';
+    const [activeTab, setActiveTab] = useState(tabAssign);
+    const [isModalOpen, setIsModalOpen] = useState(false)
+    const { orders, loading, error, loadOrders } = useOrders(activeTab)
+    const [selectedOrder, setSelectedOrder] = useState(false)
 
-    const updateStatus = (id, newStatus) => {
-        setOrders(orders.map(order => order.id === id ? { ...order, status: newStatus } : order));
-    };
+
+    console.log("Orders from seller: ", orders)
+
 
     return (
-        <div className="p-6">
-            <h1 className="text-2xl font-semibold"> --Cần thiết kế lại giao diện này--</h1>
-            <div className="flex justify-between items-center mb-6">
-                <h1 className="text-2xl font-semibold"> Quản lý đơn hàng</h1>
+        <div className="p-6  bg-white rounded-md shadow-sm">
+            <ModalUpdateOrder isOpen={isModalOpen}
+                onClose={() => setIsModalOpen(false)}
+                order={selectedOrder}
+                reloadOrders={loadOrders}
+            />
 
-                <div className="relative">
-                    <input type="text" placeholder="Tìm kiếm đơn hàng..." className="p-2 pl-8 border rounded-lg" />
-                    <FaSearch className="absolute left-2 top-3 text-gray-500" />
+
+            {/* Tabs */}
+            <div className="flex space-x-4 border-b-2 border-gray-200 ">
+                {tabs.map(tab => (
+                    <button
+                        key={tab}
+                        onClick={() => setActiveTab(tab)}
+                        className={` px-4 py-3 font-semibold transition
+                             ${activeTab === tab ? 'border-b-3 border-purple-600 text-purple-600' : 'text-gray-600 hover:text-purple-700'}`}
+                    >
+                        {tab}
+                    </button>
+                ))}
+            </div>
+
+            {/* Filters */}
+            <div className="mt-4 flex flex-wrap items-center gap-4">
+                {/* <div className="flex gap-2">
+                    <button className="px-3 py-1 text-sm rounded-full border border-gray-300 bg-white text-black hover:bg-gray-100">
+                        Tất cả
+                    </button>
+                    <button className="px-3 py-1 text-sm rounded-full border border-gray-300 bg-white text-purple-600">
+                        Chưa xử lý
+                    </button>
+                    <button className="px-3 py-1 text-sm rounded-full border border-gray-300 bg-white text-black hover:bg-gray-100">
+                        Đã xử lý
+                    </button>
+                </div> */}
+
+                <input
+                    type="text"
+                    placeholder="Mã đơn hàng"
+                    className="border border-gray-300 rounded px-3 py-2 text-sm w-48"
+                />
+                <select className="border border-gray-300 rounded px-3 py-2 text-sm">
+                    <option>Tất cả ĐVVC</option>
+                </select>
+
+                <button className="bg-purple-500 text-white px-4 py-2 rounded text-sm">Áp dụng</button>
+                <button className="px-4 py-2 text-sm text-gray-600 hover:bg-gray-300 rounded bg-gray-200">Đặt lại</button>
+            </div>
+
+            {/* Sort and bulk action */}
+            <div className="flex justify-between items-center mt-6">
+                <div className="text-sm text-gray-500">
+                    Sắp xếp theo: <span className="font-medium text-black">Hạn gửi hàng (Xa - Gần nhất)</span>
+                </div>
+                <button className="bg-purple-500 text-white px-4 py-2 rounded text-sm">Giao Hàng Loạt</button>
+            </div>
+
+            {/* Table header */}
+            <div className="mt-6">
+                <div className="font-semibold mb-2 text-lg">{orders.length} Đơn hàng</div>
+                <div className="grid grid-cols-7 bg-gray-100 text-gray-600 text-sm font-medium px-4 py-3 rounded">
+                    <div className="col-span-2">Sản phẩm</div>
+                    <div  className='flex justify-center'>Tổng Đơn hàng</div>
+                    <div  className='flex justify-center'>Trạng thái</div>
+                    <div  className='flex justify-center'>Thời gian đặt hàng</div>
+                    <div  className='flex justify-center'>Đơn vị vận chuyển</div>
+                    <div className='flex justify-center'>Thao tác</div>
+
                 </div>
             </div>
 
-            <div className="bg-white shadow-md rounded-lg p-4">
-                <table className="w-full border-collapse">
-                    <thead>
-                        <tr className="bg-blue-200 text-gray-700">
-                            <th className="p-3 text-left rounded-tl-lg">Khách hàng</th>
-                            <th className="p-3 text-left">Sản phẩm</th>
-                            <th className="p-3 text-left">Tổng tiền</th>
-                            <th className="p-3 text-left">Trạng thái</th>
-                            <th className="p-3 text-center rounded-tr-lg">Hành động</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {orders.map((order) => (
-                            <tr key={order.id} className="even:bg-gray-100 hover:bg-gray-200 transition">
-                                <td className="p-3">{order.customer}</td>
-                                <td className="p-3">{order.products.join(", ")}</td>
-                                <td className="p-3">{order.total}</td>
-                                <td className="p-3 font-semibold text-blue-600">{order.status}</td>
-                                <td className="p-5 flex justify-center items-center space-x-4">
-                                    <button>chua thiet ke</button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+            {error &&
+                <div className="text-center py-8 text-red-500">
+                    <p className="font-medium">{error}</p>
+                </div>
+            }
+            {/* orders */}
+            {orders.length > 0 ? (
+                orders.map((order, index) => (
+                    <div key={index} className="grid grid-cols-7 text-sm px-4 py-4 mt-2 bg-gray-50 shadow items-center gap-2">
+
+
+                        <div className='flex flex-col col-span-2 border-r border-gray-200  gap-y-3'>
+                            {order.orderDetails.map((item, idx) => (
+                                <div className="flex items-start space-x-3 p-1">
+                                    <img
+                                        src={item.product.image} alt={item.product.name}
+                                        className="w-13 h-13 rounded border border-gray-200"
+                                    />
+                                    <div className="flex flex-col">
+                                        <span className="font-medium text-gray-800">{item.product.name}</span>
+                                        <span className="text-gray-500 text-xs">× {item.quantity}</span>
+                                        <span className="text-gray-400 text-xs truncate">ID: {item.id}</span>
+                                    </div>
+                                </div>
+
+
+                            ))}
+                        </div>
+                        {/* Giá và phương thức thanh toán */}
+                        <div className=' border-r border-gray-200 h-full flex flex-col items-center justify-center'>
+                            <div className="font-medium text-gray-800">₫{order.total.toLocaleString()}</div>
+                            <div className="text-xs pt-2 text-gray-400">{order.paymentMethod}</div>
+                        </div>
+
+                        {/* Trạng thái */}
+                        <div className={`h-full  border-r font-medium border-gray-200 flex items-center justify-center
+                            ${order.deliveryStatus === "Đã giao" ? 'text-green-600' : 'text-red-600'}`}
+                        >{order.deliveryStatus}
+                        </div>
+
+                        {/* Đơn vị vận chuyển */}
+                        <div className="h-full text-gray-700 border-r border-gray-200 flex items-center justify-center">{order.dateCreated}</div>
+
+                        {/* Ngày đặt */}
+                        <div className="h-full text-gray-700 border-r border-gray-200 flex items-center justify-center">VNPost</div>
+
+
+
+                        {/* Thao tác */}
+                        <div className='flex flex-col h-full gap-3 justify-center '>
+                            <button className="text-blue-600 hover:underline text-sm cursor-pointer"
+                                onClick={() => { setIsModalOpen(true); setSelectedOrder(order) }}
+                            >Cập nhật</button>
+                            <button className="text-blue-600 hover:underline text-sm cursor-pointer">Hủy đơn</button>
+                        </div>
+                    </div>
+                ))
+
+            ) : (
+                <>
+                    {!loading && error == null && (
+                        <div className="text-center py-8 text-gray-500">
+                            <p className="font-medium">Không có đơn hàng nào</p>
+                        </div>
+                    )}
+
+                </>
+            )}
+
         </div>
     );
 };
