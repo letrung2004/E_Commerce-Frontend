@@ -24,6 +24,7 @@ const Home = () => {
                 setLoading(true);
                 let url = `${endpoints.products}?isActive=1&page=${page}`;
                 const res = await APIs.get(url);
+                console.log("products: ", res.data)
                 if (res.data.length === 0) {
                     if (page === 1) {
                         setProducts([]);
@@ -67,9 +68,9 @@ const Home = () => {
             <div className="w-full px-6 py-8 bg-gray-100 flex flex-col items-center ">
                 <h1 className="text-3xl font-bold mb-6 text-gray-800">Danh mục</h1>
                 <div className="flex flex-wrap justify-center gap-6 w-full max-w-7xl">
-                    {categories.map((category) => (
+                    {categories.map((category, index) => (
 
-                        <div
+                        <div key={index}
                             className="w-37 h-25 flex flex-col items-center justify-center bg-white rounded-lg shadow hover:shadow-md transition"
                         >
                             <img src={category.image} alt={category.name} className="w-12 h-12 mb-2 object-contain" />
@@ -85,7 +86,7 @@ const Home = () => {
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                     {products.map((product, index) => (
-                        <Link key={index} to={`/products/${product.id}`}>
+                        <Link key={index} to={`/products/${product.id}`} state={{ storeId: product.storeId }}>
                             <ProductCard product={product} />
                         </Link>
                     ))}

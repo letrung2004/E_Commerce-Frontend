@@ -28,6 +28,8 @@ export const endpoints = {
     'removeProductCart': productId => `/secure/cart/remove/${productId}`,
     'updateCartItem': 'secure/cart/update-quantity',
     'stores': '/stores',
+    'getReviews':  storeId => `/reviews/${storeId}`,
+    
 
 
 
