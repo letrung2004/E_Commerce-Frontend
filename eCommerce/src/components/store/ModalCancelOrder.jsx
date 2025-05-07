@@ -2,26 +2,16 @@ import React, { useState } from 'react';
 import { authAPIs, endpoints } from '../../configs/APIs';
 import Process from './Process';
 
-const ModalUpdateOrder = ({ isOpen, onClose, order, reloadOrders  }) => {
+const ModalCancelOrder = ({ isOpen, onClose, order, reloadOrders  }) => {
     if (!isOpen) return null;
 
-    const [newStatus, setNewStatus] = useState(order.status || '');
     const [loading, setLoading] = useState(false);
-
-    const statusOptions = [
-        'Chờ xác nhận',
-        'Chờ lấy hàng',
-        'Đang giao',
-        'Đã giao',
-        'Trả hàng/Hoàn tiền',
-    ];
-
     console.log("Order selected: ", order)
 
     const handleUpdate = async () => {
         const data = {
             "id": order.id,
-            "status": newStatus 
+            "status": "Hủy đơn" 
         }
 
         try {
@@ -47,7 +37,7 @@ const ModalUpdateOrder = ({ isOpen, onClose, order, reloadOrders  }) => {
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
             {loading && <Process/>}
             <div className="bg-white w-[600px] rounded shadow-lg p-6 max-h-[90vh] overflow-y-auto relative">
-                <h2 className="text-lg font-semibold mb-4">Cập nhật trạng thái đơn hàng</h2>
+                <h2 className="text-lg font-semibold mb-4">Hủy đơn hàng</h2>
 
                 {/* Thông tin đơn hàng */}
                 <div className="mb-4 text-sm text-gray-700">
@@ -80,22 +70,7 @@ const ModalUpdateOrder = ({ isOpen, onClose, order, reloadOrders  }) => {
 
 
 
-                {/* Select trạng thái mới */}
-                <div className="mb-4 text-md">
-                    <label className="block font-medium text-sm mb-2">Chọn trạng thái mới:</label>
-                    <select
-                        value={newStatus}
-                        onChange={(e) => setNewStatus(e.target.value)}
-                        className="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:ring focus:ring-purple-300"
-                    >
-                        <option value="" disabled>-Cập nhật trạng thái đơn hàng-</option>
-                        {statusOptions
-                            .filter(status => status !== order.deliveryStatus)
-                            .map(status => (
-                                <option key={status} value={status}>{status}</option>
-                            ))}
-                    </select>
-                </div>
+                
 
 
                 {/* Hành động */}
@@ -105,7 +80,7 @@ const ModalUpdateOrder = ({ isOpen, onClose, order, reloadOrders  }) => {
                         onClick={handleUpdate}
                         className="bg-purple-600 text-white px-6 py-2 rounded text-sm hover:bg-purple-700"
                     >
-                        Cập nhật
+                        Xác nhận hủy đơn
                     </button>
                 </div>
             </div>
@@ -113,4 +88,4 @@ const ModalUpdateOrder = ({ isOpen, onClose, order, reloadOrders  }) => {
     );
 };
 
-export default ModalUpdateOrder;
+export default ModalCancelOrder;
