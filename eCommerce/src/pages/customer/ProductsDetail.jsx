@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import APIs, { endpoints } from "../../configs/APIs";
 import { useAuth } from "../../context/AuthProvider";
 import { useCart } from "../../context/CartContext";
+import useReview from "../../components/customer/hook/useReview";
 
 const ProductsDetail = () => {
+    const location = useLocation();
+    const initialStoreId = location.state?.storeId || null;
+    const [storeId, setStoreId] = useState(initialStoreId);
     const { productId } = useParams();
     const nav = useNavigate();
     const [loading, setLoading] = useState(false);
@@ -14,7 +18,10 @@ const ProductsDetail = () => {
     const { user } = useAuth();
     const { addToCart } = useCart();
     const [showSuccess, setShowSuccess] = useState(false);
-
+    const { reviews, reviewLoading, error, loadMore, hasMore } = useReview(storeId, productId);
+    console.log("store: ", storeId)
+    console.log("product: ", productId)
+    console.log("reviews: ", reviews)
 
     const loadProductDetail = async () => {
         try {
@@ -64,18 +71,7 @@ const ProductsDetail = () => {
         }
     }, [product.storeId]);
 
-    const reviews = [
-        {
-            id: 1,
-            name: "Leah Nguyen",
-            avatar: "https://res.cloudinary.com/derx1izam/image/upload/v1741688511/wds7s8z3kqtytrj4tidp.png",
-            date: "8 ngày trước",
-            rating: 5,
-            comment: "Lovely quality fit really well. Sản phẩm rất tuyệt vời và đúng như mô tả. Tôi rất hài lòng với chất lượng sản phẩm.",
-            helpful: 12
-        },
 
-    ];
 
     const renderStars = (rate) => {
         const stars = [];
@@ -277,7 +273,7 @@ const ProductsDetail = () => {
 
                     <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100">
                         <div className="mb-8 grid grid-cols-1 md:grid-cols-12 gap-6">
-                            <div className="md:col-span-4 bg-gray-50 p-4 rounded-lg flex flex-col items-center justify-center">
+                            <div className="md:col-span-4 bg-gray-50 p-4 rounded-lg flex flex-col items-center">
                                 <div className="text-5xl font-bold text-yellow-500">4.8</div>
                                 <div className="flex items-center mt-2">
                                     {renderStars(5)}
@@ -303,41 +299,47 @@ const ProductsDetail = () => {
                                 </div>
                             </div>
 
-                            <div className="md:col-span-8">
+                            <div className="md:col-span-8 ">
                                 <h3 className="text-lg font-semibold mb-4">Bình luận từ khách hàng</h3>
 
                                 <div className="space-y-6">
-                                    {reviews.map(review => (
-                                        <div key={review.id} className="border-b border-gray-100 pb-6 last:border-0">
+                                    {reviews.map((review, index) => (
+                                        <div key={index} className="border-b border-gray-100 pb-6 last:border-0">
                                             <div className="flex items-start">
                                                 <img
-                                                    src={review.avatar}
-                                                    alt={review.name}
+                                                    src={review.userReview.avatar}
+                                                    alt={review.userReview.fullName}
                                                     className="w-10 h-10 rounded-full object-cover mr-4"
                                                 />
                                                 <div className="flex-1">
                                                     <div className="flex justify-between items-center">
-                                                        <h4 className="font-medium text-gray-800">{review.name}</h4>
-                                                        <span className="text-sm text-gray-500">{review.date}</span>
+                                                        <h4 className="font-medium text-gray-800">{review.userReview.fullName}</h4>
+                                                        <span className="text-sm text-gray-500">{review.dateCreated}</span>
                                                     </div>
                                                     <div className="flex items-center mt-1 text-yellow-400">
-                                                        {renderStars(review.rating)}
+                                                        {renderStars(review.rate)}
                                                     </div>
-                                                    <p className="mt-2 text-gray-700">{review.comment}</p>
+                                                    {review.comment &&
+
+                                                        <p className="mt-2 text-gray-700">{review.comment.content}</p>
+                                                    }
+                                                    {review.comment?.replies?.[0]?.content && (
+                                                        <div className="bg-gray-100 flex flex-col gap-2 p-3 mt-2  rounded">
+                                                            <p className=" text-gray-700 font-semibold text-sm">Phản hồi của người bán</p>
+                                                            <p className=" text-gray-700">{review.comment.replies[0].content}</p>
+
+                                                        </div>
+                                                    )}
+
 
                                                     <div className="flex items-center mt-3">
                                                         <button className="flex items-center text-sm text-gray-500 hover:text-blue-600">
                                                             <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5"></path>
                                                             </svg>
-                                                            Hữu ích ({review.helpful})
+                                                            3
                                                         </button>
-                                                        <button className="flex items-center text-sm text-gray-500 hover:text-blue-600 ml-4">
-                                                            <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
-                                                            </svg>
-                                                            Phản hồi
-                                                        </button>
+
                                                     </div>
                                                 </div>
                                             </div>
@@ -345,12 +347,21 @@ const ProductsDetail = () => {
                                     ))}
                                 </div>
 
-                                <button className="w-full mt-6 py-3 bg-gray-100 text-gray-800 font-semibold rounded-xl hover:bg-gray-200 transition flex items-center justify-center">
-                                    <span>Xem thêm đánh giá</span>
-                                    <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
-                                    </svg>
-                                </button>
+                                {hasMore && (
+                                    <button
+                                        className="w-full mt-6 py-3 bg-gray-100 text-gray-800 font-semibold rounded-xl hover:bg-gray-200 transition flex items-center justify-center"
+                                        onClick={loadMore}
+                                        disabled={reviewLoading}
+                                    >
+                                        <span>{reviewLoading ? "Đang tải thêm..." : "Xem thêm đánh giá"}</span>
+                                        {!reviewLoading && (
+                                            <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+                                            </svg>
+                                        )}
+                                    </button>
+                                )}
+
                             </div>
                         </div>
                     </div>
