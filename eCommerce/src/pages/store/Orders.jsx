@@ -4,8 +4,12 @@ import useOrders from '../../components/customer/hook/useOrders';
 import Process from '../../components/store/Process';
 import ModalUpdateOrder from '../../components/store/ModalUpdateOrder';
 import ModalCancelOrder from '../../components/store/ModalCancelOrder';
+import { useAuth } from '../../context/AuthProvider';
+import useSellerOrders from '../../components/customer/hook/useSellerOrders';
 
 const Orders = () => {
+    const { user } = useAuth();
+    const storeId = user.storeId;
     const location = useLocation();
     const tabs = [
         'Tất cả',
@@ -20,7 +24,7 @@ const Orders = () => {
     const [activeTab, setActiveTab] = useState(tabAssign);
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [isModalCancelOpen, setIsModalCancelOpen] = useState(false)
-    const { orders, loading, error, loadOrders, setPage, page, hasMore } = useOrders(activeTab)
+    const { orders, loading, error, loadOrders, setPage, page, hasMore } = useSellerOrders(storeId, activeTab)
     const [selectedOrder, setSelectedOrder] = useState(false)
 
     const observer = useRef();

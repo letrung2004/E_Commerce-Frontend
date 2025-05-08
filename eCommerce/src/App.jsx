@@ -33,6 +33,7 @@ import { AddressContext, AddressDispatchContext } from "./context/AppContext";
 import Orders from "./pages/customer/Orders";
 import PlaceOrder from "./pages/customer/PlaceOrder";
 import { CartProvider } from "./context/CartContext";
+import Reviews from "./pages/store/Reviews";
 
 
 const App = () => {
@@ -87,6 +88,7 @@ const App = () => {
                     <Route path="revenue" element={<Revenue />} />
                     <Route path="messages" element={<Messages />} />
                     <Route path="orders" element={<StoreOrders />} />
+                    <Route path="reviews" element={<Reviews />} />
                     <Route path="products/update/:productId" element={<SaveProduct />} />
                   </Route>
                 </Routes>

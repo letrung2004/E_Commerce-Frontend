@@ -40,6 +40,7 @@ export const endpoints = {
     // APIs for seller
     'createStore': '/secure/store-activation',
 
+    'getSellerOrders': storeId => `/secure/store/${storeId}/orders/all`,
     'getCategories': (storeId) => `/store/${storeId}/categories`,
     'updateCategory': (categoryId) => `/secure/store/categories/${categoryId}`,
     'getProducts': (storeId) => `/store/${storeId}/products`,
@@ -48,7 +49,7 @@ export const endpoints = {
     'createCategory': '/secure/store/categories',
     'changeStatus': (productId) => `/secure/store/update-status/${productId}`,
     'updateOrderStatus': '/secure/orders/update',
-
+   
 
 
 }
