@@ -34,6 +34,7 @@ import Orders from "./pages/customer/Orders";
 import PlaceOrder from "./pages/customer/PlaceOrder";
 import { CartProvider } from "./context/CartContext";
 import Reviews from "./pages/store/Reviews";
+import StoreReview from "./pages/customer/StoreReview";
 
 
 const App = () => {
@@ -63,6 +64,7 @@ const App = () => {
                     <Route path="products/:productId" element={<ProductsDetail />} />
                     <Route path="cart" element={<Cart />} />
                     <Route path="store-detail/:storeId" element={<CustomerStoreDetail />} />
+                    <Route path="store-detail/:storeId/reviews" element={<StoreReview />} />
                     <Route path="products" element={<CategoryProducts />} />
                     <Route path="orders" element={<PrivateRoute element={<CustomerOrder />} />} />
                     <Route path="place-order" element={<PrivateRoute element={<PlaceOrder />} />} />

@@ -47,7 +47,7 @@ const useReview = (storeId, productId) => {
         loadReviews();
     }, [page, storeId, productId]);
 
-    return { reviews, loading, error, loadMore: () => setPage(prev => prev + 1), page, hasMore };
+    return { reviews, loadReviews, loading, error, loadMore: () => setPage(prev => prev + 1), page, hasMore };
 };
 
 export default useReview;

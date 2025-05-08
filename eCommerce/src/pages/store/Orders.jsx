@@ -1,7 +1,5 @@
 import { useCallback, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import useOrders from '../../components/customer/hook/useOrders';
-import Process from '../../components/store/Process';
 import ModalUpdateOrder from '../../components/store/ModalUpdateOrder';
 import ModalCancelOrder from '../../components/store/ModalCancelOrder';
 import { useAuth } from '../../context/AuthProvider';

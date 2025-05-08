@@ -49,6 +49,7 @@ export const endpoints = {
     'createCategory': '/secure/store/categories',
     'changeStatus': (productId) => `/secure/store/update-status/${productId}`,
     'updateOrderStatus': '/secure/orders/update',
+    'reviewResponse': '/secure/comment/create',
    
 
 
