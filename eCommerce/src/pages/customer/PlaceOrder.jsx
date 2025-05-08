@@ -3,7 +3,7 @@ import { FaCommentDots, FaMapMarkerAlt } from 'react-icons/fa';
 import { AddressContext, AddressDispatchContext } from '../../context/AppContext';
 import useAddress from '../../components/customer/hook/useAddress';
 import Process from '../../components/store/Process';
-import vnPayIcon from '../../assets/vnpay-logo.png'
+import vnPayIcon from '../../assets/Icon-VNPAY-QR.webp'
 import { authAPIs, endpoints } from '../../configs/APIs';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
@@ -78,7 +78,7 @@ const PlaceOrder = () => {
                         checked={paymentMethod === 'VNPay'}
                         onChange={() => setPaymentMethod('VNPay')}
                     />
-                    <img src={vnPayIcon} alt="VNPay" className="w-8 h-8" />
+                    <img src={vnPayIcon} alt="VNPay" className="w-10 h-7" />
                     <div>
                         <p className="text-sm font-medium">VNPay</p>
                     </div>

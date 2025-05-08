@@ -1,5 +1,6 @@
 import React from "react";
 import { FaDollarSign, FaShoppingCart, FaBox, FaStar, FaClipboardList, FaTruck, FaCheckCircle, FaUndo, FaChartLine, FaEnvelope } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 const Home = () => {
     return (
@@ -103,11 +104,14 @@ const Home = () => {
                     </div>
 
                     <div className="flex items-center space-x-4 p-3 bg-gray-100 rounded-lg">
-                        <FaStar className="text-yellow-500 text-2xl" />
-                        <div>
-                            <p className="text-gray-600">Bạn có <span className="font-semibold">1</span> đánh giá mới</p>
-                            <span className="text-sm text-gray-500">5 phút trước</span>
-                        </div>
+                        <Link to="/seller/reviews" className="hover:text-gray-200 transition-colors w-full">
+
+                            <FaStar className="text-yellow-500 text-2xl" />
+                            <div>
+                                <p className="text-gray-600">Bạn có <span className="font-semibold">1</span> đánh giá mới</p>
+                                <span className="text-sm text-gray-500">5 phút trước</span>
+                            </div>
+                        </Link>
                     </div>
                 </div>
             </div>
