@@ -90,7 +90,7 @@ const StoreDetail = () => {
             <div className="bg-gradient-to-r from-purple-500 to-pink-200 text-white py-6">
                 <div className="max-w-6xl mx-auto px-4">
                     <div className="flex flex-col md:flex-row items-start md:items-center justify-between">
-                        <Link to="/store-detail/1" className="group">
+                        <div className="group">
                             <div className="flex items-center space-x-4">
                                 <div className="relative">
                                     <img
@@ -100,7 +100,7 @@ const StoreDetail = () => {
                                     />
                                 </div>
                                 <div>
-                                    <h1 className="text-xl md:text-2xl font-bold group-hover:underline">{store.name}</h1>
+                                    <h1 className="text-xl md:text-2xl font-bold ">{store.name}</h1>
                                     <div className="flex items-center text-xs md:text-sm mt-1">
                                         <span className="bg-yellow-500 text-yellow-900 px-2 py-0.5 rounded-full font-medium mr-2">Official</span>
                                         <span>{store.addressLine}</span>
@@ -108,11 +108,14 @@ const StoreDetail = () => {
                                     <div className="flex items-center mt-1 text-xs md:text-sm text-gray-200">
                                         <span>1.2K Followers</span>
                                         <span className="mx-2">•</span>
-                                        <span>4.8 Rating</span>
+                                        <Link  to={`/store-detail/${storeId}/reviews`} className='flex gap-2'>
+                                            <span>Đánh giá:</span>
+                                            <span className='text-white'>4.9 (5 Đánh giá)</span>
+                                        </Link>
                                     </div>
                                 </div>
                             </div>
-                        </Link>
+                        </div>
                         <div className="mt-4 md:mt-0 flex items-center space-x-2">
                             <button
                                 className={`px-4 py-2 rounded-lg font-medium transition-all flex items-center ${isFollowing
@@ -229,8 +232,10 @@ const StoreDetail = () => {
                     ) : (
                         <>
                             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
-                                {products.map((product) => (
-                                    <ProductCard key={product.id} product={product} />
+                                {products.map((product, index) => (
+                                    <Link key={index} to={`/products/${product.id}`} state={{ storeId: storeId }}>
+                                        <ProductCard key={product.id} product={product} />
+                                    </Link>
                                 ))}
                             </div>  </>
                     )}

@@ -28,6 +28,8 @@ export const endpoints = {
     'removeProductCart': productId => `/secure/cart/remove/${productId}`,
     'updateCartItem': 'secure/cart/update-quantity',
     'stores': '/stores',
+    'getReviews':  storeId => `/reviews/${storeId}`,
+    
 
 
 
@@ -37,6 +39,7 @@ export const endpoints = {
 
     // APIs for seller
     'createStore': '/secure/store-activation',
+    'getSellerOrders': storeId => `/secure/store/${storeId}/orders/all`,
     'getCategories': (storeId) => `/store/${storeId}/categories`,
     'updateCategory': (categoryId) => `/secure/store/categories/${categoryId}`,
     'getProducts': (storeId) => `/store/${storeId}/products`,
@@ -48,7 +51,7 @@ export const endpoints = {
     'allRevenue': '/secure/revenue',
     'productRevenue': '/secure/product-revenue',
     'categoryRevenue': '/secure/category-revenue',
-
+    'reviewResponse': '/secure/comment/create',
 
 
 }

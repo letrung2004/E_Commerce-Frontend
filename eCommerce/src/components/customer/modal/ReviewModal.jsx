@@ -99,8 +99,8 @@ const ReviewModal = ({ isOpen, onClose, orderDetails, fetchOrders }) => {
                             </div>
 
                             {/* Đánh giá sao sản phẩm */}
-                            <div className="mb-4 flex gap-8">
-                                <p className=" mb-2">Chất lượng sản phẩm</p>
+                            <div className="mb-4 flex gap-8 items-center">
+                                <p className="">Chất lượng sản phẩm</p>
                                 <div className="flex items-center gap-2">
                                     <StarRating
                                         rating={productRatings[index] || 5}
