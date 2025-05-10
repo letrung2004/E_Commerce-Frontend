@@ -25,7 +25,7 @@ const StoreSidebar = () => {
                         <div className="ml-6 mt-2 space-y-2">
                             <Link to="/seller/orders" className="block text-gray-700 hover:text-purple-600">Tất cả</Link>
                             <Link to="/seller/orders" className="block text-gray-700 hover:text-purple-600">Đơn hàng</Link>
-                            <Link to="/seller/shipping" className="block text-gray-700 hover:text-purple-600">Giao hàng</Link>
+                            {/* <Link to="/seller/shipping" className="block text-gray-700 hover:text-purple-600">Giao hàng</Link> */}
                         </div>
                     )}
                 </div>
