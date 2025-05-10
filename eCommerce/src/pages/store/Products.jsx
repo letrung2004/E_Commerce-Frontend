@@ -64,11 +64,9 @@ const Products = () => {
 
     const handleSearch = (e) => {
         e.preventDefault();
-        // Reset state for new search
         setProducts([]);
         setNoResults(false);
 
-        // Update search params and reset to page 1
         setSearchParams({ q: kw });
         setPage(1);
     };
@@ -89,16 +87,11 @@ const Products = () => {
         try {
             await authAPIs().delete(endpoints.updateProduct(productDel.id));
             setSuccessMessage("Xóa thành công!");
-
-            // Reset and reload products
             setProducts([]);
             setPage(1);
 
-            // Close modal first
             setShowConfirmModal(false);
             setProductDel(null);
-
-            // Then reload products
             loadProduct();
         } catch (err) {
             console.error("Lỗi xóa sản phẩm:", err);
@@ -173,117 +166,119 @@ const Products = () => {
                             <input
                                 type="text"
                                 placeholder="Tên sản phẩm..."
-                                className="w-full rounded px-3 py-2 bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                                className="rounded px-3 py-2 bg-gray-100 border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
                                 value={kw}
                                 onChange={(e) => setKw(e.target.value)}
                             />
                             <button
                                 type="submit"
-                                className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                                className="px-4 py-2 bg-purple-500 text-white rounded  hover:bg-purple-600"
                                 disabled={loading}
                             >
                                 {loading ? "Đang tìm..." : "Tìm"}
                             </button>
                         </form>
                         <Link to="/seller/products/add">
-                            <button className="flex items-center bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+                            <button className="flex items-center bg-purple-500 text-white px-4 py-2 rounded hover:bg-purple-600">
                                 <FaPlus className="mr-2" /> Thêm sản phẩm
                             </button>
                         </Link>
                     </div>
                 </div>
 
+                <div className="mt-6">
+                    <div className="font-semibold mb-2 text-lg">{products.length} Sản phẩm</div>
+                    <div className="grid grid-cols-7 bg-gray-100 text-gray-600 text-sm font-medium px-4 py-3 rounded">
+                        <div className="col-span-2">Sản phẩm</div>
+                        <div className="flex justify-center">Giá</div>
+                        <div className="flex justify-center">Nhà sản xuất</div>
+                        <div className="flex justify-center">Ngày tạo</div>
+                        <div className="flex justify-center">Trạng thái</div>
+                        <div className="flex justify-center">Thao tác</div>
+                    </div>
+                </div>
+
                 <>
                     {noResults ? (
-                        <div className="text-center py-20 bg-gray-50 rounded-lg shadow-md">
-                            <p className="text-gray-500 text-lg">Không tìm thấy sản phẩm phù hợp</p>
+                        <div className="text-center py-8 text-gray-500">
+                            <p className="font-medium">Không tìm thấy sản phẩm phù hợp</p>
                         </div>
                     ) : (
                         <>
-                            <div className="bg-white shadow-md rounded-lg p-4 overflow-hidden">
-                                <table className="w-full border-collapse">
-                                    <thead>
-                                        <tr className="bg-blue-200 text-gray-700">
-                                            <th className="p-3 text-left">Hình ảnh</th>
-                                            <th className="p-3 text-left">Tên sản phẩm</th>
-                                            <th className="p-3 text-left">Giá</th>
-                                            <th className="p-3 text-center">Nhà sản xuất</th>
-                                            <th className="p-3 text-center">Ngày tạo</th>
-                                            <th className="p-3 text-center">Trạng thái</th>
-                                            <th className="p-3 text-center">Thao tác</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {products.length === 0 && !loading && !noResults ? (
-                                            <tr>
-                                                <td colSpan="7" className="p-4 text-center text-gray-500">
-                                                    Không tìm thấy sản phẩm nào
-                                                </td>
-                                            </tr>
-                                        ) : (
-                                            products.map(product => (
-                                                <tr key={product.id} className="even:bg-gray-50 hover:bg-gray-100 transition">
-                                                    <td className="p-3">
-                                                        <img
-                                                            src={product.image}
-                                                            alt={product.name}
-                                                            className="w-20 h-20 rounded-lg shadow object-cover"
-                                                        />
-                                                    </td>
-                                                    <td className="p-3">{product.name}</td>
-                                                    <td className="p-3 text-green-600 font-semibold">
-                                                        ₫{product.price.toLocaleString()}
-                                                    </td>
-                                                    <td className="p-3 text-center">{product.manufacturer}</td>
-                                                    <td className="p-3 text-center text-gray-600">
-                                                        {formatDate(product.dateCreated)}
-                                                    </td>
-                                                    <td className="p-3 text-center">
-                                                        <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${product.active === 0 ? "bg-gray-100 text-gray-800" : "bg-green-100 text-green-800"
-                                                            }`}>
-                                                            {product.active === 0 ? (
-                                                                <><FaEyeSlash className="mr-1" /> Ẩn </>
-                                                            ) : (
-                                                                <><FaEye className="mr-1" /> Hiện</>
-                                                            )}
-                                                        </span>
-                                                    </td>
-                                                    <td className="p-3 mt-5 flex justify-center items-center space-x-2">
-                                                        <button
-                                                            type="button"
-                                                            onClick={() => handleToggleVisibility(product.id)}
-                                                            className={`${product.active === 0 ? "bg-green-500 hover:bg-green-600" : "bg-gray-500 hover:bg-gray-600"
-                                                                } w-24 justify-center text-white px-3 py-2 rounded-lg text-sm font-medium flex items-center`}
-                                                        >
-                                                            {product.active === 0 ? (
-                                                                <><FaEye className="mr-1" /> Hiện</>
-                                                            ) : (
-                                                                <><FaEyeSlash className="mr-1" /> Ẩn</>
-                                                            )}
-                                                        </button>
+                            {products.length === 0 && !loading ? (
+                                <div className="text-center py-8 text-gray-500">
+                                    <p className="font-medium">Không tìm thấy sản phẩm nào</p>
+                                </div>
+                            ) : (
+                                products.map(product => (
+                                    <div key={product.id} className="grid grid-cols-7 text-sm px-4 py-4 mt-2 bg-gray-50 shadow items-center gap-2">
+                                        {/* Product info */}
+                                        <div className="flex flex-col col-span-2 border-r border-gray-200 p-1">
+                                            <div className="flex items-start space-x-3">
+                                                <img
+                                                    src={product.image}
+                                                    alt={product.name}
+                                                    className="w-16 h-16 rounded border border-gray-200 object-cover"
+                                                />
+                                                <div className="flex flex-col">
+                                                    <span className="font-medium text-gray-800">{product.name}</span>
+                                                    <span className="text-gray-400 text-xs truncate">ID: {product.id}</span>
+                                                </div>
+                                            </div>
+                                        </div>
 
-                                                        <button
-                                                            onClick={() => navigate(`/seller/products/update/${product.id}`)}
-                                                            className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg text-sm font-medium"
-                                                        >
-                                                            Cập nhật
-                                                        </button>
-                                                        <button
-                                                            onClick={() => confirmDelete(product)}
-                                                            className="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg text-sm font-medium"
-                                                        >
-                                                            Xóa
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            ))
-                                        )}
-                                    </tbody>
-                                </table>
-                            </div>
+                                        {/* Price */}
+                                        <div className="border-r border-gray-200 h-full flex items-center justify-center text-green-600 font-semibold">
+                                            ₫{product.price.toLocaleString()}
+                                        </div>
 
+                                        {/* Manufacturer */}
+                                        <div className="border-r border-gray-200 h-full flex items-center justify-center text-gray-700">
+                                            {product.manufacturer}
+                                        </div>
 
+                                        {/* Date */}
+                                        <div className="border-r border-gray-200 h-full flex items-center justify-center text-gray-700">
+                                            {formatDate(product.dateCreated)}
+                                        </div>
 
+                                        {/* Status */}
+                                        <div className="border-r border-gray-200 h-full flex items-center justify-center">
+                                            <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium 
+                                                ${product.active === 0 ? "bg-gray-100 text-gray-800" : "bg-green-100 text-green-800"}`}>
+                                                {product.active === 0 ? (
+                                                    <><FaEyeSlash className="mr-1" /> Ẩn </>
+                                                ) : (
+                                                    <><FaEye className="mr-1" /> Hiện</>
+                                                )}
+                                            </span>
+                                        </div>
+
+                                        {/* Actions */}
+                                        <div className="flex flex-col h-full gap-3 justify-center">
+                                            <button
+                                                type="button"
+                                                onClick={() => handleToggleVisibility(product.id)}
+                                                className="text-blue-600 hover:underline text-sm cursor-pointer"
+                                            >
+                                                {product.active === 0 ? "Hiện sản phẩm" : "Ẩn sản phẩm"}
+                                            </button>
+                                            <button
+                                                onClick={() => navigate(`/seller/products/update/${product.id}`)}
+                                                className="text-blue-600 hover:underline text-sm cursor-pointer"
+                                            >
+                                                Cập nhật
+                                            </button>
+                                            <button
+                                                onClick={() => confirmDelete(product)}
+                                                className="text-blue-600 hover:underline text-sm cursor-pointer"
+                                            >
+                                                Xóa
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))
+                            )}
                         </>
                     )}
                     {loading && (
@@ -308,9 +303,7 @@ const Products = () => {
                             </button>
                         </div>
                     )}
-
                 </>
-
             </div>
 
             {showConfirmModal && productDel && (

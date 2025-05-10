@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { authAPIs, endpoints } from "../../configs/APIs";
 import { useAuth } from "../../context/AuthProvider";
+import { FaArrowLeft } from "react-icons/fa";
 
 const SaveProduct = () => {
     const { user } = useAuth();
@@ -162,95 +163,164 @@ const SaveProduct = () => {
 
     return (
         <div className="p-6">
-            <div className="flex justify-between items-center mb-6">
-                <h1 className="text-2xl font-semibold">
-                    {isEditMode ? "Cập nhật sản phẩm" : "Thêm sản phẩm"}
-                </h1>
-            </div>
-
             {message.text && (
-                <div className={`mb-4 p-4 rounded-lg ${message.type === "success" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"}`}>
-                    {message.text}
+                <div className="fixed bottom-6 right-6 bg-white border-l-4 border-purple-600 text-gray-700 px-5 py-3 rounded-lg shadow-xl z-50 flex items-center space-x-3 animate-slide-in-right">
+                    <div className="bg-purple-100 p-2 rounded-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-purple-600" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                        </svg>
+                    </div>
+                    <div>
+                        <p className="font-medium">Thao tác thành công</p>
+                        <p className="text-sm text-gray-600">{message.text}</p>
+                    </div>
                 </div>
             )}
 
-            <div className="bg-white shadow-md rounded-xl p-6">
-                <form onSubmit={handleSubmit} className="space-y-5">
-                    {info.map((item) => (
-                        <div key={item.field}>
-                            <label className="block text-gray-700 font-medium mb-1">{item.label}</label>
+            <div className="flex justify-between items-center mb-6">
+                <div className="flex items-center space-x-4">
+                    <button
+                        onClick={() => navigate("/seller/products")}
+                        className="bg-gray-100 hover:bg-gray-200 text-gray-700 p-2 rounded-full"
+                    >
+                        <FaArrowLeft />
+                    </button>
+                    <h1 className="text-2xl font-semibold">
+                        {isEditMode ? "Cập nhật sản phẩm" : "Thêm sản phẩm mới"}
+                    </h1>
+                </div>
+            </div>
 
-                            {item.type === "textarea" ? (
-                                <textarea
-                                    name={item.field}
-                                    value={product[item.field] || ""}
-                                    onChange={(e) => handleChange(e.target.value, item.field)}
-                                    rows="3"
-                                    className={`w-full px-4 py-2 rounded-xl border ${errors[item.field] ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-blue-500`}
+            <div className="bg-white shadow-md rounded-lg p-6">
+                <form onSubmit={handleSubmit} className="space-y-5">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-5">
+                            <div>
+                                <label className="block text-gray-700 text-sm font-medium mb-1">Tên sản phẩm</label>
+                                <input
+                                    type="text"
+                                    name="name"
+                                    value={product.name || ""}
+                                    onChange={(e) => handleChange(e.target.value, "name")}
+                                    className={`w-full px-4 py-2 rounded-lg border ${errors.name ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-purple-500`}
                                     disabled={loading}
+                                    placeholder="Nhập tên sản phẩm"
                                 />
-                            ) : item.type === "select" ? (
+                                {errors.name && (
+                                    <p className="text-red-500 text-xs mt-1">{errors.name}</p>
+                                )}
+                            </div>
+
+                            <div>
+                                <label className="block text-gray-700 text-sm font-medium mb-1">Giá</label>
+                                <input
+                                    type="number"
+                                    name="price"
+                                    value={product.price || ""}
+                                    onChange={(e) => handleChange(e.target.value, "price")}
+                                    className={`w-full px-4 py-2 rounded-lg border ${errors.price ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-purple-500`}
+                                    disabled={loading}
+                                    placeholder="Nhập giá sản phẩm"
+                                />
+                                {errors.price && (
+                                    <p className="text-red-500 text-xs mt-1">{errors.price}</p>
+                                )}
+                            </div>
+
+                            <div>
+                                <label className="block text-gray-700 text-sm font-medium mb-1">Nhà sản xuất</label>
+                                <input
+                                    type="text"
+                                    name="manufacturer"
+                                    value={product.manufacturer || ""}
+                                    onChange={(e) => handleChange(e.target.value, "manufacturer")}
+                                    className={`w-full px-4 py-2 rounded-lg border ${errors.manufacturer ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-purple-500`}
+                                    disabled={loading}
+                                    placeholder="Nhập tên nhà sản xuất"
+                                />
+                                {errors.manufacturer && (
+                                    <p className="text-red-500 text-xs mt-1">{errors.manufacturer}</p>
+                                )}
+                            </div>
+
+                            <div>
+                                <label className="block text-gray-700 text-sm font-medium mb-1">Danh mục</label>
                                 <select
-                                    name={item.field}
-                                    value={product[item.field] || ""}
-                                    onChange={(e) => handleChange(e.target.value, item.field)}
-                                    className={`w-full px-4 py-2 rounded-xl border ${errors[item.field] ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                                    name="categoryId"
+                                    value={product.categoryId || ""}
+                                    onChange={(e) => handleChange(e.target.value, "categoryId")}
+                                    className={`w-full px-4 py-2 rounded-lg border ${errors.categoryId ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-purple-500`}
                                     disabled={loading}
                                 >
-                                    <option value="">Chọn {item.label.toLowerCase()}</option>
+                                    <option value="">Chọn danh mục</option>
                                     {categories.map((cat) => (
                                         <option key={cat.id} value={cat.id}>
                                             {cat.name}
                                         </option>
                                     ))}
                                 </select>
-                            ) : item.type === "file" ? (
-                                <>
-                                    <input
-                                        type="file"
-                                        accept="image/*"
-                                        name={item.field}
-                                        onChange={handleFileChange}
-                                        className={`w-full px-4 py-2 rounded-xl border file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-blue-500 file:text-white hover:file:bg-blue-600 transition ${errors[item.field] ? 'border-red-500' : 'border-gray-300'}`}
-                                        disabled={loading}
-                                    />
-                                    {previewImage && (
+                                {errors.categoryId && (
+                                    <p className="text-red-500 text-xs mt-1">{errors.categoryId}</p>
+                                )}
+                            </div>
+                        </div>
+
+                        <div className="space-y-5">
+                            <div>
+                                <label className="block text-gray-700 text-sm font-medium mb-1">Mô tả</label>
+                                <textarea
+                                    name="description"
+                                    value={product.description || ""}
+                                    onChange={(e) => handleChange(e.target.value, "description")}
+                                    rows="4"
+                                    className={`w-full px-4 py-2 rounded-lg border ${errors.description ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-purple-500`}
+                                    disabled={loading}
+                                    placeholder="Nhập mô tả sản phẩm"
+                                />
+                                {errors.description && (
+                                    <p className="text-red-500 text-xs mt-1">{errors.description}</p>
+                                )}
+                            </div>
+
+                            <div>
+                                <label className="block text-gray-700 text-sm font-medium mb-1">Ảnh sản phẩm</label>
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    name="file"
+                                    onChange={handleFileChange}
+                                    className={`w-full px-4 py-2 rounded-lg border file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-purple-500 file:text-white hover:file:bg-purple-600 transition ${errors.file ? 'border-red-500' : 'border-gray-300'}`}
+                                    disabled={loading}
+                                />
+                                {errors.file && (
+                                    <p className="text-red-500 text-xs mt-1">{errors.file}</p>
+                                )}
+                                {previewImage && (
+                                    <div className="mt-3">
+                                        <p className="text-sm text-gray-500 mb-1">Xem trước:</p>
                                         <img
                                             src={previewImage}
                                             alt="Preview"
-                                            className="mt-4 w-40 h-40 object-cover rounded-xl shadow"
+                                            className="w-40 h-40 object-cover rounded-lg shadow-sm border border-gray-200"
                                         />
-                                    )}
-                                </>
-                            ) : (
-                                <input
-                                    type={item.type}
-                                    name={item.field}
-                                    value={product[item.field] || ""}
-                                    onChange={(e) => handleChange(e.target.value, item.field)}
-                                    className={`w-full px-4 py-2 rounded-xl border ${errors[item.field] ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-blue-500`}
-                                    disabled={loading}
-                                />
-                            )}
-
-                            {errors[item.field] && (
-                                <p className="text-red-500 text-sm mt-1">{errors[item.field]}</p>
-                            )}
+                                    </div>
+                                )}
+                            </div>
                         </div>
-                    ))}
+                    </div>
 
-                    <div className="flex justify-end space-x-3">
+                    <div className="pt-4 flex justify-end space-x-3">
                         <button
                             type="button"
                             onClick={() => navigate("/seller/products")}
-                            className="bg-gray-400 text-white py-2 px-4 rounded-lg hover:bg-gray-500 transition"
+                            className="bg-gray-400 text-white py-2 px-5 rounded-lg hover:bg-gray-500 transition"
                             disabled={loading}
                         >
                             Hủy
                         </button>
                         <button
                             type="submit"
-                            className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition flex items-center justify-center min-w-24"
+                            className="bg-purple-500 text-white py-2 px-5 rounded-lg hover:bg-purple-600 transition flex items-center justify-center min-w-32"
                             disabled={loading}
                         >
                             {loading ? (
