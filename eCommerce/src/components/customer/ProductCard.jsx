@@ -1,8 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { FaStore } from "react-icons/fa"; // Import icon cửa hàng
 
 const ProductCard = ({ product }) => {
-    const { id, name, price, image } = product || {};
+    const { id, name, price, image, storeName } = product || {};
+
     const renderStars = (rate) => {
         const stars = [];
         for (let i = 1; i <= 5; i++) {
@@ -16,7 +18,6 @@ const ProductCard = ({ product }) => {
     };
 
     return (
-
         <div className="bg-white p-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 w-56 flex-shrink-0 border border-gray-200">
             <div className="h-45 flex items-center justify-center rounded-lg overflow-hidden">
                 {image ? (
@@ -33,6 +34,14 @@ const ProductCard = ({ product }) => {
             <div className="mt-3 px-2">
                 <h3 className="text-gray-800 font-semibold text-sm line-clamp-2">{name}</h3>
 
+                {/* Thêm dòng hiển thị tên cửa hàng */}
+                {storeName && (
+                    <div className="flex items-center gap-1 text-gray-500 text-xs mt-1">
+                        <FaStore className="text-purple-500" />
+                        <span className="truncate">{storeName}</span>
+                    </div>
+                )}
+
                 <div className="flex items-center gap-1 text-yellow-500 text-xs mt-1">
                     {renderStars(product.starRate || 0)}
                 </div>
@@ -42,7 +51,6 @@ const ProductCard = ({ product }) => {
                 </p>
             </div>
         </div>
-
     );
 };
 

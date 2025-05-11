@@ -123,21 +123,29 @@ const SaveProduct = () => {
                     formData
                 );
                 navigate("/seller/products", { state: { successMessage: "Cập nhật sản phẩm thành công!" } });
+                // setMessage({ text: "Cập nhật thành công", type: "success" });
             } else {
                 res = await authAPIs().post(
                     endpoints.createProduct,
                     formData
                 );
                 navigate("/seller/products", { state: { successMessage: "Thêm sản phẩm thành công!" } });
+                // setMessage({ text: "Thêm sản phẩm thành công", type: "success" });
             }
+
             setProduct({});
             setPreviewImage(null);
             setErrors({});
 
 
         } catch (err) {
-            console.error("Lỗi:", err);
-            setMessage({ text: "Thất bại. Vui lòng thử lại!", type: "error" });
+            if (err.response && err.response.status === 400) {
+                const backendErrors = err.response.data;
+                setErrors(backendErrors);
+            } else {
+                console.error("Lỗi:", err);
+                setMessage({ text: "Thất bại. Vui lòng thử lại!", type: "error" });
+            }
         } finally {
             setLoading(false);
         }
@@ -164,14 +172,20 @@ const SaveProduct = () => {
     return (
         <div className="p-6">
             {message.text && (
-                <div className="fixed bottom-6 right-6 bg-white border-l-4 border-purple-600 text-gray-700 px-5 py-3 rounded-lg shadow-xl z-50 flex items-center space-x-3 animate-slide-in-right">
-                    <div className="bg-purple-100 p-2 rounded-full">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-purple-600" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                        </svg>
+                <div className={`fixed bottom-6 right-6 bg-white border-l-4 ${message.type === "success" ? "border-green-600" : "border-red-600"} text-gray-700 px-5 py-3 rounded-lg shadow-xl z-50 flex items-center space-x-3 animate-slide-in-right`}>
+                    <div className={`p-2 rounded-full ${message.type === "success" ? "bg-green-100" : "bg-red-100"}`}>
+                        {message.type === "success" ? (
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-green-600" viewBox="0 0 20 20" fill="currentColor">
+                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                            </svg>
+                        ) : (
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-red-600" viewBox="0 0 20 20" fill="currentColor">
+                                <path fillRule="evenodd" d="M18 10A8 8 0 11.001 10a8 8 0 0117.998 0zM9 5a1 1 0 012 0v4a1 1 0 01-2 0V5zm0 6a1 1 0 102 0 1 1 0 00-2 0z" clipRule="evenodd" />
+                            </svg>
+                        )}
                     </div>
                     <div>
-                        <p className="font-medium">Thao tác thành công</p>
+                        <p className="font-medium">{message.type === "success" ? "Thao tác thành công" : "Đã xảy ra lỗi"}</p>
                         <p className="text-sm text-gray-600">{message.text}</p>
                     </div>
                 </div>

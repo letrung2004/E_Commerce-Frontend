@@ -3,7 +3,6 @@ import ProductCard from "../../components/customer/ProductCard";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import APIs, { endpoints } from "../../configs/APIs";
 import { FaSearch, FaStar, FaFilter, FaSortAmountDown, FaStore } from "react-icons/fa";
-import Process from "../../components/store/Process";
 
 const Products = () => {
     const [loading, setLoading] = useState(false);
@@ -82,20 +81,16 @@ const Products = () => {
         if (!q) return;
         try {
             setLoading(true);
-            let url = `${endpoints.stores}`;
-            const q = param.get('q');
-            if (q) url += `&q=${q}`;
-
+            let url = `${endpoints.stores}?q=${q}`;
             const res = await APIs.get(url);
-            console.log(res.data);
-            setStores(res.data)
+            setStores(res.data);
         } catch (err) {
             console.error("Lỗi load cửa hàng:", err);
-        }
-        finally {
+        } finally {
             setLoading(false);
         }
-    }
+    };
+
 
     const loadProducts = async () => {
         if (page > 0) {
@@ -125,7 +120,7 @@ const Products = () => {
                     if (page === 1) {
                         setProducts([]);
                     }
-                    setPage(0);
+                    // setPage(0);
                 } else {
                     if (page === 1) {
                         setProducts(res.data);
@@ -170,7 +165,7 @@ const Products = () => {
         }
         loadProducts();
         loadStores();
-    }, [page, param]);
+    }, [page, param.toString()]);
 
     return (
         <div className=" w-full max-w-7xl mx-auto px-4 md:px-6 py-4">
@@ -181,10 +176,45 @@ const Products = () => {
                 <span className="text-purple-700 font-medium truncate">Sản phẩm</span>
             </nav>
 
+
+            {stores.length > 0 && param.get("q") && (
+                <div className="mb-6">
+                    <h2 className="text-xl font-bold mb-2">Cửa hàng liên quan đến "{param.get('q')}"</h2>
+                    <div className="flex items-center justify-between bg-gradient-to-r from-purple-50 to-blue-50 p-4 rounded-xl shadow-sm border border-purple-100 transition hover:shadow-md">
+                        <Link to={`/store-detail/${stores[0].id}`} className="flex items-center gap-4 group">
+                            <div className="relative">
+                                <img
+                                    src={stores[0].logo}
+                                    alt="Store"
+                                    className="w-14 h-14 rounded-full object-cover border-2 border-purple-300 group-hover:border-purple-500 transition-all"
+                                />
+                            </div>
+                            <div className="space-y-1">
+                                <div className="flex items-center gap-2">
+                                    <h3 className="text-lg font-semibold text-gray-800 group-hover:text-purple-700 transition">
+                                        {stores[0].name || "Tên cửa hàng"}
+                                    </h3>
+                                    <span className="bg-blue-100 text-blue-800 text-xs px-2 py-0.5 rounded-full font-medium">
+                                        Official Store
+                                    </span>
+                                </div>
+                                <div className="flex items-center text-sm text-gray-600 gap-1">
+                                    <span>{stores[0].addressLine || "Địa chỉ chưa cập nhật"}</span>
+                                </div>
+                            </div>
+                        </Link>
+
+                        <button className="px-4 py-2 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700 transition-all transform hover:scale-105 shadow-sm hover:shadow">
+                            Follow
+                        </button>
+                    </div>
+                </div>
+            )}
+
+
             <div className="flex items-center justify-between mb-6">
                 <h1 className="text-2xl md:text-3xl font-bold text-gray-800">Tất cả sản phẩm</h1>
             </div>
-
             <div className="flex flex-col md:flex-row gap-6">
                 <div className="w-72 bg-white p-5 rounded-lg shadow-md mb-4 sticky top-24 h-fit max-h-[32rem] overflow-y-auto">
                     <div className="flex justify-between items-center mb-5">
@@ -268,6 +298,9 @@ const Products = () => {
                         Áp Dụng
                     </button>
                 </div>
+
+
+
 
                 <div className="flex-1">
                     <div className="bg-white p-3 rounded-lg shadow-sm mb-4 flex items-center justify-between">
