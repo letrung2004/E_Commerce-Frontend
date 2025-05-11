@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { FaPlus, FaEye, FaEyeSlash, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { useAuth } from "../../context/AuthProvider";
 import { authAPIs, endpoints } from "../../configs/APIs";
@@ -7,6 +7,7 @@ import ModalDialog from "../../components/store/ModalDialog";
 
 const Products = () => {
     const navigate = useNavigate();
+    const location = useLocation();
     const { user } = useAuth();
     const storeId = user.storeId;
     const [searchParams, setSearchParams] = useSearchParams();
@@ -105,8 +106,6 @@ const Products = () => {
         try {
             await authAPIs().post(endpoints.changeStatus(productId));
             setSuccessMessage("Cập nhật trạng thái sản phẩm thành công!");
-
-            // Update product status in the current list without reloading
             setProducts(prev => prev.map(p =>
                 p.id === productId ? { ...p, active: p.active === 0 ? 1 : 0 } : p
             ));
@@ -133,6 +132,11 @@ const Products = () => {
         }
     }, [storeId, page, searchParams.get("q")]);
 
+    useEffect(() => {
+        if (location.state?.successMessage) {
+            setSuccessMessage(location.state.successMessage);
+        }
+    }, [location.state]);
 
     useEffect(() => {
         if (successMessage !== "") {

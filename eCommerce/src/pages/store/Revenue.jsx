@@ -20,7 +20,6 @@ const Revenue = () => {
 
     const [activeTab, setActiveTab] = useState("month");
 
-
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
     const [selectedQuarter, setSelectedQuarter] = useState(Math.floor(new Date().getMonth() / 3) + 1);
     const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
@@ -365,14 +364,14 @@ const Revenue = () => {
                 </div>
             </div>
 
-            <div className="mt-8 flex justify-end">
+            {/* <div className="mt-8 flex justify-end">
                 <button className="bg-purple-500 text-white px-4 py-2 rounded text-sm mr-2">
                     Xuất Excel
                 </button>
                 <button className="bg-gray-600 text-white px-4 py-2 rounded text-sm">
                     Xuất PDF
                 </button>
-            </div>
+            </div> */}
         </div>
     );
 };

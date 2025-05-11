@@ -20,6 +20,7 @@ const CustomerHeader = () => {
     const handleSearch = () => {
         if (keyword.trim() !== "") {
             nav(`/products?q=${encodeURIComponent(keyword)}`);
+            console.log("key:", keyword);
         }
     };
 
