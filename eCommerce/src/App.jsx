@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./context/AuthProvider";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CustomerLayout from "./layout/customer/CustomerLayout";
 import CustomerHome from "./pages/customer/Home";
 import ProductsDetail from "./pages/customer/ProductsDetail";
@@ -39,17 +39,19 @@ import StoreReview from "./pages/customer/StoreReview";
 const App = () => {
 
   const [currentAddress, setCurrentAddress] = useState(null)
-
   // Component route kiểm tra đăng nhập
   const PrivateRoute = ({ element }) => {
     const { user, loading } = useAuth();
     if (loading) return <div>Loading...</div>;
     return user ? element : <Navigate to="/login" />;
   };
+
+
   return (
     <>
       <AuthProvider>
         <CartProvider>
+
           <AddressContext.Provider value={currentAddress}>
             <AddressDispatchContext.Provider value={setCurrentAddress}>
               <BrowserRouter>
@@ -68,12 +70,13 @@ const App = () => {
                     <Route path="orders" element={<PrivateRoute element={<CustomerOrder />} />} />
                     <Route path="place-order" element={<PrivateRoute element={<PlaceOrder />} />} />
                     <Route path="orders/:orderId" element={<PrivateRoute element={<CustomerOrderDetail />} />} />
+
+                    {/* <Route path="me" element={<UserProfile />} /> */}
                     <Route path="me" element={<PrivateRoute element={<MyProfile />} />}>
                       <Route path="profile" index element={<ProfileInfo />} />
                       <Route path="address" element={<Address />} />
                       <Route path="my-orders" element={<Orders />} />
                     </Route>
-
                   </Route>
 
                   <Route path="/seller" element={<PrivateRoute element={<StoreLayout />} />}>
@@ -94,6 +97,7 @@ const App = () => {
               </BrowserRouter>
             </AddressDispatchContext.Provider>
           </AddressContext.Provider>
+
         </CartProvider>
       </AuthProvider>
     </>

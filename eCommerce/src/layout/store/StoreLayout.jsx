@@ -3,6 +3,8 @@ import { Navigate, Outlet, useLocation } from "react-router-dom";
 import StoreHeader from "./StoreHeader";
 import StoreSidebar from "./StoreSidebar";
 import { useAuth } from "../../context/AuthProvider";
+import { WebSocketProvider } from "../../context/WebSocketContext";
+import { Toaster } from 'react-hot-toast';
 
 const StoreLayout = () => {
     const { user } = useAuth();
@@ -17,16 +19,19 @@ const StoreLayout = () => {
     }
 
     return (
-        <div className="flex flex-col h-screen bg-gray-100">
-            <StoreHeader />
-            <div className="flex flex-grow overflow-hidden">
-                {user.storeActive && <StoreSidebar />}
+        <WebSocketProvider currentUser={user}>
+            <Toaster position="top-center" reverseOrder={false} />
+            <div className="flex flex-col h-screen bg-gray-100">
+                <StoreHeader />
+                <div className="flex flex-grow overflow-hidden">
+                    {user.storeActive && <StoreSidebar />}
 
-                <main className="flex-grow p-4 overflow-auto">
-                    <Outlet />
-                </main>
+                    <main className="flex-grow p-4 overflow-auto">
+                        <Outlet />
+                    </main>
+                </div>
             </div>
-        </div>
+        </WebSocketProvider>
     );
 };
 

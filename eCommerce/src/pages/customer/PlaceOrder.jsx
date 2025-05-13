@@ -7,11 +7,18 @@ import vnPayIcon from '../../assets/Icon-VNPAY-QR.webp'
 import { authAPIs, endpoints } from '../../configs/APIs';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
+import NotificationSender from '../../components/customer/Notification';
+import { useAuth } from '../../context/AuthProvider';
+import { useWebSocket } from '../../context/WebSocketContext';
 
 const PlaceOrder = () => {
     const location = useLocation()
     const { checkoutData } = location.state || {};
+    console.log("Checkout data: ", checkoutData)
+    const { user } = useAuth()
 
+    const { stompClient } = useWebSocket();
+    const [message, setMessage] = useState("");
     const navigate = useNavigate();
 
     const { loadCart } = useCart();
@@ -24,8 +31,24 @@ const PlaceOrder = () => {
 
     const paymentOptions = ['Ví điện tử', 'Thẻ tín dụng/Ghi nợ', 'Google Pay', 'Thẻ nội địa Napas', 'Thanh toán khi nhận hàng']
 
+    const sendMessage = () => {
+        if (stompClient && stompClient.connected) {
+            stompClient.publish({
+                destination: "/app/sendPrivateMessage",
+                body: JSON.stringify({
+                    senderUsername: user?.username,
+                    recipientUsername: "dt123",
+                    content: message
+                })
 
-    console.log("data from cart: ", checkoutData)
+            });
+            setMessage("");
+        } else {
+            console.error("WebSocket chưa kết nối.");
+        }
+    };
+
+
 
     const handlePlaceOrder = async () => {
         const data = {
@@ -90,6 +113,7 @@ const PlaceOrder = () => {
 
     return (
         <div className='w-full bg-gray-100'>
+            {/* <NotificationSender currentUser={user} /> */}
 
             {loading && <Process />}
 
