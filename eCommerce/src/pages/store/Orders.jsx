@@ -123,7 +123,7 @@ const Orders = () => {
 
                             <div className='flex flex-col col-span-2 border-r border-gray-200  gap-y-3'>
                                 {order.orderDetails.map((item, idx) => (
-                                    <div className="flex items-start space-x-3 p-1">
+                                    <div key={idx} className="flex items-start space-x-3 p-1">
                                         <img
                                             src={item.product.image} alt={item.product.name}
                                             className="w-13 h-13 rounded border border-gray-200"

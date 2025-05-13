@@ -50,6 +50,9 @@ export const endpoints = {
     'changeStatus': (productId) => `/secure/store/update-status/${productId}`,
     'updateOrderStatus': '/secure/orders/update',
     'reviewResponse': '/secure/comment/create',
+    'registerFcmToken':'/secure/notifications/register-token',
+    'unRegisterFcmToken':'/secure/notifications/unregister-token',
+    'getUserTokens':'/secure/notifications/tokens'  
    
 
 
