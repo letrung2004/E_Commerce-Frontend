@@ -9,9 +9,6 @@ const NotificationSender = ({currentUser}) => {
 
     const sendMessage = () => {
         if (stompClient && stompClient.connected) {
-            // stompClient.publish({
-            //     destination: "/app/sendMessage", 
-            //    body: JSON.stringify({ content: message }),
 
             stompClient.publish({
                 destination: "/app/sendPrivateMessage",

@@ -4,6 +4,8 @@ import APIs, { endpoints } from "../../configs/APIs";
 import { useAuth } from "../../context/AuthProvider";
 import { useCart } from "../../context/CartContext";
 import useReview from "../../components/customer/hook/useReview";
+import { MessageCircle, Store } from "lucide-react";
+import ChatBox from "../../components/customer/ChatBox";
 
 const ProductsDetail = () => {
     const location = useLocation();
@@ -19,6 +21,8 @@ const ProductsDetail = () => {
     const { addToCart } = useCart();
     const [showSuccess, setShowSuccess] = useState(false);
     const { reviews, reviewLoading, error, loadMore, hasMore } = useReview(storeId, productId);
+    const [isChatBoxOpen, setChatBoxOpen] = useState(false)
+
     console.log("store: ", storeId)
     console.log("product: ", productId)
     console.log("reviews: ", reviews)
@@ -87,6 +91,11 @@ const ProductsDetail = () => {
 
     return (
         <div className="w-full max-w-6xl mx-auto p-4 space-y-8">
+            <ChatBox isOpen={isChatBoxOpen}
+                onClose={() => setChatBoxOpen(false)}
+                currentUser={user}
+                store={store}
+            />
             <nav className="flex items-center text-sm text-gray-500 mb-4 bg-gray-50 p-3 rounded-lg">
                 <Link to="/" className="hover:text-purple-600 transition">Trang chủ</Link>
                 <span className="mx-2">•</span>
@@ -226,17 +235,17 @@ const ProductsDetail = () => {
                         </div>
                     </div>
 
-                    <div className="flex items-center justify-between bg-gradient-to-r from-purple-50 to-blue-50 p-4 rounded-xl shadow-sm border border-purple-100 transition hover:shadow-md">
-                        <Link to={`/store-detail/${product.storeId}`} className="flex items-center gap-4 group">
-                            <div className="relative">
+                    <div className="flex items-center justify-between bg-white from-purple-50 to-blue-50 p-6 rounded-xl shadow border border-purple-100 transition hover:shadow-md">
+                        <div className="flex items-center gap-4 group">
+                            <Link to={`/store-detail/${product.storeId}`} className="relative">
                                 <img
                                     src={store.logo}
                                     alt="Store"
-                                    className="w-14 h-14 rounded-full object-cover border-2 border-purple-300 group-hover:border-purple-500 transition-all"
+                                    className="w-18 h-18 rounded-full object-cover border-2 border-purple-300 group-hover:border-purple-500 transition-all"
                                 />
 
-                            </div>
-                            <div className="space-y-1">
+                            </Link>
+                            <div className="space-y-2">
                                 <div className="flex items-center gap-2">
                                     <h3 className="text-lg font-semibold text-gray-800 group-hover:text-purple-700 transition">
                                         {store.name || "Tên cửa hàng"}
@@ -245,15 +254,29 @@ const ProductsDetail = () => {
                                         Official Store
                                     </span>
                                 </div>
-                                <div className="flex items-center text-sm text-gray-600 gap-1">
-                                    <span>{store.addressLine || "Địa chỉ chưa cập nhật"}</span>
+                                <div className="flex gap-3 ">
+                                    <button
+                                        onClick={() => setChatBoxOpen(true)}
+                                        className="cursor-pointer flex items-center gap-1 text-purple-600 border-2 border-purple-600  font-bold px-2 py-1 rounded hover:bg-purple-100 "
+                                    >
+                                        <MessageCircle className="w-4 h-4  font-bold" />
+                                        Chat ngay
+                                    </button>
+                                    <Link to={`/store-detail/${product.storeId}`}
+                                        className=" cursor-pointer flex items-center gap-1 text-gray-500 border border-gray-400  px-2 py-1 rounded hover:bg-gray-200 "
+                                    >
+                                        <Store className="w-4 h-4" />
+                                        Xem shop
+                                    </Link>
                                 </div>
+
                             </div>
 
-                        </Link>
+                        </div>
                         <button className="px-4 py-2 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700 transition-all transform hover:scale-105 shadow-sm hover:shadow">
                             Follow
                         </button>
+
                     </div>
 
                     <div className="mt-10 bg-white p-6 rounded-xl shadow-sm border border-gray-100">

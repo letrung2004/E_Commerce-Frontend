@@ -4,6 +4,7 @@ import SockJS from "sockjs-client";
 import cookie from "react-cookies"
 import toast from 'react-hot-toast';
 import ToastOrderNotification from "../components/ToastOrderNotification";
+import ToastNewMessage from "../components/ToastNewMessage";
 
 
 
@@ -24,15 +25,12 @@ export const WebSocketProvider = ({ children, currentUser }) => {
             reconnectDelay: 5000,
             onConnect: () => {
                 console.log("Kết nối WebSocket");
-                // client.subscribe(`/topic/notifications`, (message) => {
-                //     const payload = JSON.parse(message.body)
-                //     console.log("Thông báo:", payload)
-                // });
+
                 client.subscribe("/user/" + currentUser.username + "/queue/messages", (message) => {
                     console.log("Callback nhận tin nhắn được gọi!")
                     try {
                         const payload = JSON.parse(message.body)
-                        console.log("Tin nhắn riêng nhận được:", payload)
+                        console.log("Thông báo đơn hàng mới nhận được:", payload)
 
                         toast.custom(<ToastOrderNotification payload={payload} />, {
                             duration: 10000
@@ -41,6 +39,21 @@ export const WebSocketProvider = ({ children, currentUser }) => {
                         console.error("Lỗi khi xử lý tin nhắn nhận được:", e, message.body)
                     }
                 });
+
+                client.subscribe("/user/" + currentUser.username + "/queue/private/messages", (message) => {
+                    console.log("Callback Tin nhắn cá nhân được gọi!")
+                    try {
+                        const payload = JSON.parse(message.body)
+                        console.log("Tin nhắn riêng nhận được:", payload)
+
+                        toast.custom(<ToastNewMessage payload={payload} />, {
+                            duration: 10000
+                        });
+                    } catch (e) {
+                        console.error("Lỗi khi xử lý tin nhắn nhận được:", e, message.body)
+                    }
+                });
+
 
                 setConnectedClient(client)
             },
