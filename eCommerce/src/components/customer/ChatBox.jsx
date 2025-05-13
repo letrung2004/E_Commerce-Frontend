@@ -51,8 +51,8 @@ const ChatBox = ({ isOpen, onClose, currentUser, store }) => {
 
 
     return (
-        <div className="fixed bottom-0 right-0 z-50 w-[45%] shadow-xl bg-white rounded-tl-lg border border-gray-300 overflow-hidden text-sm font-sans">
-            <div className="h-[500px] flex flex-col">
+        <div className="fixed bottom-0 right-0 z-50 w-[45%] h-[500px] shadow-xl bg-white rounded-tl-lg border border-gray-300 overflow-hidden text-sm font-sans">
+            <div className="flex flex-col h-full">
                 {/* Header */}
                 <div className="w-full bg-gray-50 border-b border-gray-300 flex justify-between">
                     <div className="w-full px-3 py-2 font-semibold bg-white text-purple-600">Chat</div>
@@ -113,14 +113,15 @@ const ChatBox = ({ isOpen, onClose, currentUser, store }) => {
                                 <div
                                     key={idx}
                                     className={`p-2 rounded shadow w-fit max-w-[80%] ${msg.from === "user"
-                                        ? "ml-auto text-blue-700 bg-blue-100"
-                                        : "text-gray-700 bg-white"
+                                            ? "ml-auto text-blue-700 bg-blue-100"
+                                            : "text-gray-700 bg-white"
                                         }`}
                                 >
                                     {msg.text}
                                 </div>
                             ))}
                         </div>
+
 
 
                         {/* Input */}

@@ -38,34 +38,7 @@ const Messages = () => {
                 { sender: "customer", content: "Dạ, tôi muốn đặt một chiếc màu đen. Thời gian giao hàng mất bao lâu vậy?", time: "11:20 AM", read: false }
             ]
         },
-        {
-            id: 3,
-            name: "Lê Văn C",
-            avatar: "/api/placeholder/40/40",
-            lastActive: "Hoạt động 1 giờ trước",
-            unread: false,
-            isOnline: false,
-            startTime: "09:30 AM",
-            messages: [
-                { sender: "customer", content: "Tôi muốn hủy đơn hàng #FSDT78945", time: "09:30 AM", read: true },
-                { sender: "seller", content: "Xin chào, vì sao bạn muốn hủy đơn hàng? Có vấn đề gì với sản phẩm hoặc dịch vụ của chúng tôi không?", time: "09:35 AM", read: true },
-                { sender: "customer", content: "Tôi đã đặt nhầm sản phẩm.", time: "09:37 AM", read: true },
-                { sender: "seller", content: "Tôi đã hủy đơn hàng của bạn. Tiền sẽ được hoàn lại trong 3-5 ngày làm việc.", time: "09:40 AM", read: true }
-            ]
-        },
-        {
-            id: 4,
-            name: "Phạm Thị D",
-            avatar: "/api/placeholder/40/40",
-            lastActive: "Hoạt động 1 ngày trước",
-            unread: false,
-            isOnline: false,
-            startTime: "Hôm qua",
-            messages: [
-                { sender: "customer", content: "Shop có giao hàng đến Đà Nẵng không?", time: "15:20 PM", read: true },
-                { sender: "seller", content: "Dạ chào bạn, chúng tôi có giao hàng đến Đà Nẵng. Phí vận chuyển sẽ là 30.000đ và thời gian giao hàng khoảng 2-3 ngày.", time: "15:25 PM", read: true }
-            ]
-        },
+       
     ]);
 
     const [selectedChat, setSelectedChat] = useState(conversations[0]);
