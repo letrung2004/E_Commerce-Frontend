@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { FaEllipsisV, FaSearch, FaUserCircle, FaPaperPlane, FaRegCalendarAlt, FaInfoCircle } from "react-icons/fa";
+import { useAuth } from "../../context/AuthProvider";
+import useChat from "../../components/customer/hook/useChat";
 
 const Messages = () => {
     const [activeTab, setActiveTab] = useState('Tất cả');
@@ -69,31 +71,9 @@ const Messages = () => {
     const [selectedChat, setSelectedChat] = useState(conversations[0]);
     const [newMessage, setNewMessage] = useState("");
     const [searchQuery, setSearchQuery] = useState("");
+    const { user } = useAuth();
+    const currentUser = { username: user?.username }
 
-    const sendMessage = () => {
-        if (newMessage.trim() === "") return;
-
-        const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-        const updatedConversations = conversations.map(chat => {
-            if (chat.id === selectedChat.id) {
-                return {
-                    ...chat,
-                    messages: [...chat.messages, {
-                        sender: "seller",
-                        content: newMessage,
-                        time: currentTime,
-                        read: true
-                    }]
-                };
-            }
-            return chat;
-        });
-
-        setConversations(updatedConversations);
-        setSelectedChat(updatedConversations.find(chat => chat.id === selectedChat.id));
-        setNewMessage("");
-    };
 
     const handleKeyPress = (e) => {
         if (e.key === 'Enter') {
@@ -133,6 +113,82 @@ const Messages = () => {
         setSelectedChat(chat);
         markAsRead(chat.id);
     };
+
+    const handleReceiveMessage = (payload) => {
+        const { senderUsername, content } = payload;
+        const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+        setConversations(prev => {
+            const existing = prev.find(c => c.name === senderUsername);
+
+            if (!existing) {
+                const newConversation = {
+                    id: Date.now(),
+                    name: senderUsername,
+                    avatar: "/api/placeholder/40/40",
+                    lastActive: "Vừa xong",
+                    unread: true,
+                    isOnline: true,
+                    startTime: currentTime,
+                    messages: [{
+                        sender: "customer",
+                        content,
+                        time: currentTime,
+                        read: false
+                    }]
+                };
+                return [newConversation, ...prev];
+            } else {
+                const updated = {
+                    ...existing,
+                    unread: true,
+                    messages: [
+                        ...existing.messages,
+                        {
+                            sender: "customer",
+                            content,
+                            time: currentTime,
+                            read: false
+                        }
+                    ]
+                };
+                return [
+                    updated,
+                    ...prev.filter(c => c.name !== senderUsername)
+                ];
+            }
+        });
+    };
+
+    const { sendMessage: sendViaSocket } = useChat(currentUser, selectedChat?.name, handleReceiveMessage);
+
+
+    const sendMessage = () => {
+        if (newMessage.trim() === "") return;
+
+        const currentTime = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+        const updatedConversations = conversations.map(chat => {
+            if (chat.id === selectedChat.id) {
+                return {
+                    ...chat,
+                    messages: [...chat.messages, {
+                        sender: "seller",
+                        content: newMessage,
+                        time: currentTime,
+                        read: true
+                    }]
+                };
+            }
+            return chat;
+        });
+
+        setConversations(updatedConversations);
+        setSelectedChat(updatedConversations.find(chat => chat.id === selectedChat.id));
+        sendViaSocket(newMessage);
+        setNewMessage("");
+    };
+
 
     return (
         <div className="p-6 bg-white rounded-md shadow-sm flex h-[calc(100vh-120px)]">
