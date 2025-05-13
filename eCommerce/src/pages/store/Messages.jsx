@@ -158,6 +158,20 @@ const Messages = () => {
                 ];
             }
         });
+        if (selectedChat?.name === senderUsername) {
+            setSelectedChat(prev => ({
+                ...prev,
+                messages: [
+                    ...prev.messages,
+                    {
+                        sender: "customer",
+                        content,
+                        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+                        read: false,
+                    }
+                ]
+            }));
+        }
     };
 
     const { sendMessage: sendViaSocket } = useChat(currentUser, selectedChat?.name, handleReceiveMessage);

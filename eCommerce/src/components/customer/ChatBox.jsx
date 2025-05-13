@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Send, X } from 'lucide-react';
-import { useWebSocket } from '../../context/WebSocketContext';
 import useChat from './hook/useChat';
 
 const ChatBox = ({ isOpen, onClose, currentUser, store }) => {
@@ -72,7 +71,7 @@ const ChatBox = ({ isOpen, onClose, currentUser, store }) => {
                                 <div
                                     key={i}
                                     onClick={() => setSelectedIndex(i)}
-                                    className={`flex items-center gap-2 px-3 py-4 hover:bg-gray-100 cursor-pointer ${i === selectedIndex ? "bg-gray-100" : ""}`}
+                                    className={`flex items-center gap-2 px-4 py-4 hover:bg-gray-100 cursor-pointer ${i === selectedIndex ? "bg-gray-100" : ""}`}
                                 >
                                     {/* <div className="w-8 h-8 bg-gray-300 rounded-full shrink-0" /> */}
                                     <img src={store.logo} alt={store.name} className="w-8 h-8 rounded-full object-cover" />
