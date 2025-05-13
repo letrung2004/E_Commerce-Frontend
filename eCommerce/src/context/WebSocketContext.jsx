@@ -35,7 +35,7 @@ export const WebSocketProvider = ({ children, currentUser }) => {
                         console.log("Tin nhắn riêng nhận được:", payload)
 
                         toast.custom(<ToastOrderNotification payload={payload} />, {
-                            duration: 120000,
+                            duration: 10000
                         });
                     } catch (e) {
                         console.error("Lỗi khi xử lý tin nhắn nhận được:", e, message.body)
