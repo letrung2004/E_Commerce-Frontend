@@ -1,7 +1,7 @@
 import React, { useCallback, useRef, useState } from 'react'
 import useOrders from '../../components/customer/hook/useOrders';
 import ReviewModal from '../../components/customer/modal/ReviewModal';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 const Orders = () => {
     const location = useLocation();
@@ -9,6 +9,7 @@ const Orders = () => {
     const tabAssign = location.state?.tabAssign || "Tất cả";
     const [activeTab, setActiveTab] = useState(tabAssign);
     const { orders, loading, error, loadOrders, setPage, page, hasMore } = useOrders(activeTab)
+    console.log("Orders: ", orders)
 
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [selectedOrderDetails, setSelectedOrderDetails] = useState(null);
@@ -85,7 +86,7 @@ const Orders = () => {
                                     {/* Sản phẩm */}
                                     {/* Sản phẩm trong đơn hàng */}
                                     {order.orderDetails.map((item, idx) => (
-                                        <div key={idx} className="flex gap-4 mb-4">
+                                        <Link to={"/me/orders/orderId"} state={{ order }} key={idx} className="flex gap-4 mb-4 cursor-pointer">
                                             <div className="w-20 h-20 bg-gray-100 flex items-center justify-center text-gray-400">
                                                 {/* Ảnh sản phẩm */}
                                                 <img src={item.product.image} alt={item.product.name} className="w-full h-full object-cover rounded" />
@@ -98,7 +99,7 @@ const Orders = () => {
                                             <div className="text-right">
                                                 <div className="text-purple-800 font-bold">₫{item.subTotal.toLocaleString()}</div>
                                             </div>
-                                        </div>
+                                        </Link>
                                     ))}
                                 </div>
                                 <div className='bg-purple-50 pt-3 pb-6 px-5 mb-4 shadow rounded-t-md'>
