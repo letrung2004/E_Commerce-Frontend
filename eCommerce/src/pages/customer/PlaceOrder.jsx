@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { FaCommentDots, FaMapMarkerAlt } from 'react-icons/fa';
 import { AddressContext, AddressDispatchContext } from '../../context/AppContext';
 import useAddress from '../../components/customer/hook/useAddress';
@@ -10,13 +10,15 @@ import { useCart } from '../../context/CartContext';
 import NotificationSender from '../../components/customer/Notification';
 import { useAuth } from '../../context/AuthProvider';
 import { useWebSocket } from '../../context/WebSocketContext';
+import { v4 as uuidv4 } from 'uuid';
+import debounce from 'lodash/debounce'
 
 const PlaceOrder = () => {
     const location = useLocation()
     const { checkoutData } = location.state || {};
-    console.log("Checkout data: ", checkoutData)
+    // console.log("Checkout data: ", checkoutData)
     const { user } = useAuth()
-
+    const [idempotencyKey, setIdempotencyKey] = useState('');
     const { stompClient } = useWebSocket();
     const [message, setMessage] = useState("");
     const navigate = useNavigate();
@@ -47,7 +49,16 @@ const PlaceOrder = () => {
             console.error("WebSocket chưa kết nối.");
         }
     };
-
+    useEffect(() => {
+        let key = localStorage.getItem('placeOrderKey')
+        console.log("UUID get: ", key)
+        if (!key) {
+            key = uuidv4();
+            console.log("UUID set: ", key)
+            localStorage.setItem('placeOrderKey', key);
+        }
+        setIdempotencyKey(key);
+    }, []);
 
 
     const handlePlaceOrder = async () => {
@@ -66,32 +77,46 @@ const PlaceOrder = () => {
 
         try {
             setLoading(true)
-            const response = await authAPIs().post(endpoints.placeOrder, data);
+            const config = {
+                headers: {
+                    'uuidKey': idempotencyKey,
+                }
+            };
+            const response = await authAPIs().post(endpoints.placeOrder, data, config);
             console.log("Status: ", response.status)
 
 
-
             if (response.data.paymentUrl) {
+
                 window.location.href = response.data.paymentUrl; // Redirect sang VNPay
+
             } else if (response.status === 201) {
+
                 console.log("Đặt hàng COD thành công", response.data);
-
                 loadCart()
-
                 navigate("/me/my-orders", { state: { tabAssign: "Chờ xác nhận" } })
 
             } else {
-                throw new Error("Failed to load addresses");
+                throw new Error("Order failed");
             }
 
+            localStorage.removeItem('placeOrderKey');
+            console.log("uuid removed");
 
 
         } catch (err) {
-            // setError(err.message);
+            if (err.response?.status === 409) {
+                console.log("Đơn đặt hàng đã được xử lý trước đó");
+                alert("Lỗi: Đơn hàng đã xử lý trước đó");
+            } else {
+                console.error("Lỗi khác:", err);
+            }
+
         } finally {
             setLoading(false);
         }
     }
+
 
     const EWallet = () => {
         return (
