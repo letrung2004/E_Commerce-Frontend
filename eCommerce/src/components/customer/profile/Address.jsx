@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import NewAddress from '../../store/NewAddress';
 import { authAPIs, endpoints } from '../../../configs/APIs';
 import DeleteConfirmation from '../modal/DeleteConfirmation';
-import { AddressDispatchContext } from '../../../context/AppContext';
+import { AddressContext, AddressDispatchContext } from '../../../context/AppContext';
 import Process from '../../store/Process';
 
 const Address = () => {
@@ -11,6 +11,8 @@ const Address = () => {
     const [addresses, setAddresses] = useState([]);
     const [selectedAddressId, setSelectedAddressId] = useState(null)
     const setCurrentAddress = useContext(AddressDispatchContext)
+    const currentAddress = useContext(AddressContext)
+    // console.log("Current address: ", currentAddress)
     const [loading, setLoading] = useState(false)
 
     const handleAddressCreated = (address) => {
@@ -43,14 +45,14 @@ const Address = () => {
     }
 
     const handleSetDefaultAddress = async (address) => {
-        console.log("default Address: ", address)
-        setCurrentAddress(address) // khong can thiet
+        // console.log("default Address: ", address)
 
         try {
             setLoading(true)
             let response = await authAPIs().patch(endpoints.setDefaultAddress(address.id))
             if (response.status === 200) {
-                loadAddresses()
+                setCurrentAddress(address)
+
             } else {
                 console.log("FAILED");
             }
@@ -64,7 +66,7 @@ const Address = () => {
 
     useEffect(() => {
         loadAddresses()
-    }, [])
+    }, [currentAddress])
 
     return (
         <div className="bg-white w-full m-3 p-4 rounded shadow">
@@ -100,7 +102,7 @@ const Address = () => {
                                     onClick={() => handleSetDefaultAddress(addr)}
                                 >Thiết lập mặc định</button> :
                                 <button className='text-white text-sm rounded-sm p-1 bg-purple-600 border border-gray-300'
-                                    
+
                                 >Địa chỉ mặc định</button>
                             }
                         </div>
