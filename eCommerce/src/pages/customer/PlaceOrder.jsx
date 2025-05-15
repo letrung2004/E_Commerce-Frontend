@@ -135,6 +135,13 @@ const PlaceOrder = () => {
             </div>
         )
     }
+    const totalProductPrice = checkoutData.subOrderItems.reduce((sum, subOrder) => {
+        return sum + subOrder.subCartItem.reduce((subSum, item) => subSum + item.unitPrice * item.quantity, 0);
+    }, 0);
+
+    const totalShippingFee = checkoutData.subOrderItems.reduce((sum, subOrder) => sum + subOrder.shippingCost, 0);
+
+    const totalPayment = totalProductPrice + totalShippingFee;
 
     return (
         <div className='w-full bg-gray-100'>
@@ -271,16 +278,17 @@ const PlaceOrder = () => {
                         <div className="space-y-3 text-sm text-gray-700 border-b border-gray-300 border-dashed w-full flex flex-col items-end p-4">
                             <div className='w-[30%] flex justify-between '>
                                 <p>Tổng tiền hàng:</p>
-                                <p>₫285.000</p>
+                                <p>₫{totalProductPrice.toLocaleString()}</p>
                             </div>
                             <div className='w-[30%] flex justify-between'>
                                 <p>Tổng tiền phí vận chuyển:</p>
-                                <p> ₫37.300</p>
+                                <p>₫{totalShippingFee.toLocaleString()}</p>
                             </div>
                             <div className='w-[30%] flex justify-between'>
                                 <p className="">Tổng thanh toán: </p>
-                                <p className='text-2xl font-medium text-purple-600'>₫322.300</p>
+                                <p className='text-2xl font-medium text-purple-600'>₫{totalPayment.toLocaleString()}</p>
                             </div>
+
                         </div>
                         <div className='w-full flex  justify-between  p-6'>
                             <p className="text-xs text-gray-500 mt-2">

@@ -1,37 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 
-// const order = {
-//     id: "1012OD",
-//     date: "April 12, 2025",
-//     status: "Delivered",
-//     deliveryDate: "April 15, 2025",
-//     paymentMethod: "Credit Card",
-//     shippingAddress: {
-//         name: "Nguyen Van A",
-//         phone: "0901234567",
-//         address: "123 Lê Lợi, Quận 1, TP.HCM",
-//     },
-//     items: [
-//         {
-//             id: 1,
-//             name: "Men Slim Mid Rise Black Jeans",
-//             price: 1099000,
-//             quantity: 1,
-//             image: "https://res.cloudinary.com/derx1izam/image/upload/v1741688511/wds7s8z3kqtytrj4tidp.png",
-//         },
-//         {
-//             id: 2,
-//             name: "Women Bodycon Yellow Dress",
-//             price: 499000,
-//             quantity: 2,
-//             image: "https://res.cloudinary.com/derx1izam/image/upload/v1741688511/wds7s8z3kqtytrj4tidp.png",
-//         },
-//     ],
-// };
-
 const OrderDetail = () => {
-    // const total = order.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
     const location = useLocation();
     const { order } = location.state || {}
     console.log("detail: ", order)
