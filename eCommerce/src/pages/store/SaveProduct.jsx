@@ -208,119 +208,71 @@ const SaveProduct = () => {
             <div className="bg-white shadow-md rounded-lg p-6">
                 <form onSubmit={handleSubmit} className="space-y-5">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div className="space-y-5">
-                            <div>
-                                <label className="block text-gray-700 text-sm font-medium mb-1">Tên sản phẩm</label>
-                                <input
-                                    type="text"
-                                    name="name"
-                                    value={product.name || ""}
-                                    onChange={(e) => handleChange(e.target.value, "name")}
-                                    className={`w-full px-4 py-2 rounded-lg border ${errors.name ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-purple-500`}
-                                    disabled={loading}
-                                    placeholder="Nhập tên sản phẩm"
-                                />
-                                {errors.name && (
-                                    <p className="text-red-500 text-xs mt-1">{errors.name}</p>
-                                )}
-                            </div>
+                        {info.map((item) => (
+                            <div key={item.field}>
+                                <label className="block text-gray-700 text-sm font-medium mb-1">
+                                    {item.label}
+                                </label>
 
-                            <div>
-                                <label className="block text-gray-700 text-sm font-medium mb-1">Giá</label>
-                                <input
-                                    type="number"
-                                    name="price"
-                                    value={product.price || ""}
-                                    onChange={(e) => handleChange(e.target.value, "price")}
-                                    className={`w-full px-4 py-2 rounded-lg border ${errors.price ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-purple-500`}
-                                    disabled={loading}
-                                    placeholder="Nhập giá sản phẩm"
-                                />
-                                {errors.price && (
-                                    <p className="text-red-500 text-xs mt-1">{errors.price}</p>
-                                )}
-                            </div>
-
-                            <div>
-                                <label className="block text-gray-700 text-sm font-medium mb-1">Nhà sản xuất</label>
-                                <input
-                                    type="text"
-                                    name="manufacturer"
-                                    value={product.manufacturer || ""}
-                                    onChange={(e) => handleChange(e.target.value, "manufacturer")}
-                                    className={`w-full px-4 py-2 rounded-lg border ${errors.manufacturer ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-purple-500`}
-                                    disabled={loading}
-                                    placeholder="Nhập tên nhà sản xuất"
-                                />
-                                {errors.manufacturer && (
-                                    <p className="text-red-500 text-xs mt-1">{errors.manufacturer}</p>
-                                )}
-                            </div>
-
-                            <div>
-                                <label className="block text-gray-700 text-sm font-medium mb-1">Danh mục</label>
-                                <select
-                                    name="categoryId"
-                                    value={product.categoryId || ""}
-                                    onChange={(e) => handleChange(e.target.value, "categoryId")}
-                                    className={`w-full px-4 py-2 rounded-lg border ${errors.categoryId ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-purple-500`}
-                                    disabled={loading}
-                                >
-                                    <option value="">Chọn danh mục</option>
-                                    {categories.map((cat) => (
-                                        <option key={cat.id} value={cat.id}>
-                                            {cat.name}
-                                        </option>
-                                    ))}
-                                </select>
-                                {errors.categoryId && (
-                                    <p className="text-red-500 text-xs mt-1">{errors.categoryId}</p>
-                                )}
-                            </div>
-                        </div>
-
-                        <div className="space-y-5">
-                            <div>
-                                <label className="block text-gray-700 text-sm font-medium mb-1">Mô tả</label>
-                                <textarea
-                                    name="description"
-                                    value={product.description || ""}
-                                    onChange={(e) => handleChange(e.target.value, "description")}
-                                    rows="4"
-                                    className={`w-full px-4 py-2 rounded-lg border ${errors.description ? 'border-red-500' : 'border-gray-300'} focus:outline-none focus:ring-2 focus:ring-purple-500`}
-                                    disabled={loading}
-                                    placeholder="Nhập mô tả sản phẩm"
-                                />
-                                {errors.description && (
-                                    <p className="text-red-500 text-xs mt-1">{errors.description}</p>
-                                )}
-                            </div>
-
-                            <div>
-                                <label className="block text-gray-700 text-sm font-medium mb-1">Ảnh sản phẩm</label>
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    name="file"
-                                    onChange={handleFileChange}
-                                    className={`w-full px-4 py-2 rounded-lg border file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-purple-500 file:text-white hover:file:bg-purple-600 transition ${errors.file ? 'border-red-500' : 'border-gray-300'}`}
-                                    disabled={loading}
-                                />
-                                {errors.file && (
-                                    <p className="text-red-500 text-xs mt-1">{errors.file}</p>
-                                )}
-                                {previewImage && (
-                                    <div className="mt-3">
-                                        <p className="text-sm text-gray-500 mb-1">Xem trước:</p>
-                                        <img
-                                            src={previewImage}
-                                            alt="Preview"
-                                            className="w-40 h-40 object-cover rounded-lg shadow-sm border border-gray-200"
+                                {item.type === "textarea" ? (
+                                    <textarea
+                                        value={product[item.field] || ""}
+                                        onChange={(e) => handleChange(e.target.value, item.field)}
+                                        className={`w-full px-4 py-2 rounded-lg border ${errors[item.field] ? "border-red-500" : "border-gray-300"
+                                            } focus:outline-none focus:ring-2 focus:ring-purple-500`}
+                                        disabled={loading}
+                                        placeholder={`Nhập ${item.label.toLowerCase()}`}
+                                    />
+                                ) : item.type === "select" ? (
+                                    <select
+                                        value={product[item.field] || ""}
+                                        onChange={(e) => handleChange(e.target.value, item.field)}
+                                        className={`w-full px-4 py-2 rounded-lg border ${errors[item.field] ? "border-red-500" : "border-gray-300"
+                                            } focus:outline-none focus:ring-2 focus:ring-purple-500`}
+                                        disabled={loading}
+                                    >
+                                        <option value="">Chọn danh mục</option>
+                                        {categories.map((cat) => (
+                                            <option key={cat.id} value={cat.id}>
+                                                {cat.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                ) : item.type === "file" ? (
+                                    <>
+                                        <input
+                                            type="file"
+                                            onChange={handleFileChange}
+                                            className={`w-full px-4 py-2 rounded-lg border file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-purple-500 file:text-white hover:file:bg-purple-600 transition ${errors[item.field] ? "border-red-500" : "border-gray-300"
+                                                } focus:outline-none focus:ring-2 focus:ring-purple-500`}
+                                            disabled={loading}
                                         />
-                                    </div>
+                                        {previewImage && (
+                                            <img
+                                                src={previewImage}
+                                                alt="Preview"
+                                                className="mt-2 h-24 object-contain rounded-md border"
+                                            />
+                                        )}
+                                    </>
+                                ) : (
+                                    <input
+                                        type={item.type}
+                                        value={product[item.field] || ""}
+                                        onChange={(e) => handleChange(e.target.value, item.field)}
+                                        className={`w-full px-4 py-2 rounded-lg border ${errors[item.field] ? "border-red-500" : "border-gray-300"
+                                            } focus:outline-none focus:ring-2 focus:ring-purple-500`}
+                                        disabled={loading}
+                                        placeholder={`Nhập ${item.label.toLowerCase()}`}
+                                    />
+                                )}
+
+                                {errors[item.field] && (
+                                    <p className="text-red-500 text-xs mt-1">{errors[item.field]}</p>
                                 )}
                             </div>
-                        </div>
+                        ))}
+
                     </div>
 
                     <div className="pt-4 flex justify-end space-x-3">
