@@ -172,7 +172,7 @@ const StoreRegistration = () => {
                         <div className='flex flex-col w-[10%]'>
 
                             <button onClick={() => setIsModalOpen(true)}
-                                className={`px-4 py-2 border ${errors.addressId ? "border-red-500" : "border-gray-300"} rounded text-sm`}
+                                className={`px-4 py-2 border ${errors.addressId ? "border-purple-500" : "border-gray-300"} rounded text-sm`}
                                 type="button"
                             >
                                 + Thêm
@@ -217,7 +217,7 @@ const StoreRegistration = () => {
                         * Số điện thoại
                     </label>
                     <div className='w-[60%]'>
-                        <div className={`w-full flex border ${errors.phoneNumber ? "border-red-500" : "border-gray-300"} rounded overflow-hidden`}>
+                        <div className={`w-full flex border ${errors.phoneNumber ? "border-purple-500" : "border-gray-300"} rounded overflow-hidden`}>
                             <span className="p-2 bg-gray-100 border-r border-gray-300">+84</span>
                             <input
                                 type="text"
@@ -241,7 +241,7 @@ const StoreRegistration = () => {
                     <button className="px-4 py-2 border rounded text-sm" onClick={handleCancel}>Hủy</button>
                     <button
                         type="submit"
-                        className="px-4 py-2 bg-red-500 text-white rounded text-sm">
+                        className="px-4 py-2 bg-purple-500 text-white rounded text-sm">
                         Lưu & gửi yêu cầu
                     </button>
                 </div>
