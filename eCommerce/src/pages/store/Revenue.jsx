@@ -7,6 +7,7 @@ const Revenue = () => {
     const [allRevenueData, setAllRevenueData] = useState([]);
     const [productRevenueData, setProductRevenueData] = useState([]);
     const [categoryRevenueData, setCategoryRevenueData] = useState([]);
+    const [activeTab, setActiveTab] = useState("month");
 
     const infoTimes = [
         { label: "Tháng", field: "month" },
@@ -14,11 +15,43 @@ const Revenue = () => {
         { label: "Năm", field: "year" }
     ];
 
-    const totalRevenue = allRevenueData.reduce((sum, item) => sum + item.totalRevenue, 0);
-    const totalOrders = allRevenueData.reduce((sum, item) => sum + item.orderCount, 0);
-    const averageOrderValue = totalOrders > 0 ? totalRevenue / totalOrders : 0;
+    const getCurrentPeriodStats = () => {
+        if (allRevenueData.length === 0) {
+            return { totalRevenue: 0, totalOrders: 0, averageOrderValue: 0 };
+        }
 
-    const [activeTab, setActiveTab] = useState("month");
+        let currentData = [];
+        const now = new Date();
+        const currentYear = now.getFullYear();
+        const currentMonth = now.getMonth() + 1;
+        const currentQuarter = Math.floor(now.getMonth() / 3) + 1;
+
+        if (activeTab === 'month') {
+            const monthStr = currentMonth < 10 ? `0${currentMonth}` : currentMonth;
+            const currentPeriod = `${currentYear}-${monthStr}`;
+            currentData = allRevenueData.filter(item => item.period === currentPeriod);
+        } else if (activeTab === 'quarter') {
+            const currentPeriod = `${currentYear}-Q${currentQuarter}`;
+            currentData = allRevenueData.filter(item => item.period === currentPeriod);
+        } else {
+            const currentPeriod = `${currentYear}`;
+            currentData = allRevenueData.filter(item => item.period === currentPeriod);
+        }
+
+        if (currentData.length === 0) {
+            currentData = allRevenueData;
+        }
+
+        const totalRevenue = currentData.reduce((sum, item) => sum + item.totalRevenue, 0);
+        const totalOrders = currentData.reduce((sum, item) => sum + item.orderCount, 0);
+        const averageOrderValue = totalOrders > 0 ? totalRevenue / totalOrders : 0;
+
+        return { totalRevenue, totalOrders, averageOrderValue };
+    };
+
+    const { totalRevenue, totalOrders, averageOrderValue } = getCurrentPeriodStats();
+
+
 
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
     const [selectedQuarter, setSelectedQuarter] = useState(Math.floor(new Date().getMonth() / 3) + 1);
@@ -363,15 +396,6 @@ const Revenue = () => {
                     </div>
                 </div>
             </div>
-
-            {/* <div className="mt-8 flex justify-end">
-                <button className="bg-purple-500 text-white px-4 py-2 rounded text-sm mr-2">
-                    Xuất Excel
-                </button>
-                <button className="bg-gray-600 text-white px-4 py-2 rounded text-sm">
-                    Xuất PDF
-                </button>
-            </div> */}
         </div>
     );
 };
